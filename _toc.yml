@@ -5,5 +5,5 @@ root: about/unsyllabus
 parts:
 - caption: Wohninvest 4.0
   chapters:
-    - file: class/01_kicker
+    - file: class/01_Kicker
       title: Einleitung und Übersicht
