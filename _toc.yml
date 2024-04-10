@@ -1,0 +1,9 @@
+# Table of contents
+
+format: jb-book
+root: about/unsyllabus
+parts:
+- caption: Wohninvest 4.0
+  chapters:
+    - file: class/01_kicker
+      title: Einleitung und Übersicht
