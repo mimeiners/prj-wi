@@ -60,20 +60,22 @@ sphinx:
     html_show_copyright: false
     html_extra_path: ['files']
     bibtex_reference_style: author_year
-    myst_enable_extensions: 
-    - amsmath
-    - colon_fence
-    - deflist
-    - dollarmath
-    - html_image
-    - linkify
-    - replacements
-    - substitution
+    myst_enable_extensions:
+      - amsmath
+      - colon_fence
+      - deflist
+      - dollarmath
+      - html_image
+      - linkify
+      - replacements
+      - substitution
+
+    myst_number_code_blocks: typescript
 
     myst_substitutions:
-      INSTRUCTOR: "Prof. Dr.-Ing. Mirco Meiners (he/his/him)"
+      INSTRUCTOR: "M. Meiners / B. Lehmann"
       PRONOUNCE: ""
-      OFFICE: "E 508"
+      OFFICE: "E 508 / E 30"
       PHONE: "N/A"
       COURSE_CODE: "PRJ2/PRJ3"
       SECTION: ""
@@ -97,5 +99,5 @@ sphinx:
       FORUM_LINK: ""
       ANALYTICS_OPTOUT: ""
       FORMAT: "Projekt"
-      ASSOCIATE_HEAD: "Benjamin Lehmann [Benjamin.Lehmann@hs-bremen.de](mailto:Benjamin.Lehmann@hs-bremen.de)"
+      ASSOCIATE_HEAD: ""
       ANON_FEEDBACK: ""
