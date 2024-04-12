@@ -70,8 +70,6 @@ sphinx:
       - replacements
       - substitution
 
-    myst_number_code_blocks: typescript
-
     myst_substitutions:
       INSTRUCTOR: "M. Meiners / B. Lehmann"
       PRONOUNCE: ""
