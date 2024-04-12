@@ -1,5 +1,5 @@
 # Projektplan
-[Der <font color='red'>**vorläufige**</font> Projektplan ist hier zu finden:](docs/AuVAReS/PRJ_AuVAReS_PRJ-PLAN_001.pdf)
+[Der <font color='red'>**vorläufige**</font> Projektplan ist hier zu finden:](PRJ_AuVAReS_PRJ-PLAN_001.pdf)
 
 
 # AuVAReS System Anforderungen 
