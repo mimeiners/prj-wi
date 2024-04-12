@@ -7,12 +7,10 @@ parts:
     chapters:
       - file: docs/Kicker/01_Kicker
         title: Einleitung und Übersicht
-parts:
   - caption: AuVAReS
     chapters:
       - file: docs/AuVAReS/01_Requirements
         title: Anforderungen
-parts:
   - caption: Meetings
     chapters:
       - file: docs/Meetings/04-11_Protokoll

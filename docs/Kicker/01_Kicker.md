@@ -20,7 +20,7 @@ die Spielernamen einzugeben und auf den Displays auszugeben, kann über ein im H
 verwendet werden. Zu diesem Zweck wird ein Tablett bereitgestellt. Von diesem aus kann auch die Einsicht in die
 Spieltabellen geschehen. Der schematische Programmaufbau ist in der Abbildung 1 dargestellt.
 
-```{figure} ../images/Kicker/Ablauf.png
+```{figure} ../../images/Kicker/Ablauf.png
 :align: center
 :name: Abb. 1 
 
@@ -94,67 +94,67 @@ für die Bedienung des Datenbank Programms vorgesehen.
 Nachfolgend sind die für dieses Projekt verwendeten Quellcodes
 aufgelistet. Diese sind Abschnittsweise im Code kommentiert.
 
-o Abfragen der Lichtschranken
+* Abfragen der Lichtschranken
 
-```{.literalinclude} ../files/Kicker/www/cgi-bin/Sensoren.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/Sensoren.py
 ```
 
-o Anzeige des Spielstands auf den Anzeigetafeln
+* Anzeige des Spielstands auf den Anzeigetafeln
 
-```{.literalinclude} ../files/Kicker/Anzeigetafel/main.py
+```{literalinclude} ../../files/Kicker/Anzeigetafel/main.py
 ```
 
-o Index Datei der WEBGUI
+* Index Datei der WEBGUI
 
-```{.literalinclude} ../files/Kicker/www/index.html
+```{literalinclude} ../../files/Kicker/www/index.html
 ```
 
-o Funktion zum Hinzufügen und Löschen der Spiele
+* Funktion zum Hinzufügen und Löschen der Spiele
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/function_add_game.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/function_add_game.py
 ```
 
-o HTML Header der WEBGUI
+* HTML Header der WEBGUI
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/main_top.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/main_top.py
 ```
 
-o HTML Main Seite
+* HTML Main Seite
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/main_home.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/main_home.py
 ```
 
-o Einstellungen an der HTML-Seite vornehmen
+* Einstellungen an der HTML-Seite vornehmen
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/main_settings.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/main_settings.py
 ```
 
-o Funktionsblock
+* Funktionsblock
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/function_settings.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/function_settings.py
 ```
 
-o Alle Spiele Anzeigen
+* Alle Spiele Anzeigen
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/main_games.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/main_games.py
 ```
 
-o Ewige Tabelle Anzeigen
+* Ewige Tabelle Anzeigen
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/main_ever_table.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/main_ever_table.py
 ```
 
-o Spieler miteinander Vergleichen
+* Spieler miteinander Vergleichen
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/main_compare.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/main_compare.py
 ```
 
-o Funktionsblock
+* Funktionsblock
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/function_compare.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/function_compare.py
 ```
 
-o Spieltag anzeigen und Spiel starten
+* Spieltag anzeigen und Spiel starten
 
-``` {.literalinclude} ../files/Kicker/www/cgi-bin/main_gameday.py
+```{literalinclude} ../../files/Kicker/www/cgi-bin/main_gameday.py
 ```
