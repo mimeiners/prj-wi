@@ -6,10 +6,11 @@
 - Festlegung der Teilgruppen der Gruppe Kicker
 
 ## Gruppen Kicker:
+| Bereich  | Personen  | Aufgabe|
 |:----------|:----------|:----------|
-| DB:  | David, Achraf, Seif                        |Potenziell über Beispielprojekt auf Reichelt                       |
-| HW:  | Eduard, Niclas                             |LCDs, Tore: Blech & Holz, Beleuchtung, Sensoren, Verdrahtung       |
-| DB:  | Lukas, Martin, Phillip, Torge, Marvin      |Spielsteuerung                                                     |
+| DB:  | David, Achraf, Seif |Potenziell über Beispielprojekt auf Reichelt |
+| HW:  | Eduard, Niclas |LCDs, Tore: Blech & Holz, Beleuchtung, Sensoren, Verdrahtung  |
+| DB:  | Lukas, Martin, Phillip, Torge, Marvin |Spielsteuerung |
 
 
 ## To-Do:
