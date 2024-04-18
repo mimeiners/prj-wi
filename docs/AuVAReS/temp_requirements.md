@@ -6,7 +6,7 @@
 
 <mark><font color='red'>**Hinweis**</font>: Vorläufige Aufschlüsselung der System-Anforderungen</mark>
 
-**Stand: 11.04.2024**
+**Stand: 18.04.2024**
 
 **Status: vertraglich vorgegeben**
 
@@ -33,11 +33,18 @@
 - Erkennung Ball außerhalb des Spielfeldes
 - Zwei Bälle innerhalb des Spielfeldes
 - Unzulässiger Eingriff durch Spieler in das Spielgeschehen
+
+Das System muss das Spielfeld erkennen.
+Das System muss den Ball erkennen.
+Wenn ein zweiter Ball im Spielfeld erkannt wird, soll dies gemeldet werden.
+Wenn eine Hand im Spielfeld zu erkennen ist, soll das System dies melden.
 \
 \
 **S1.2: Überwachung aus der Luft**
 - VAR-Drohne fliegt über das Spielfeld
 - Erfassung Spielgeschehen via Kamera
+
+Das Teilsystem muss das Spielgeschehen ergänzend zu dem Kicker aufnehmen.
 \
 \
 **S1.3: System muss über hohen Grad an Autonomie verfügen**
@@ -45,24 +52,34 @@
 - Selbstständige Spielfelderfassung
 - Flugoperationen werden selbstständig durchgeführt
 - Bei Unterschreitung eines niedrigen Ladezustandes (tbd) kehrt die Drohne zu ihrer Landestation zurück
+
+Das Teilsystem muss sich selbstständig in eine geeignete Position manövrieren.
+Das Teilsystem kann bei einem niedrigen Akkustand selbstständig zu einer Landeposition fliegen. 
 \
 \
 **S1.4: Auswertung und Bereitstellung von Spieldaten in Echtzeit**
 - Im Falle eines Spielereignisses (vgl. S1.1) wird eine Wiederholung des Szene auf den Monitoren des Kickers ausgegeben
 - Maximale Latenz (Echtzeit): tbd
 - Dauer der Wiederholungen: tbd
-- Replay-Funktion von Highlights (optional)
+- Replay-Funktion von 
+
+Highlights (optional)
+Das System muss eine Video-Wiederholung zur Verfügung stellen.
 \
 \
 **S1.5: Netzwerkfunktionen**
 - Kommunikation mit Kicker-Tisch
 - Kommunikation mit KI-Server
 - Kommunikation mit Steuer-Einheit der Drohne
+
+Das System muss eine Kommunikationsschnittstelle besitzen.
 \
 \
 **S1.6: Selbstlernfunktion**
 - Spielfeld- und Spielballerkennung verbessert sich
 - Anpassung Flugroute
+
+Das System wird sich basierend auf dem Spielstil bekannter Spieler selbst positionieren und seine Ausrichtung zum Spielgeschehen anpassen.
 \
 \
 **S1.7: Sicherer Betrieb**
@@ -70,9 +87,15 @@
 - Eigenständige Landung bei geringem Ladezustand (vgl. S1.3)
 - Vor einem Start der Drohne muss eine hindernisfreie Umgebung für den Start vom Benutzer quittiert werden
 - tbd
+
+Das System muss vor dem Starten von den Spielern freigegeben werden.
+Das System muss ausreichend Abstand zu den Spielern wahren.
+Das System muss jederzeit eine manuell initiierte Landung ermöglichen.
 \
 \
 **S1.8: Maßstab 1:10**
 - Bezugsgröße muss definiert werden
+
+Das System wird für einen größeren Maßstab angepasst.
 
 
