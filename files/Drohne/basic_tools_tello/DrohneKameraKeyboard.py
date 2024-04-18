@@ -1,19 +1,19 @@
 """
-@date       2024.04.17
-@version:   V1.01
+@date       2024.04.18
+@version:   V1.02
 @author:    Finn Katenkmap
 """
 
 """
-Hinweis: Für die Fehlersuche kann Zeile 40 einkommentiert werden,
+Hinweis: Für die Fehlersuche kann Zeile 42,44-45 einkommentiert werden,
 um den Log in einer Datei zu speichern.
 Das Loglevel kann in zeile 38 angepasst werden.
 
 Flugsteuerung:
 
     links/rechts/vorwärts/rückwärts -> "Pfeiltasten"
-    hoch -> "s"
-    runter -> "w"
+    hoch -> "w"
+    runter -> "s"
     rechts-/linksdrehen -> "d"/"a"
 
     starten -> "q"
@@ -76,11 +76,11 @@ def getKeyboardInput():
     if kp.getKey("UP"): fb     = speed
     elif kp.getKey("DOWN"): fb = -speed 
 
-    if kp.getKey("w"): ud   = -speed
-    elif kp.getKey("s"): ud = speed
+    if kp.getKey("s"): ud   = -speed
+    elif kp.getKey("w"): ud = speed
 
-    if kp.getKey("a"): yv   =   speed
-    elif kp.getKey("d"): yv =   -speed
+    if kp.getKey("d"): yv   =   speed
+    elif kp.getKey("a"): yv =   -speed
 
     if kp.getKey("e"):
         if not landed:
@@ -100,13 +100,28 @@ def getKeyboardInput():
 
     return[lr,fb,ud,yv,esc,save]
 
+def get_file_list(path):
+    file_list = []
+    highest_number = 0
+    for file_name in os.listdir(path):
+        if file_name.startswith("img_") and file_name.endswith(".png"):
+            file_list.append(file_name)
+            number = int(file_name[4:-4])  # Extrahiere die Nummer aus dem Dateinamen
+            if number > highest_number:
+                highest_number = number
+
+    return file_list, highest_number
+
 
 #%% main
 
 running = True
 battery = tello.get_battery()
-img_nr = 0
+temperature = tello.get_temperature()
 path = os.path.dirname(__file__)
+
+img_nr = get_file_list(os.path.join(path, "screenshots"))[1]
+logging.info(f"next img number: {img_nr:04d}")
 
 while running:
     direc = getKeyboardInput()
@@ -123,6 +138,12 @@ while running:
     if not (battery == tello.get_battery()):
         battery = tello.get_battery()
         logging.warning(f"battery: {battery}")
+    # temperature
+    if not (temperature == tello.get_temperature()):
+        temperature = tello.get_temperature()
+        logging.warning(f"temperature: {temperature}")
+
+    print(f"battery: {battery} | temperature: {temperature}")
 
     # rc controll
     tello.send_rc_control(direc[0],direc[1],direc[2],direc[3])
@@ -134,7 +155,7 @@ while running:
     if direc[5]:
         img_nr +=1
         save = False
-        img_path = os.path.join(path, "screenshots\\picture{img_nr}.png".format(img_nr=img_nr))
+        img_path = os.path.join(path, "screenshots\\img_{img_nr:04d}.png".format(img_nr=img_nr))
         if cv2.imwrite(img_path, img):
             logging.info(f"image saved : \"{img_path}\"")
         else:
