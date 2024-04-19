@@ -1,6 +1,6 @@
 """
-@date       2024.04.18
-@version:   V1.02
+@date       2024.04.19
+@version:   V1.03
 @author:    Finn Katenkmap
 """
 
@@ -48,7 +48,7 @@ kp.init()
 tello = tello.Tello()
 tello.connect()
 tello.LOGGER.setLevel(logging.WARNING)
-logging.warning(f"battery: {tello.get_battery()}")
+logging.warning(f"battery: {tello.get_battery()} | temperature: {tello.get_temperature}")
 
 tello.streamon()
 
@@ -57,9 +57,8 @@ save = False
 
 # Stellt sicher, dass ein Pfad zum speichern von Screenshots verfpgbar ist
 # bei bedarf die Variable directory ändern
-directory = ".\screenshots"
-if not os.path.exists(directory):
-    os.makedirs(directory)
+directory = "screenshots"
+os.makedirs(directory, exist_ok=True)
 
 #%% functions
 
@@ -120,7 +119,7 @@ battery = tello.get_battery()
 temperature = tello.get_temperature()
 path = os.path.dirname(__file__)
 
-img_nr = get_file_list(os.path.join(path, "screenshots"))[1]
+img_nr = get_file_list(os.path.join(path, directory))[1]
 logging.info(f"next img number: {img_nr:04d}")
 
 while running:
@@ -155,7 +154,7 @@ while running:
     if direc[5]:
         img_nr +=1
         save = False
-        img_path = os.path.join(path, "screenshots\\img_{img_nr:04d}.png".format(img_nr=img_nr))
+        img_path = os.path.join(os.path.join(path, directory), "img_{img_nr:04d}.png".format(img_nr=img_nr))
         if cv2.imwrite(img_path, img):
             logging.info(f"image saved : \"{img_path}\"")
         else:
