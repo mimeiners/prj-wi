@@ -89,8 +89,8 @@ PlayerName1 = input("Enter Player 1: ")
 PlayerName2 = input("Enter Player 2: ")	
 	
 # Hauptschleife: Abfrage der GPIO Ports. Updaten des Spielstandes bei auslösen einer Lichtschranke
-while True:			#While True feels dangerous, maybe add global variable which is either True or False and use it as an off-switch?
-#{loop begin
+while True:
+#{loop begin		
 # game
 	if checkend() == 1:
 		punkteausgabe(ToreS1, ToreS2, PlayerName1, PlayerName2)
@@ -133,13 +133,13 @@ while True:			#While True feels dangerous, maybe add global variable which is ei
 	if ToreS1 == "99" and ToreS2 == "99":
 		if screen == 1:
 			# Hintergrund
-			background_main = Label(master=root, image=logo)
+			background_main = tk.Label(master=root, image=logo)
 			background_main.place(x=0, y=0, width=800, height=480)
 			screen = 0
 	else:
 		if ToreS1 != ToreS1_alt or ToreS2 != ToreS2_alt:
 			if ToreS1 != "0" or ToreS2 != "0":
-				background_main = Label(master=root, image=tooor)				
+				background_main = tk.Label(master=root, image=tooor)				
 				background_main.place(x=0, y=0, width=800, height=480)
 				root.update()
 				time.sleep(1)
@@ -147,12 +147,12 @@ while True:			#While True feels dangerous, maybe add global variable which is ei
 
 		if screen == 0:
 			# Hintergrund
-			background_main = Label(master=root, image=background)
+			background_main = tk.Label(master=root, image=background)
 			background_main.place(x=0, y=0, width=800, height=480)
 			screen = 1
 			
 			# Spielernamen
-			player1name = Label(
+			player1name = tk.Label(
 							root, 
 							fg="black",
 							font=('Arial', 30),
@@ -161,7 +161,7 @@ while True:			#While True feels dangerous, maybe add global variable which is ei
 							image=player1img)
 			player1name.place(x=102, y=343, width=200, height=50)
 		
-			player2name = Label(
+			player2name = tk.Label(
 							root, 
 							fg="black",
 							font=('Arial', 30),
@@ -172,7 +172,7 @@ while True:			#While True feels dangerous, maybe add global variable which is ei
 
 		if ToreS1 != ToreS1_alt or ToreS2 != ToreS2_alt:
 			# Anzahl der Tore
-			player1goals = Label(
+			player1goals = tk.Label(
 								root, 
 								fg="black",
 								font=('Arial', 90),
@@ -181,7 +181,7 @@ while True:			#While True feels dangerous, maybe add global variable which is ei
 								image=goal1img)
 			player1goals.place(x=102, y=129, width=198, height=203)
 			
-			player2goals = Label(
+			player2goals = tk.Label(
 								root, 
 								fg="black",
 								font=('Arial', 90),
