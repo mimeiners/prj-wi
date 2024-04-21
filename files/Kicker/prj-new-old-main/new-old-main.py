@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 """
 Versuch das alte Spiel aus den alten Daten (ohne die Datenbank) wieder lauffähig zu bekommen.
-Dieser Code basiert aus dem alten main.py der Anzeigetafel und dem Sensoren.py aus "./Kicker/www/cgi-bin".
+Dieser Code basiert auf der alten main.py der Anzeigetafel und der Sensoren.py aus "./Kicker/www/cgi-bin".
 Diese Version ersetzt die Datenbank durch einfache Variablen, welche mitzählen. 
 Die Spielernamen werden über die Konsole abgefragt und es gibt jetzt ein Game Over screen mit einem Temporären Bild zum Testen. 
 
@@ -18,12 +18,12 @@ __version__ = "1.0.0"
 __status__ = "WIP"
 
 # bibs
-import tkinter as tk
-from tkinter import *
+import tkinter as tk			#bib um GUI zu erstellen
+#from tkinter import *			#auskommentiert um die Modulzuweisung zu behalten
 import time
 import sys
-import RPi.GPIO as GPIO 
-
+import RPi.GPIO as GPIO 		#https://pypi.org/project/RPi.GPIO/: 
+								#"Note that the current release does not support SPI, I2C, hardware PWM or serial functionality on the RPi yet"
 
 
 # bilder
@@ -60,6 +60,7 @@ ToreS2_alt = 0
 def punkteausgabe(tore1, tore2, name1, name2):	# diese gibt NUR das Ergebniss in der Konsole aus
 	print(name1,": ", tore1)
 	print(name2,": ", tore2)
+	return
 
 
 
@@ -68,15 +69,16 @@ def checkend():
 	if ToreS1 == 6 or ToreS2 == 6:
 		print("game over")
 		return 1
-
-	if ToreS1 == 5 and ToreS2 == 5:
+	elif ToreS1 == 5 and ToreS2 == 5:
 		print("game over")
 		return 1
+	else:
+		return 0
 
 
 
 # Background defult
-background_main = Label(master=root, image=logo)
+background_main = tk.Label(master=root, image=logo)
 background_main.place(x=0, y=0, width=800, height=400)
 screen = 0
 	
@@ -84,12 +86,12 @@ screen = 0
 PlayerName1 = input("Enter Player 1: ")
 PlayerName2 = input("Enter Player 2: ")	
 	
-# Hauptschleife: Abrfage der GPIO Ports. Updaten des Spielstandes bei auslösen einer Lichtschranke
+# Hauptschleife: Abfrage der GPIO Ports. Updaten des Spielstandes bei auslösen einer Lichtschranke
 while True:
 # game
 	if checkend() == 1:
 		punkteausgabe(ToreS1, ToreS2, PlayerName1, PlayerName2)
-		gameOver = Label(
+		gameOver = tk.Label(
 						root, 
 						fg="black",
 						font=('Arial', 60),
