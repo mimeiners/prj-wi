@@ -90,6 +90,7 @@ PlayerName2 = input("Enter Player 2: ")
 	
 # Hauptschleife: Abfrage der GPIO Ports. Updaten des Spielstandes bei auslösen einer Lichtschranke
 while True:			#While True feels dangerous, maybe add global variable which is either True or False and use it as an off-switch?
+#{loop begin
 # game
 	if checkend() == 1:
 		punkteausgabe(ToreS1, ToreS2, PlayerName1, PlayerName2)
@@ -98,7 +99,7 @@ while True:			#While True feels dangerous, maybe add global variable which is ei
 						fg="black",
 						font=('Arial', 60),
 						text="Game Over", 
-						compound = CENTER,						
+						compound = CENTER,					#Check for correct parameter				
 						image=gameFinish)
 		gameOver.place(x=0, y=0, width=800, height=600)
 		root.update()
@@ -193,7 +194,8 @@ while True:			#While True feels dangerous, maybe add global variable which is ei
 			ToreS2_alt = ToreS2
 	
 	root.update()
-	time.sleep(1)	
+	time.sleep(1)
+#loop end}
 	
 	
 
