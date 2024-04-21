@@ -79,7 +79,7 @@ def checkend():
 
 
 
-# Background defult
+# Background default
 background_main = tk.Label(master=root, image=logo)
 background_main.place(x=0, y=0, width=800, height=400)
 screen = 0
