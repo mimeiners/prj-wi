@@ -30,14 +30,14 @@ import RPi.GPIO as GPIO 		#https://pypi.org/project/RPi.GPIO/:
 root = tk.Tk()
 screen = 0
 
-background = PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/schirm.gif")	# Pfad nach Bedarf ändern !
-logo = PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/hsb.gif")
-goal1img = PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/goal1img.gif")
-goal2img = PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/goal2img.gif")
-player1img = PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/player1img.gif")
-player2img = PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/player2img.gif")
-tooor = PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/tooor.gif")
-gameFinish = PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/amogus_sus")
+background = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/schirm.gif")	# Pfad nach Bedarf ändern !
+logo = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/hsb.gif")
+goal1img = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/goal1img.gif")
+goal2img = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/goal2img.gif")
+player1img = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/player1img.gif")
+player2img = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/player2img.gif")
+tooor = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/tooor.gif")
+gameFinish = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/amogus_sus")
 
 # Anpassung der Anzeige an das Display
 #root.overrideredirect(True)
