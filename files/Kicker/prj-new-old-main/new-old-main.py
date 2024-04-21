@@ -69,9 +69,11 @@ def checkend():
 	if ToreS1 == 6 or ToreS2 == 6:
 		print("game over")
 		return 1
+	
 	elif ToreS1 == 5 and ToreS2 == 5:
 		print("game over")
 		return 1
+	
 	else:
 		return 0
 
@@ -87,7 +89,7 @@ PlayerName1 = input("Enter Player 1: ")
 PlayerName2 = input("Enter Player 2: ")	
 	
 # Hauptschleife: Abfrage der GPIO Ports. Updaten des Spielstandes bei auslösen einer Lichtschranke
-while True:
+while True:			#While True feels dangerous, maybe add global variable which is either True or False and use it as an off-switch?
 # game
 	if checkend() == 1:
 		punkteausgabe(ToreS1, ToreS2, PlayerName1, PlayerName2)
