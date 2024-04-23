@@ -98,6 +98,8 @@ In der grafana Oberfläche können wir influxDB als Datenquelle hinzufügen inde
 
 Mit grafana können wir ein Dashboard erstellen, über welches das Gesamtsystem überwacht werden kann.  
 
+# Quellen
+
 #[^1]: https://simonhearne.com/2020/pi-influx-grafana/
 
 #[^2]: https://devconnected.com/how-to-setup-telegraf-influxdb-and-grafana-on-linux/
