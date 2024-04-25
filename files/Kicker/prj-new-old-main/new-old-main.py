@@ -14,12 +14,11 @@ Der Einfachheit halber empfiehlt es sich den Ordner "new-old-main" ebenfalls im 
 """
 __author__ = "Martin Schwarz"
 __credits__ = ["Oliver Bleeker", "Christian Hannover"]
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __status__ = "WIP"
 
 # bibs
 import tkinter as tk			#bib um GUI zu erstellen
-#from tkinter import *			#auskommentiert um die Modulzuweisung zu behalten
 import time
 import sys
 import RPi.GPIO as GPIO 		#https://pypi.org/project/RPi.GPIO/: 
@@ -38,6 +37,7 @@ player1img = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/
 player2img = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/player2img.gif")
 tooor = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/tooor.gif")
 gameFinish = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/amogus_sus")
+gameSite = tk.PhotoImage(file="/home/amogus/Documents/prj-new-old-main/Bilder/pi_game.png") # qr-code for easy access to WebSite
 
 # Anpassung der Anzeige an das Display
 #root.overrideredirect(True)
@@ -77,17 +77,38 @@ def checkend():
 	else:
 		return 0
 
-
+def monitor_names():
+	print("Start name wait")
+	while True:
+		if os.path.exists("/var/www/html/PlayerNames.txt"):
+			with open("/var/www/html/PlayerNames.txt", "r") as names_file:
+				names = names_file.read().strip()
+			if names:
+				name1, name2 = names.split(",")
+				print("game start")
+				return name1, name2
+			else:
+				print("wait")
+				time.sleep(1)
+		else:
+			print("no names")
+			time.sleep(1)
 
 # Background default
-background_main = tk.Label(master=root, image=logo)
-background_main.place(x=0, y=0, width=800, height=400)
+# qr-code ist hier aus Test-Gründen, sollte später durch was anderes ersetzt werden
+findGame = tk.Label(master=root, image=gameSite)
+findGame.place(x=200, y=50, width=400, height=400)
 screen = 0
+root.update()
 	
-# Abfrage der Spielernamen über die Konsole:
-PlayerName1 = input("Enter Player 1: ")
-PlayerName2 = input("Enter Player 2: ")	
-	
+# Abfrage der Spielernamen:
+Names = monitor_names()
+PlayerName1 = Names[0]
+PlayerName2 = Names[1]
+# hier sollte was hinkommen das die Namen in die Datenbank ablegt 
+
+# namen werden gelöscht 
+open("/var/www/html/PlayerNames.txt", "w").close()	
 # Hauptschleife: Abfrage der GPIO Ports. Updaten des Spielstandes bei auslösen einer Lichtschranke
 while True:
 #{loop begin		
@@ -99,7 +120,7 @@ while True:
 						fg="black",
 						font=('Arial', 60),
 						text="Game Over", 
-						compound = CENTER,					#Check for correct parameter				
+						compound = tk.CENTER,					#Check for correct parameter				
 						image=gameFinish)
 		gameOver.place(x=0, y=0, width=800, height=600)
 		root.update()
@@ -157,7 +178,7 @@ while True:
 							fg="black",
 							font=('Arial', 30),
 							text=PlayerName1, 
-							compound = CENTER,						
+							compound = tk.CENTER,						
 							image=player1img)
 			player1name.place(x=102, y=343, width=200, height=50)
 		
@@ -166,7 +187,7 @@ while True:
 							fg="black",
 							font=('Arial', 30),
 							text=PlayerName2, 
-							compound = CENTER,						#Bild wird versetzt
+							compound = tk.CENTER,						#Bild wird versetzt
 							image=player2img)
 			player2name.place(x=482, y=343, width=200, height=50)
 
@@ -177,7 +198,7 @@ while True:
 								fg="black",
 								font=('Arial', 90),
 								text=ToreS1, 
-								compound = CENTER,						#Bild wird versetzt
+								compound = tk.CENTER,						#Bild wird versetzt
 								image=goal1img)
 			player1goals.place(x=102, y=129, width=198, height=203)
 			
@@ -186,7 +207,7 @@ while True:
 								fg="black",
 								font=('Arial', 90),
 								text=ToreS2, 
-								compound = CENTER,						#Bild wird versetzt
+								compound = tk.CENTER,						#Bild wird versetzt
 								image=goal2img)
 			player2goals.place(x=486, y=129, width=198, height=203)
 			
