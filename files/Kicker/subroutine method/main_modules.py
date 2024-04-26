@@ -3,7 +3,7 @@ This is meant to be used as an imported modules file for the main file
 and is basically listing all the available functions (literally) the kicker posesses.
 """
 __author__ = "Lukas Haberkorn"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __status__ = " heavy WIP"
 
 
@@ -27,16 +27,9 @@ def display_screensaver():
     return
 
 
-# these functions inform auvares of game events, e.g. to trigger a replay/start drone
-def notify_goal():
-    return
-def notify_foul():
-    return
-def notify_gamestart():
-    return
-def notify_gameover():
-    return
-def notify_score():
+# inform auvares of game events, e.g. to trigger a replay/start drone
+def notify_auvares():
+    # goal, foul, gamestart, gameover, score
     return
 
 
