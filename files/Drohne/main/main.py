@@ -2,7 +2,7 @@
 This is the main file for the project.
 """
 __author__ = "Julian Höpe"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __status__ = " WIP"
 __date__ = "2024-04-28"
 
@@ -12,6 +12,13 @@ Error Handling has to be implemented in the most functions
 
 NOTE:
 This is the first approach of the main code
+'''
+
+'''
+Changes:
+
+1.0.1: (2024-04-28) / JH
+    - fixed socket connection
 '''
 
 ##### Imports #####
@@ -47,15 +54,14 @@ framecentery = 400
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 out = cv2.VideoWriter(filename=filename, fourcc=fourcc, fps=10.0, frameSize=(2*framecenterx, 2*framecentery))
 
-
-
-### INIT the network connection and main task in separate threads
-network_connection_thread = threading.Thread(target=network_connection)
-connection_established = threading.Event()
-main_task_thread = MainTaskThread(connection_established)
-
 ### Create a socket object
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+### INIT the network connection and main task in separate threads
+connection_established = threading.Event()
+main_task_thread = MainTaskThread(connection_established, s)
+network_connection_thread = threading.Thread(target=network_connection, args=(s, main_task_thread, connection_established,))
+
 
 # Get local machine name
 host = socket.gethostname()

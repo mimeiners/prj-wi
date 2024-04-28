@@ -3,7 +3,7 @@ This is meant to be used as an imported modules file for the main file
 and is basically listing the auxilary functions (literally) the AuVAReS posesses.
 """
 __author__ = "Julian Höpe"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __status__ = " WIP"
 __date__ = "2024-04-28"
 
@@ -19,11 +19,19 @@ network_function:
 '''
 Changes:
 
+1.0.2: (2024-04-28) / JH
+    - Fixed function network_function   (socket)
+    - Fixed class MainTaskThread        (socket)
+    - Fixed function main_task          (socket)
+    - Fixed function special_function   (socket)
+
+    
 1.0.1: (2024-04-28) / JH
     - Added function network_function
     - Added class MainTaskThread
     - Added function main_task
     - Added function special_function
+    
 '''
 
 
@@ -202,9 +210,20 @@ def videoPlayback(filename: str, startframe: int, numberOfFrames: int, timedelay
     return
 
 
-def network_connection():
-    global s    # network connection
+def network_connection(s : socket, main_task_thread, connection_established):
 
+    """
+    Establishes a network connection and handles incoming messages.
+
+    Args:
+        s (object): A socket object representing the network connection.
+        main_task_thread (MainTaskThread): A thread object representing the main task.
+        connection_established (Event): An object representing the established connection.
+
+    Returns:
+        None
+    """
+    
     #while True:
     try:
         #s.connect((host, port))
@@ -233,7 +252,7 @@ def network_connection():
                     # Interrupt the main task and run the special function
                     main_task_thread.do_run = False
                     print("interrupted main task")
-                    special_message_function()
+                    special_message_function(s)
                     main_task_thread.do_run = True
                     print("continued main task")
         
@@ -284,37 +303,40 @@ class MainTaskThread(threading.Thread):
     Attributes:
         connection_established (object): An object representing the established connection.
         do_run (bool): A flag indicating whether the thread should continue running.
+        s (object): An object representing some additional data.
 
     Methods:
-        __init__(self, connection_established): Initializes the thread with the given connection.
+        __init__(self, connection_established, s): Initializes the thread with the given connection and additional data.
         run(self): Runs the main task in a loop while the do_run flag is True.
     """
 
-    def __init__(self, connection_established):
+    def __init__(self, connection_established, s : socket):
         """
-        Initializes the thread with the given connection.
+        Initializes the thread with the given connection and additional data.
 
         Args:
             connection_established (object): An object representing the established connection.
+            s (object): An object representing some additional data.
         """
         super().__init__()
         self.connection_established = connection_established
         self.do_run = True
+        self.s = s
 
     def run(self):
         """
         Runs the main task in a loop while the do_run flag is True.
         """
         while self.do_run:
-            main_task(self.connection_established)
+            main_task(self.connection_established, self.s)
 
 
-def main_task(connection_established):
+def main_task(connection_established, s : socket):
     # main task function - planned content: AI video processign
     # function called in threat
 
     # Logic to be implemented
-    global s    # network connection
+    #global s    # network connection
     # When connection established (optional):
     while connection_established.is_set():
         print("Doing main task...")
@@ -322,10 +344,10 @@ def main_task(connection_established):
         time.sleep(5)
 
 
-def special_message_function():
+def special_message_function(s : socket):
     # This function is called when the server sends a special message
 
-    global s    # network connection
+    #global s    # network connection
     print("Special message received! Running special function...")
     s.sendall(b"HELLO SERVER FROM special_message_function")
 
