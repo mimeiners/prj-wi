@@ -1,5 +1,6 @@
 """
 THIS FILE IS NOT ACTUALLY EXECUTABLE YET
+Prototype for using a main file and a modules file so that main is a bit more easy to grasp
 "import main_modules.py as a", more useful name can be chosen later (Ctrl+F replace); "import ... as ..." is needed for variables to actually be updated while running, "from ... import ..." doesnt do it
 
 to be added:
