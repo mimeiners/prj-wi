@@ -4,6 +4,9 @@ The following functions are for use in different scripts and will carry the the
 transfer of data between the Kicker PC, referenced as Server, and Drone PC,
 referenced as Client. This documents serves as a collection of these functions
 for the sake of accessibility and organisation.
+
+auther : Marvin Otten | System engineer, Interface Manager
+
 """
 
 #import globally needed libraries
@@ -19,7 +22,10 @@ operate inside a threat and will handle the connection to other devices inside
 the local network aswell as receiving messages.
 
 Inner workings:
+
     
+auther : Marvin Otten | System engineer, Interface Manager
+
 '''
 
 def server_interface():
@@ -34,15 +40,37 @@ def server_interface():
     
     
     # Create dictionary of connections
+    global connect_dic
     connect_dic = {'drone' :  None,         # Connection type Objekt for Drone
                    'extern1' : None,        # Connection type Objekt for extern excess or future use
                    'extern2' : None,
-                   'dynamic': None}
+                   'dynamic': None}         # Connection type Objekt for dynamic use. Description in server.listen() Header
     
     
-
+    # List of Threads for continues listen and receive function for all connections
+    connect_threadlist = [thr.Thread(target= server_listen,
+                                      args= [server_interface_obj, connect_dic],
+                                      kwargs= { ('Client_IP_Adress as str' , 'Port as int') }),   #FIND IP ADRESS AND PORT!!
+                          
+                          thr.Thread(target= server_recv,
+                                      args= [],
+                                      kwargs= {})]
+    
+    #start threats
+    # Check for some operation determing variable
+    some_var = False
+    if some_var == True:
+        for thread in connect_threadlist:
+            thread.start()
+    
+    #wait for threads to join once programm is finished
+    for thread in connect_threadlist:
+        thread.join()  
     
     return
+
+
+
 
 #%%
 
@@ -50,8 +78,8 @@ def server_interface():
 '''
 This function will be used as a thread and constantly searches for new connections.
 If a connection is found it is inserted into the connect_dic dictionary as a tuple
-of the created connection type object and the address of the client as provided
-by the .accept() function.
+of the created connection type object and the (address , Port) of the client as
+provided by the .accept() function.
 
 By providing the kwarg "target_address" it is possible to reserve a connection
 slot for critical connections like the connection to the drone.
@@ -81,14 +109,18 @@ arguments
                         
 kwargs
 
-    target_address:     Import an important IP adress which re
+    target_address:     Import an important IP adress which requires a reserved
+                        connection slot
+
+
+auther : Marvin Otten | System engineer, Interface Manager
 '''
 
 def server_listen(socket_objekt, connect_dic, target_address = None):
     # Check for some operation determing variable
     some_var = False
     while some_var == True:
-    #{start of loop
+    # {start of loop
     
         # look for connection
         socket_objekt.listen(0)
@@ -96,11 +128,14 @@ def server_listen(socket_objekt, connect_dic, target_address = None):
         # wait/find connection
         client_address = None
         while client_address == None:
-    
+            # this loop might be useless as the .accept() function waits until
+            # it found a conncetion. It might be handy for future operations and
+            # should not impact the programm, so it stays for now.
+            
             # create conncetion object
             connection, client_address = socket_objekt.accept()
         
-        #there is probably a smarter way but this is easy and observable
+
         # check if client is drone client
         if client_address == target_address:
             connect_dic['drone'] = (connection , client_address)
@@ -118,8 +153,17 @@ def server_listen(socket_objekt, connect_dic, target_address = None):
             dyn_con = connect_dic['dynamic'][0]
             dyn_con.close()
             connect_dic['dynamic'] = (connection , client_address)
-
         
-    #end of loop}
+    # end of loop}
     
+    return
+
+
+
+
+#%%
+
+# Serverside receive function to check for incoming data
+
+def server_recv():
     return
