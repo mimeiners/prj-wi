@@ -264,7 +264,7 @@ def server_sendall( message_str , connection_type_object = connect_dic['drone'][
     connection_type_object.sendall(message_str)
     
     wait_time = 0
-    while ack_dic[message_str] == False or wait_time < 1:
+    while ack_dic[message_str] == False or wait_time > 1:
         time.sleep(0.1)
         wait_time += 0.1
     
