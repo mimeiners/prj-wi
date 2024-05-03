@@ -11,6 +11,7 @@ auther : Marvin Otten
 
 #import globally needed libraries
 import socket
+import time
 import threading as thr
 
 #%%
@@ -177,13 +178,16 @@ This function creates threads for each connection in the "connect_dic" dictionar
 Each thread runs the function "server_connect_man()" which then handles the execution
 of receiving data and interpreting it's content.
 
-So this function serves as a place holder for these threads in the function
-"server_interface()", which represents the main function for the interface. It
-also assigns the keys from the "connect_dic" dictionary to each thread. The values
-from these keys are updated inside the threads which also contain the while loop
-for continues operation.
+This function assigns the keys from the "connect_dic" dictionary to each thread.
+The values from these keys are updated inside the threads which also contain the
+while loop for continues operation.
 
-ver. 1.0.0
+The dictionary for acknowledgment management is initialised and will be updated
+by the "server_connect_man()" function, based on which acknowledgment message has
+been received. The function which send the first message will reset the flag to
+False. This Reset might change.
+
+ver. 1.1.0
     
 auther : Marvin Otten
 
@@ -191,6 +195,14 @@ auther : Marvin Otten
 def server_recv():
     
     global connect_dic
+    
+    # Create acknowledgment dictionary which saves the status of an received acknowledgment
+    global ack_dic
+    ack_dic = {'ping' : False,
+               'notify_gamestart' : False,
+               'notify_newgoal' : False,
+               'notify_foul' : False,
+               'notify_gameover' : False}
     
     # Create list of threads for each connection
     recv_threadlist = []
@@ -234,7 +246,37 @@ def server_connect_man( connection_type ):
         
         else : print('Error: undetermined Connection')
         
-        #Data if/else Tree here!
+        #Data if/else Tree here! Interpret all messages!
     
     
     return
+
+
+#%%
+
+def server_sendall( message_str , connection_type_object = connect_dic['drone'][0]):
+    
+    import ack_dic
+    
+    if connection_type_object == None : return
+    
+    message_str = message_str.encode('utf-8')
+    connection_type_object.sendall(message_str)
+    
+    wait_time = 0
+    while ack_dic[message_str] == False or wait_time < 1:
+        time.sleep(0.1)
+        wait_time += 0.1
+    
+    #reset acknowledgment flag
+    ack_dic[message_str] = False
+    
+    return
+    
+    
+
+
+
+#%%
+
+def client_sendall( message_str , send_object): return
