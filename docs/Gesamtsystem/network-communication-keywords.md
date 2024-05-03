@@ -11,3 +11,5 @@ Das Schlüsselwort wird in das Netzwerk gesendet und sekündlich wiederholt, sol
 | K | notify_gameover |Zusätzlich zum replay des Siegertores wird die Abschlussroutine der Drohne ausgeführt.|received_gamover
 | A | please_wait| AuVAReS kann das Spiel pausieren, bspw. wenn es Zwischenfälle gibt. Tore werden nicht gezählt. |waiting
 | A |please_resume| AuVAReS ist wieder einsatzbereit und erlaubt dem Kicker, wieder Tore zu zählen.|gaming
+
+Unklar: Was soll passieren wenn kein ACK kommt?
