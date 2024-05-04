@@ -55,3 +55,5 @@ Die Acknowledgements werden durch die dictionaries "ack_dic" und "ack_status_dic
 - Kollisionskontrolle ist in der Entwicklung
 
 - Display Kontrolle ist noch unbekannt. Standard Ansteuerung über Website geplant.
+
+- Es fehlen noch Reaktionsfunktionen auf Keywords und Acknowledgement timeouts

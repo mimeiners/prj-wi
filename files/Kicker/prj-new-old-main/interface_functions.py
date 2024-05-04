@@ -323,22 +323,32 @@ def server_recv( connection_type ):
 
 #%%
 
-def server_sendall( message_str , connection_type_object = connect_dic['drone'][0]):
+def server_sendall( message_str , connection_type_object = connect_dic['drone'][0], timeout = 0):
     
-    import ack_dic
+    import ack_status_dic
     
+    # connection not established, continue with normal operation
     if connection_type_object == None : return
     
+    # send message
     message_str = message_str.encode('utf-8')
     connection_type_object.sendall(message_str)
     
+    # set acknowledgment to False, waiting position
+    ack_status_dic[message_str] = False
+    
+    # wait for acknowledgment
     wait_time = 0
-    while ack_dic[message_str] == False or wait_time > 1:
+    while ack_status_dic[message_str] == False or wait_time < timeout:
         time.sleep(0.1)
         wait_time += 0.1
     
-    #reset acknowledgment flag
-    ack_dic[message_str] = False
+    # reset acknowledgment flag
+    ack_dic[message_str] = None
+    
+    #if timeout was reached react
+    if wait_time < timeout:
+        reaction_to_timeout = None
     
     return
     
