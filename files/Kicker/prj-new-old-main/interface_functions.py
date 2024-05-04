@@ -68,16 +68,20 @@ def server_interface():
                'drone_in_position' : False,
                'received_newgoal' : False,
                'received_foul' : False,
-               'received_gameover' : False}
+               'received_gameover' : False,
+               'waiting' : False,
+               'gaming' : False}
     
     
     # Create acknowledgment dictionary which pairs up keywords with acknowledgment
     global ack_dic
-    ack_dic = {'ping' : 'hi',
-               'notify_gamestart' : 'drone_in_position',
-               'notify_newgoal' : 'received_newgoal',
-               'notify_foul' : 'received_foul',
-               'notify_gameover' : 'received_gameover'}
+    ack_dic = {'ping' : ['hi'],
+               'notify_gamestart' : ['drone_in_position'],
+               'notify_newgoal' : ['received_newgoal'],
+               'notify_foul' : ['received_foul'],
+               'notify_gameover' : ['received_gameover'],
+               'please_wait' : ['waiting'],
+               'please_resume' : ['gaming']}
     
     
     # Create thread lock for access to connect_dic
@@ -298,16 +302,17 @@ def server_recv( connection_type ):
         for keyword in ack_dic:
             #send acknowledgement
             if data == keyword:
-                connection_type_objekt.sendall( ack_dic[keyword])
+                connection_type_objekt.sendall( ack_dic[keyword][0])
                 
-                # Insert reaction function here, Maybe create third dic for keyword reaction?
+                # Insert reaction function here, call from ack_dic[keyword][1]
                 react_to_keyword_function_call = None
                 continue
         
         # check if data was acknowledgment
+        #could be implemented in keyword check
         for acknowledgment in ack_status_dic:
-            #set acknowledgment to True
             
+            #set acknowledgment to True
             if data == acknowledgment and ack_status_dic[acknowledgment] == False :
                 ack_status_dic[acknowledgment] = True
                 continue
@@ -344,7 +349,7 @@ def server_sendall( message_str , connection_type_object = connect_dic['drone'][
         wait_time += 0.1
     
     # reset acknowledgment flag
-    ack_dic[message_str] = None
+    ack_status_dic[message_str] = None
     
     #if timeout was reached react
     if wait_time < timeout:
@@ -352,10 +357,59 @@ def server_sendall( message_str , connection_type_object = connect_dic['drone'][
     
     return
     
-    
+
 
 
 
 #%%
 
-def client_sendall( message_str , send_object): return
+def client_interface():
+    
+    ## Initialize Socket on Serverside
+    # Create clientside Socket objekt
+    client_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    # Define IP adress and the used Port number of the target Server
+    server_add = ('localhost',10000)  #FIND IP ADRESS AND PORT!!!!!!!
+    # Connect to Server
+    client_interface_obj.connect(server_add)
+    
+
+    # Create acknowledgment status dictionary which saves the status of an received acknowledgment
+    global ack_status_dic
+    ack_status_dic = {'hi' : False,
+                'drone_in_position' : False,
+                'received_newgoal' : False,
+                'received_foul' : False,
+                'received_gameover' : False,
+                'waiting' : False,
+                'gaming' : False}
+    
+    
+    # Create acknowledgment dictionary which pairs up keywords with acknowledgment
+    global ack_dic
+    ack_dic = {'ping' : ['hi'],
+               'notify_gamestart' : ['drone_in_position'],
+               'notify_newgoal' : ['received_newgoal'],
+               'notify_foul' : ['received_foul'],
+               'notify_gameover' : ['received_gameover'],
+               'please_wait' : ['waiting'],
+               'please_resume' : ['gaming']}
+    
+    
+    
+    ## Interface managment threads
+    # List of Threads for continues listen and receive function for all connections
+    connect_threadlist = [thr.Thread(target= client_recv,
+                                      args= [],
+                                      kwargs= {})]
+    
+    #start threats
+    for thread in connect_threadlist:
+        thread.start()
+    
+    #wait for threads to join once programm is finished | thread internal check
+    for thread in connect_threadlist:
+        thread.join()  
+    
+    return
