@@ -326,7 +326,11 @@ def server_recv( connection_type ):
     return
 
 
+
+
 #%%
+
+#serverside send function. Might be updated to systemwide send function
 
 def server_sendall( message_str , connection_type_object = connect_dic['drone'][0], timeout = 0):
     
@@ -372,7 +376,10 @@ def client_interface():
     # Define IP adress and the used Port number of the target Server
     server_add = ('localhost',10000)  #FIND IP ADRESS AND PORT!!!!!!!
     # Connect to Server
-    client_interface_obj.connect(server_add)
+    some_var = False
+    while some_var == True:
+        try: client_interface_obj.connect(server_add)
+        except: continue
     
 
     # Create acknowledgment status dictionary which saves the status of an received acknowledgment
@@ -399,9 +406,9 @@ def client_interface():
     
     
     ## Interface managment threads
-    # List of Threads for continues listen and receive function for all connections
+    # List of Threads for continues recieve. Implemented as list to allow for easy expansion
     connect_threadlist = [thr.Thread(target= client_recv,
-                                      args= [],
+                                      args= [ client_interface_obj ],
                                       kwargs= {})]
     
     #start threats
@@ -411,5 +418,61 @@ def client_interface():
     #wait for threads to join once programm is finished | thread internal check
     for thread in connect_threadlist:
         thread.join()  
+    
+    return
+
+
+
+
+#%%%
+
+# Clientside receive function
+
+def client_recv( connection_type_object ):
+        
+    global connect_dic
+    
+    global ack_status_dic
+    
+    global ack_dic
+    
+    # Check for some operation determing variable
+    some_var = False
+    while some_var == True:
+    # {start of loop
+        
+        data = connection_type_object.recv(1024)
+        data = data.decode('utf-8')
+        
+        
+        # Data if/else Tree here! Interpret all messages!
+        
+        # check if nothing was send
+        if data == '': continue
+        
+        # check if data was keyword
+        for keyword in ack_dic:
+            #send acknowledgement
+            if data == keyword:
+                connection_type_object.sendall( ack_dic[keyword][0] )
+                
+                # Insert reaction function here, call from ack_dic[keyword][1]
+                react_to_keyword_function_call = None
+                continue
+        
+        # check if data was acknowledgment
+        #could be implemented in keyword check
+        for acknowledgment in ack_status_dic:
+            
+            #set acknowledgment to True
+            if data == acknowledgment and ack_status_dic[acknowledgment] == False :
+                ack_status_dic[acknowledgment] = True
+                continue
+        
+        # data has not been recognised as a keyword or acknowledgement
+        print('Undetermined message:', data)
+        continue
+                
+    # end of loop}
     
     return
