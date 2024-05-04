@@ -28,9 +28,11 @@ Geplant ist auch neben den bestehenden Befehlen Stand 03.05.2024 auch noch weite
 
 ##### Schnittstelle von Clientside
 
-Der Dronen Client wird innerhalb des Netzwerkes nur Verbindung zu dem Server aufnehemen. Es ist somit nicht nötig meherere Verbindungen zu unterstützen. Die Funktionen der Schnittstelle werden also dadurch gesteuert das es überhaupt erst zu einer Verbindung kommt. Solange keine Verbindung gefunden wird verbleibt die zuständige Funktion in einem Suchzustand.
+Der Dronen Client wird innerhalb des Netzwerkes nur Verbindung zu dem Server aufnehemen. Es ist somit nicht nötig meherere Verbindungen zu unterstützen. Die Funktionen der Schnittstelle werden also dadurch gesteuert das es überhaupt erst zu einer Verbindung kommt. Solange keine Verbindung gefunden wird verbleibt die zuständige Funktion in einem Suchzustand. Dies wird erreicht in der Funktion "client_interface()".
 
-Sobald eine Funktion gefunden ist muss die Funktion nur noch die Empfangenden Befehle managen. Dies erfolgt ebenfalls mit den dokumentierten Befehlen aus "network-communication-keywords.md".
+Um einen kontinuierlichen Betrieb zu ermöglichen, auch bei kurzzeitigen Verbindungsausfällen, ist die Funktion so strukturiert das bei Verlust der Verbindung die Funktion in den Suchzustand zurückkehrt. Um dies zu erreichen müssen nur alle, in der dazugehörigen Schleife und somit in der lokalen "connect_threadlist" hinterlegten, Threads returnen sobald keine Verbindung mehr vorhanden ist.
+
+Sobald eine Verbindung gefunden ist muss die Funktion nur noch die Empfangenden Befehle managen. Dies erfolgt ebenfalls mit den dokumentierten Befehlen aus "network-communication-keywords.md" innerhalb der Funktion "client_recv".
 
 Sobald ein Befehl erkannt wurde folgt eine entsprechende Reaktion. Nach Systemvorgabe ist es dabei nur nötig die Displays anzusprechen und die entsprechenden Informationen/Bilder etc. zu übertragen. Es muss somit im normalen Betrieb keine Interferenz mit der Steurung der Drohne erfolgen. Nur Start und Stop Bedingungen interferieren mit dem System. Während des normalen Betriebs muss somit nur Zugriff auf die nötigen Daten der Drohne (Videostream) gewährleistet sein.
 
@@ -38,7 +40,7 @@ Sobald ein Befehl erkannt wurde folgt eine entsprechende Reaktion. Nach Systemvo
 
 ### Senden von Befehlen
 
-Funktion existiert noch nicht
+Funktion WIP
 
 Das senden von Befehlen wird vor Ort (wo die Bedingung erzeugt wird) geschehen. Dafür wird eine passende Funktion bereit gestellt welche sich über verschieden Parameter wie gewünscht einstellen lässt. Der zu sende Befehl wird als Argument in string in die Funktion eingesetzt und gesendet. Der gesendete Befehl wird von dem Empfänge interpretiert welcher dann wieder das entsprechende acknowledgement sendet. Wie lange auf das acknowledgement oder ob überhaupt gewartet wird ist variabel.
 
@@ -56,4 +58,4 @@ Die Acknowledgements werden durch die dictionaries "ack_dic" und "ack_status_dic
 
 - Display Kontrolle ist noch unbekannt. Standard Ansteuerung über Website geplant.
 
-- Es fehlen noch Reaktionsfunktionen auf Keywords und Acknowledgement timeouts
+- Es fehlen noch Reaktionsfunktionen auf Keywords und Acknowledgement timeouts. Zugriff auf diese wurde aber schon implementiert.

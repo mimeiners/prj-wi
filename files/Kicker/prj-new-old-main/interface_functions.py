@@ -17,7 +17,7 @@ import threading as thr
 #%%
 
 ### server_interface()
-# Serverside main implementation of connection
+# Serverside main implementation of interface
 '''
 This function defines the serverside connection. The function is designed to
 operate inside a thread and will handle the connection to other devices inside
@@ -73,7 +73,7 @@ def server_interface():
                'gaming' : False}
     
     
-    # Create acknowledgment dictionary which pairs up keywords with acknowledgment
+    # Create acknowledgment dictionary which pairs up keywords with acknowledgment and reaction
     global ack_dic
     ack_dic = {'ping' : ['hi'],
                'notify_gamestart' : ['drone_in_position'],
@@ -205,7 +205,7 @@ def server_listen( socket_objekt , target_address = None ):
 
 #%%
 
-### server_recv()
+### server_recv_man()
 # Serverside receive function to check for incoming data
 '''
 This function creates threads for each connection in the "connect_dic" dictionary.
@@ -247,6 +247,7 @@ def server_recv_man():
 
 #%%
 
+### server_recv()
 # Serverside receive function
 
 '''
@@ -259,7 +260,14 @@ received. After that the funtion will once again check if the connection exists.
 
 There has not been a collision check implemented yet.
 
-ver. 1.0.0
+arguments
+
+    connection_type:    Provides the key for the connection_type_object from
+                        "connect_dic" from which a message is suppose to be
+                        received from.
+                        
+
+ver. 1.0.1
     
 auther : Marvin Otten
 
@@ -367,21 +375,31 @@ def server_sendall( message_str , connection_type_object = connect_dic['drone'][
 
 #%%
 
+### client_interface()
+# Clientside main implementation of interface
+'''
+This function defines the clientside connection. The function is designed to
+operate inside a thread and will handle the connection to the Server aswell as 
+receiving messages.
+
+The operation order first initializes some needed variables or objects. As only
+one connection is needed it serves as gateway to futher interface action. To achieve
+that the connection function is called in a while loop. If an Timeout Interrupt
+occurs, the Exception continues the loop. If a connection is found the loop breaks.
+
+To allow the handling of an interupting connection, the search for a connection
+and the thread/s for the recv/other function/s is placed in a while loop aswell.
+If the connection gets interrupted, the thread are suppose to return and allow
+the loop to enter the next iteration which once again tries to connect to the server.
+
+ver. 1.0.0
+    
+auther : Marvin Otten
+
+'''
+
 def client_interface():
     
-    ## Initialize Socket on Serverside
-    # Create clientside Socket objekt
-    client_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    # Define IP adress and the used Port number of the target Server
-    server_add = ('localhost',10000)  #FIND IP ADRESS AND PORT!!!!!!!
-    # Connect to Server
-    some_var = False
-    while some_var == True:
-        try: client_interface_obj.connect(server_add)
-        except: continue
-    
-
     # Create acknowledgment status dictionary which saves the status of an received acknowledgment
     global ack_status_dic
     ack_status_dic = {'hi' : False,
@@ -393,7 +411,7 @@ def client_interface():
                 'gaming' : False}
     
     
-    # Create acknowledgment dictionary which pairs up keywords with acknowledgment
+    # Create acknowledgment dictionary which pairs up keywords with acknowledgment and reaction
     global ack_dic
     ack_dic = {'ping' : ['hi'],
                'notify_gamestart' : ['drone_in_position'],
@@ -403,21 +421,46 @@ def client_interface():
                'please_wait' : ['waiting'],
                'please_resume' : ['gaming']}
     
+    # Create clientside Socket objekt
+    client_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    # Define IP adress and the used Port number of the target Server
+    server_add = ('localhost',10000)  #FIND IP ADRESS AND PORT!!!!!!!
     
     
-    ## Interface managment threads
-    # List of Threads for continues recieve. Implemented as list to allow for easy expansion
-    connect_threadlist = [thr.Thread(target= client_recv,
-                                      args= [ client_interface_obj ],
-                                      kwargs= {})]
+    # Connect to Server
+    some_var = False
+    while some_var == True:
+    # This first loop allows for reconnection with the Server if the connection
+    # gets interrupted. For that to happen, the threads need to contain a return
+    # based on the connection status.
     
-    #start threats
-    for thread in connect_threadlist:
-        thread.start()
+    # {start of loop
+        # try to connect with the server, ignore timeout. If no connection is
+        # possible all interface action is blocked trough this loop.
+        some_var = False
+        while some_var == True:
+            try: 
+                client_interface_obj.connect(server_add)
+                break
+            
+            except: continue
     
-    #wait for threads to join once programm is finished | thread internal check
-    for thread in connect_threadlist:
-        thread.join()  
+        ## Interface managment threads
+        # List of Threads for continues recieve. Implemented as list to allow for easy expansion
+        connect_threadlist = [thr.Thread(target= client_recv,
+                                          args= [ client_interface_obj ],
+                                          kwargs= {})]
+        
+        #start threats
+        for thread in connect_threadlist:
+            thread.start()
+        
+        #wait for threads to join once programm is finished | thread internal check
+        for thread in connect_threadlist:
+            thread.join()  
+    
+    # end of loop}
     
     return
 
@@ -427,6 +470,8 @@ def client_interface():
 #%%%
 
 # Clientside receive function
+
+#WIP | Stop Bedingug fehlt
 
 def client_recv( connection_type_object ):
         
