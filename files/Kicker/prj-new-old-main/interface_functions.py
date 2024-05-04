@@ -56,10 +56,30 @@ def server_interface():
                    'extern2' : None,        # ...
                    'dynamic': None}         # Connection type Objekt for dynamic use. Description in server.listen() Header
     
+    
+    # Create acknowledgment status dictionary which saves the status of an received acknowledgment
+    global ack_status_dic
+    ack_status_dic = {'hi' : False,
+               'drone_in_position' : False,
+               'received_newgoal' : False,
+               'received_foul' : False,
+               'received_gameover' : False}
+    
+    
+    # Create acknowledgment dictionary which pairs up keywords with acknowledgment
+    global ack_dic
+    ack_dic = {'ping' : 'hi',
+               'notify_gamestart' : 'drone_in_position',
+               'notify_newgoal' : 'received_newgoal',
+               'notify_foul' : 'received_foul',
+               'notify_gameover' : 'received_gameover'}
+    
+    
     # Create thread lock for access to connect_dic
     global connect_dic_lock
     connect_dic_lock = thr.lock()
     
+    ## Interface managment threads
     # List of Threads for continues listen and receive function for all connections
     connect_threadlist = [thr.Thread(target= server_listen,
                                       args= [server_interface_obj, connect_dic],
@@ -221,6 +241,7 @@ def server_recv():
 # Serverside receive function
 # Not yet finished!!!!!!!!!!!
 '''
+This fucntion will recieve all messages from a given connection from the "connect_dic".
 
 The dictionary for acknowledgment management is initialised and will be updated
 by the "server_connect_man()" function, based on which acknowledgment message has
@@ -231,30 +252,51 @@ def server_connect_man( connection_type ):
     
     global connect_dic
     
-    # Create acknowledgment dictionary which saves the status of an received acknowledgment
+    global ack_status_dic
+    
     global ack_dic
-    ack_dic = {'ping' : False,
-               'notify_gamestart' : False,
-               'notify_newgoal' : False,
-               'notify_foul' : False,
-               'notify_gameover' : False}
     
     # Check for some operation determing variable
     some_var = False
     while some_var == True:
     # {start of loop
-
+        
+        # if Connection exists, receive 1024 sized string
         if type( connect_dic[connection_type] ) == tuple:
             connection_type_objekt = connect_dic[connection_type][0]
             data = connection_type_objekt.recv(1024)
-            data.decode('utf-8')
-            
-        elif connection_type == None: return
+            data = data.decode('utf-8')
         
-        else : print('Error: undetermined Connection')
+        # if connection has not been established, continue
+        elif connection_type == None: continue
+        
+        # if weird connection_type_object appears, send Error to cmd, continue
+        else :
+            print('Error: undetermined Connection type :', type( connect_dic[connection_type] ))
+            continue
+        
         
         #Data if/else Tree here! Interpret all messages!
-    
+        
+        #check if data was keyword
+        for keyword in ack_dic:
+            #send acknowledgement
+            if data == keyword:
+                connection_type_objekt.sendall( ack_dic[keyword])
+                continue
+        
+        #check if data was acknowledgment
+        for acknowledgment in ack_status_dic:
+            #set acknowledgment to True
+            if data == acknowledgment:
+                ack_status_dic[acknowledgment] = True
+                continue
+        
+        # data has not been recognised as a keyword or acknowledgement
+        print('Undetermined message:', data)
+        continue
+                
+    # end of loop}
     
     return
 
