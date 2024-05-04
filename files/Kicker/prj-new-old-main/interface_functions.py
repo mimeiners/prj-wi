@@ -56,6 +56,9 @@ def server_interface():
                    'extern2' : None,        # ...
                    'dynamic': None}         # Connection type Objekt for dynamic use. Description in server.listen() Header
     
+    # Create thread lock for access to connect_dic
+    global connect_dic_lock
+    connect_dic_lock = thr.lock()
     
     # List of Threads for continues listen and receive function for all connections
     connect_threadlist = [thr.Thread(target= server_listen,
@@ -124,6 +127,7 @@ auther : Marvin Otten
 def server_listen( socket_objekt , target_address = None ):
     
     global connect_dic
+    global connect_dic_lock
     
     # Check for some operation determing variable
     some_var = False
@@ -143,24 +147,25 @@ def server_listen( socket_objekt , target_address = None ):
             # create conncetion object
             connection_type_objekt , client_address = socket_objekt.accept()
         
-
-        # check if client is drone client
-        if client_address == target_address:
-            connect_dic['drone'] = (connection_type_objekt , client_address)
-        
-        # check if external connection/ non system critical connection is open
-        elif connect_dic['extern1'] == None:
-            connect_dic['extern1'] = (connection_type_objekt , client_address)
-        
-        # check if external connection/ non system critical connection is open
-        elif connect_dic['extern2'] == None:
-            connect_dic['extern2'] = (connection_type_objekt , client_address)
-        
-        # dynamic connection if external connections are already used
-        else :
-            dyn_con = connect_dic['dynamic'][0]
-            dyn_con.close()
-            connect_dic['dynamic'] = (connection_type_objekt , client_address)
+        # with connect_dic_loc access to connect_dic is granted
+        with connect_dic_lock:
+            # check if client is drone client
+            if client_address == target_address:
+                connect_dic['drone'] = (connection_type_objekt , client_address)
+            
+            # check if external connection/ non system critical connection is open
+            elif connect_dic['extern1'] == None:
+                connect_dic['extern1'] = (connection_type_objekt , client_address)
+            
+            # check if external connection/ non system critical connection is open
+            elif connect_dic['extern2'] == None:
+                connect_dic['extern2'] = (connection_type_objekt , client_address)
+            
+            # dynamic connection if external connections are already used
+            else :
+                dyn_con = connect_dic['dynamic'][0]
+                dyn_con.close()
+                connect_dic['dynamic'] = (connection_type_objekt , client_address)
         
     # end of loop}
     
@@ -182,11 +187,6 @@ This function assigns the keys from the "connect_dic" dictionary to each thread.
 The values from these keys are updated inside the threads which also contain the
 while loop for continues operation.
 
-The dictionary for acknowledgment management is initialised and will be updated
-by the "server_connect_man()" function, based on which acknowledgment message has
-been received. The function which send the first message will reset the flag to
-False. This Reset might change.
-
 ver. 1.1.0
     
 auther : Marvin Otten
@@ -195,14 +195,6 @@ auther : Marvin Otten
 def server_recv():
     
     global connect_dic
-    
-    # Create acknowledgment dictionary which saves the status of an received acknowledgment
-    global ack_dic
-    ack_dic = {'ping' : False,
-               'notify_gamestart' : False,
-               'notify_newgoal' : False,
-               'notify_foul' : False,
-               'notify_gameover' : False}
     
     # Create list of threads for each connection
     recv_threadlist = []
@@ -228,9 +220,24 @@ def server_recv():
 
 # Serverside receive function
 # Not yet finished!!!!!!!!!!!
+'''
+
+The dictionary for acknowledgment management is initialised and will be updated
+by the "server_connect_man()" function, based on which acknowledgment message has
+been received. The function which send the first message will reset the flag to
+False. This Reset might change.
+'''
 def server_connect_man( connection_type ):
     
     global connect_dic
+    
+    # Create acknowledgment dictionary which saves the status of an received acknowledgment
+    global ack_dic
+    ack_dic = {'ping' : False,
+               'notify_gamestart' : False,
+               'notify_newgoal' : False,
+               'notify_foul' : False,
+               'notify_gameover' : False}
     
     # Check for some operation determing variable
     some_var = False
