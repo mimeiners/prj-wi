@@ -288,7 +288,7 @@ def server_connect_man( connection_type ):
         #check if data was acknowledgment
         for acknowledgment in ack_status_dic:
             #set acknowledgment to True
-            if data == acknowledgment:
+            if data == acknowledgment and ack_status_dic[acknowledgment] == False :
                 ack_status_dic[acknowledgment] = True
                 continue
         

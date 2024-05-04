@@ -42,6 +42,10 @@ Funktion existiert noch nicht
 
 Das senden von Befehlen wird vor Ort (wo die Bedingung erzeugt wird) geschehen. Dafür wird eine passende Funktion bereit gestellt welche sich über verschieden Parameter wie gewünscht einstellen lässt. Der zu sende Befehl wird als Argument in string in die Funktion eingesetzt und gesendet. Der gesendete Befehl wird von dem Empfänge interpretiert welcher dann wieder das entsprechende acknowledgement sendet. Wie lange auf das acknowledgement oder ob überhaupt gewartet wird ist variabel.
 
+### Acknowledgement
+
+Die Acknowledgements werden durch die dictionaries "ack_dic" und "ack_status_dic" gehandelt. Sobald ein Befehl/Keyword gesendet wird, wird das dazugehörige Value im "ack_status_dic" von None auf False gesetzt. Wenn das Acknowledgement empfangen wird und dessen status im "ack_status_dic" False ist so setzt die zuständige Empfangsfunktion das Value auf True. Sobald das Value auf True gesetzt wird, wird es in der ursprünglichen Sendefunktion wieder of None gesetzt und das Acknowledgment wird als angekommen gewertet.
+
 ## Offene Baustellen
 
 - Grundlage für das desgin ist in Bearbeitung
