@@ -28,15 +28,7 @@ Geplant ist auch neben den bestehenden Befehlen Stand 03.05.2024 auch noch weite
 
 ##### Schnittstelle von Clientside
 
-Der Dronen Client wird innerhalb des Netzwerkes nur Verbindung zu dem Server aufnehemen. Es ist somit nicht nötig meherere Verbindungen zu unterstützen. Die Funktionen der Schnittstelle werden also dadurch gesteuert das es überhaupt erst zu einer Verbindung kommt. Solange keine Verbindung gefunden wird verbleibt die zuständige Funktion in einem Suchzustand. Dies wird erreicht in der Funktion "client_interface()".
-
-Um einen kontinuierlichen Betrieb zu ermöglichen, auch bei kurzzeitigen Verbindungsausfällen, ist die Funktion so strukturiert das bei Verlust der Verbindung die Funktion in den Suchzustand zurückkehrt. Um dies zu erreichen müssen nur alle, in der dazugehörigen Schleife und somit in der lokalen "connect_threadlist" hinterlegten, Threads returnen sobald keine Verbindung mehr vorhanden ist.
-
-Sobald eine Verbindung gefunden ist muss die Funktion nur noch die Empfangenden Befehle managen. Dies erfolgt ebenfalls mit den dokumentierten Befehlen aus "network-communication-keywords.md" innerhalb der Funktion "client_recv".
-
-Sobald ein Befehl erkannt wurde folgt eine entsprechende Reaktion. Nach Systemvorgabe ist es dabei nur nötig die Displays anzusprechen und die entsprechenden Informationen/Bilder etc. zu übertragen. Es muss somit im normalen Betrieb keine Interferenz mit der Steurung der Drohne erfolgen. Nur Start und Stop Bedingungen interferieren mit dem System. Während des normalen Betriebs muss somit nur Zugriff auf die nötigen Daten der Drohne (Videostream) gewährleistet sein.
-
-![alt text](interface_client.jpg)
+Die schnittstelle wird von AuVAReS verwaltet
 
 ### Senden von Befehlen
 
