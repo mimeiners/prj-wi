@@ -32,7 +32,12 @@ While "server_interface" does not contain any loops, the operating functions do.
 A continues execution is therefore secured inside the functions and can be changed
 individualy.
 
-ver. 1.0.0
+The dictionary for acknowledgment management is initialised and will be updated
+by the "server_recv()" function, based on which acknowledgment message has
+been received. The function which send the first message will reset the flag to
+None.
+
+ver. 1.1.0
     
 auther : Marvin Otten
 
@@ -85,7 +90,7 @@ def server_interface():
                                       args= [server_interface_obj, connect_dic],
                                       kwargs= { ('Client_IP_Adress as str' , 'Port as int') }),   #FIND IP ADRESS AND PORT!!
                           
-                          thr.Thread(target= server_recv,
+                          thr.Thread(target= server_recv_man,
                                       args= [],
                                       kwargs= {})]
     
@@ -212,14 +217,14 @@ ver. 1.1.0
 auther : Marvin Otten
 
 '''
-def server_recv():
+def server_recv_man():
     
     global connect_dic
     
     # Create list of threads for each connection
     recv_threadlist = []
     for connection_type in connect_dic:
-        recv_threadlist.append(thr.Thread(target= server_connect_man,
+        recv_threadlist.append(thr.Thread(target= server_recv,
                                               args= [ connection_type ],
                                               kwargs= {}))
     
@@ -239,16 +244,12 @@ def server_recv():
 #%%
 
 # Serverside receive function
-# Not yet finished!!!!!!!!!!!
+
 '''
 This fucntion will recieve all messages from a given connection from the "connect_dic".
 
-The dictionary for acknowledgment management is initialised and will be updated
-by the "server_connect_man()" function, based on which acknowledgment message has
-been received. The function which send the first message will reset the flag to
-False. This Reset might change.
 '''
-def server_connect_man( connection_type ):
+def server_recv( connection_type ):
     
     global connect_dic
     
@@ -261,6 +262,7 @@ def server_connect_man( connection_type ):
     while some_var == True:
     # {start of loop
         
+    
         # if Connection exists, receive 1024 sized string
         if type( connect_dic[connection_type] ) == tuple:
             connection_type_objekt = connect_dic[connection_type][0]
@@ -276,18 +278,25 @@ def server_connect_man( connection_type ):
             continue
         
         
-        #Data if/else Tree here! Interpret all messages!
+        # Data if/else Tree here! Interpret all messages!
         
-        #check if data was keyword
+        # check if nothing was send
+        if data == '': continue
+        
+        # check if data was keyword
         for keyword in ack_dic:
             #send acknowledgement
             if data == keyword:
                 connection_type_objekt.sendall( ack_dic[keyword])
+                
+                # Insert reaction function here, Maybe create third dic for keyword reaction?
+                react_to_keyword_function_call = None
                 continue
         
-        #check if data was acknowledgment
+        # check if data was acknowledgment
         for acknowledgment in ack_status_dic:
             #set acknowledgment to True
+            
             if data == acknowledgment and ack_status_dic[acknowledgment] == False :
                 ack_status_dic[acknowledgment] = True
                 continue
