@@ -76,7 +76,9 @@ def server_interface():
     # Create acknowledgment dictionary which pairs up keywords with acknowledgment and reaction
     global ack_dic
     ack_dic = {'ping' : ['hi'],
-               'notify_gamestart' : ['drone_in_position'],
+               'notify_drone_connect' : ['connection_established'],
+               'notify_start_permission' : ['drone_in_position'],
+               'notify_gamestart' : ['game_started'],
                'notify_newgoal' : ['received_newgoal'],
                'notify_foul' : ['received_foul'],
                'notify_gameover' : ['received_gameover'],
@@ -403,7 +405,9 @@ def client_interface():
     # Create acknowledgment status dictionary which saves the status of an received acknowledgment
     global ack_status_dic
     ack_status_dic = {'hi' : False,
+                'connection_established' : False,
                 'drone_in_position' : False,
+                'game_started' : False,
                 'received_newgoal' : False,
                 'received_foul' : False,
                 'received_gameover' : False,
@@ -414,7 +418,9 @@ def client_interface():
     # Create acknowledgment dictionary which pairs up keywords with acknowledgment and reaction
     global ack_dic
     ack_dic = {'ping' : ['hi'],
-               'notify_gamestart' : ['drone_in_position'],
+               'notify_drone_connect' : ['connection_established'],
+               'notify_start_permission' : ['drone_in_position'],
+               'notify_gamestart' : ['game_started'],
                'notify_newgoal' : ['received_newgoal'],
                'notify_foul' : ['received_foul'],
                'notify_gameover' : ['received_gameover'],
