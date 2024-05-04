@@ -20,11 +20,11 @@ Die Sende Funktionen werden dort abgerufen wo sie erzeugt werden und werden vorg
 
 Im Falle des Servers werden die "Connection_type_objects" organisiert in dem Dictionary "connect_dic" hinterlegt. Diese "Connection_type_objects" enstehen aus der "socket_object.accept()" Funktion und beschreiben eine Verbindung von dem Server zu einem Client. Die Funktion "server_listen()" sucht kontinuierlich nach neuen Verbindungen und sotiert diese in "connect_dic". Bis zu vier Verbindungen können so erschaffen werden.
 
-Zum empfangen von Informationen wird Funktion "server_recv" bzw. dessen Unterfunktion "server_connect_man()" genutzt. Ersteres erstellt Threads für alle möglichen Verbindungen. Die zweite Funktion übernimmt dann eine Verbindung innerhalb jedes Threads. Hier wird nun überprüft ob überhaupt eine Verbindung vorliegt, ob etwas gesendet wird und was gesendet wird. Für den Inhalt der Nachrichten werden die dokumentierten Befehle aus "network-communication-keywords.md" verwendet.
+Zum empfangen von Informationen wird Funktion "server_recv_man()" bzw. dessen Unterfunktion "server_recv()" genutzt. Ersteres erstellt Threads für alle möglichen Verbindungen. Die zweite Funktion übernimmt dann eine Verbindung innerhalb jedes Threads. Hier wird nun überprüft ob überhaupt eine Verbindung vorliegt, ob etwas empfangen wird und was empgangen wird. Für den Inhalt der Nachrichten werden die dokumentierten Keywords aus "network-communication-keywords.md" verwendet welche in "ack_dic" zugeordnet werden.
 
 ![alt text](interface_connection_management.jpg)
 
-Geplant ist auch neben den bestehenden Befehlen Stand 03.05.2024 auch noch weiter Befehle hinzufügen welche die Verbindungen schließen, Verbidnungsart in "connect_dic" ändern etc. Dies steht aber nur als Idee und ist noch nicht festgelegt.
+Geplant ist auch neben den bestehenden Befehlen Stand 03.05.2024 auch noch weiter Befehle hinzufügen welche die Verbindungen schließen, Verbindungsart in "connect_dic" ändern etc. Dies steht aber nur als Idee und ist noch nicht festgelegt.
 
 ##### Schnittstelle von Clientside
 

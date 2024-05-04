@@ -205,7 +205,7 @@ def server_listen( socket_objekt , target_address = None ):
 # Serverside receive function to check for incoming data
 '''
 This function creates threads for each connection in the "connect_dic" dictionary.
-Each thread runs the function "server_connect_man()" which then handles the execution
+Each thread runs the function "server_recv()" which then handles the execution
 of receiving data and interpreting it's content.
 
 This function assigns the keys from the "connect_dic" dictionary to each thread.
@@ -246,7 +246,18 @@ def server_recv_man():
 # Serverside receive function
 
 '''
-This fucntion will recieve all messages from a given connection from the "connect_dic".
+This function will recieve all messages from a given connection from the "connect_dic".
+At first it will check if a connection is present. If that is case, the function
+can receive a max 1024 long string which will be decoded bei utf-8 format. After
+decoding the data is checked for it's content. First if there was a message at all,
+followed up by a check if a keyword was received and lastly if a acknowledgment was
+received. After that the funtion will once again check if the connection exists.
+
+There has not been a collision check implemented yet.
+
+ver. 1.0.0
+    
+auther : Marvin Otten
 
 '''
 def server_recv( connection_type ):
