@@ -12,6 +12,7 @@ auther : Marvin Otten
 #import globally needed libraries
 import socket
 import time
+import threading
 import threading as thr
 
 
@@ -27,23 +28,56 @@ class keyword_class:
     
 
 
-class Thread(threading.Thread):
-    def __init__(self, t, *args):
-        threading.Thread.__init__(self, target=t, args=args)
-        self.start()
-        
-
-
-class connection(socket.socket, keyword_class, Thread):
+class connection(socket.socket, keyword_class):
     
-    def __init__(self, server_interface_obj):
+    def __init__(self , server_interface_obj , format_ = 'utf-8'):
         
         self.server_interface_obj = server_interface_obj
-        self.keyword_list = self.keyword_checks(ack_dic)
-        self.data = self.recv('utf-8')
-        self.connection_status = self.send_ping()
+        self.keyword_list = self.keyword_checks( ack_dic )
+        self.format_ = format_
+        self.data = self.recv()
+        
+        #Chat GPT lässt grüßen
+        self._connection_status = False
+        self._thread = threading.Thread(target=self._ping_check , args = self._connection_status)
+        self._thread.daemon = True  # Der Thread wird als Hintergrundthread ausgeführt
+        self._thread.start()
     
     
+    def _ping_check(self):
+        while True:
+            if self._connection_status == False:
+                time.sleep(1)
+                continue
+            else:
+                self.send('ping' , 1)
+    
+    def connection_status(self):
+        return self._connection_status
+ 
+    
+    def send(self, keyword, timeout = 0):
+        if self._connection_status == False: return
+        else:
+            message = keyword.encode( self.format_ )
+            self.server_interface_obj.sendall( keyword )
+            
+            # set acknowledgment to False, waiting position
+            self.keyword_list
+            
+            # wait for acknowledgment
+            wait_time = 0
+            while ack_status_dic[message_str] == False or wait_time < timeout:
+                time.sleep(0.1)
+                wait_time += 0.1
+            
+            # reset acknowledgment flag
+            ack_status_dic[message_str] = None
+            
+            #if timeout was reached react
+            if wait_time < timeout:
+                reaction_to_timeout = None
+ 
     def keyword_checks(self, keyword_dic):
         self.keyword_list = []
         for keyword in keyword_dic:
@@ -51,13 +85,12 @@ class connection(socket.socket, keyword_class, Thread):
         return self.keyword_list
         
     
-    def recv(self, format_):
+    def recv(self):
         self.raw_data = self.server_interface_obj.recv(1024)
-        self.data = self.raw_data.decode(format_)
+        self.data = self.raw_data.decode( self.format_ )
         return self.data
     
-    def send_ping(self):
-        
+    
 #%%
 
 ### server_interface()
