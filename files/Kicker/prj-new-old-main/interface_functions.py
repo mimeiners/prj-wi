@@ -25,7 +25,7 @@ class keyword_class:
         self.ack_status =  None
         self.react = keyword_func
         self.ack_react = ack_func
-        self.ack_tm = ack_TOE_func
+        self.ack_TOE = ack_TOE_func
 
         
 
@@ -43,7 +43,6 @@ class connection( socket.socket , keyword_class , Thread ):
         self.server_connection_obj = server_connection_obj
         self.keyword_class_dic = self.keyword_checks( ack_dic )
         self.format_ = format_
-        self.data = self.recv()
         
         #Chat GPT lässt grüßen
         self._connection_status = False
@@ -69,32 +68,34 @@ class connection( socket.socket , keyword_class , Thread ):
     def send_thread(self , args ):
         Thread(self.send , args )
  
-    def send(self, keyword, timeout = 0):
+    def send(self, message, timeout = 0):
         if self._connection_status == False: return
         else:
-            message = keyword.encode( self.format_ )
-            with port_lock: self.server_connection_obj.sendall( message )
+            message_encoded = message.encode( self.format_ )
+            with port_lock: self.server_connection_obj.sendall( message_encoded )
             
-            # set acknowledgment to False, waiting position
-            self.keyword_class_dic[ keyword ].ack_status = False
-            
-            # wait for acknowledgment
-            wait_time = 0
-            while self.keyword_class_dic[ keyword ].ack_status == False and wait_time < timeout:
-                time.sleep(0.1)
-                wait_time += 0.1
-            
-            # react to ACK or NACK
-            if self.keyword_class_dic[ keyword ].ack_status == False and wait_time >= timeout:
-                self.keyword_class_dic[ keyword ].ack_tm
-                
-            if self.keyword_class_dic[ keyword ].ack_status == True and wait_time < timeout:
-                self.keyword_class_dic[ keyword ].ack_react
-            
-            # reset acknowledgment flag
-            self.keyword_class_dic[ keyword ].ack_status = None
-            return
+            for keyword in ack_dic:
+                if message == keyword and timeout != -1:
+                    # set acknowledgment to False, waiting position
+                    self.keyword_class_dic[ message ].ack_status = False
+                    
+                    # wait for acknowledgment
+                    wait_time = 0
+                    while self.keyword_class_dic[ message ].ack_status == False and wait_time < timeout:
+                        time.sleep(0.1)
+                        wait_time += 0.1
+                    
+                    # react to ACK or NACK
+                    if self.keyword_class_dic[ message ].ack_status == False and wait_time >= timeout:
+                        self.keyword_class_dic[ message ].ack_TOE
+                        
+                    if self.keyword_class_dic[ message ].ack_status == True and wait_time < timeout:
+                        self.keyword_class_dic[ message ].ack_react
+                    
+                    # reset acknowledgment flag
+                    self.keyword_class_dic[ message ].ack_status = None
 
+        return
     
     def keyword_checks(self, keyword_dic):
         keyword_class_dic = {}
@@ -103,8 +104,8 @@ class connection( socket.socket , keyword_class , Thread ):
         return keyword_class_dic
         
     
-    def recv(self):
-        self.raw_data = self.server_connection_obj.recv(1024)
+    def recv(self, length):
+        self.raw_data = self.server_connection_obj.recv( length )
         self.data = self.raw_data.decode( self.format_ )
         return self.data
     
@@ -240,7 +241,7 @@ kwargs
                         connection slot
 
 
-ver. 1.0.0
+ver. 1.1.0
 
 auther : Marvin Otten
 '''
@@ -312,7 +313,7 @@ This function assigns the keys from the "connect_dic" dictionary to each thread.
 The values from these keys are updated inside the threads which also contain the
 while loop for continues operation.
 
-ver. 1.1.0
+ver. 1.2.0
     
 auther : Marvin Otten
 
@@ -379,19 +380,19 @@ def server_recv( connection_type ):
     while some_var == True:
     # {start of loop
         
+        # if connection has not been established, continue
+        if connection_type == None: continue
     
         # if Connection exists, receive 1024 sized string
-        if connect_dic[ connection_type].connection_status() == True:
-            connection_type_objekt = connect_dic[connection_type][0]
-            data = connection_type_objekt.recv(1024)
-            data = data.decode('utf-8')
+        elif connect_dic[ connection_type ].connection_status() == True:
+             connection_ph = connect_dic[ connection_type ]
+             keyword_ph = connection_ph.keyword_class_dic
+             data = connection_ph.recv(1024)
         
-        # if connection has not been established, continue
-        elif connection_type == None: continue
         
         # if weird connection_type_object appears, send Error to cmd, continue
         else :
-            print('Error: undetermined Connection type :', type( connect_dic[connection_type] ))
+            print('Error: undetermined Connection type :', type( connect_dic[ connection_type ] ))
             continue
         
         
@@ -404,24 +405,23 @@ def server_recv( connection_type ):
         for keyword in ack_dic:
             #send acknowledgement
             if data == keyword:
-                connection_type_objekt.sendall( ack_dic[keyword][0])
+                connection_ph.send_thread( ack_dic[ keyword ] )
                 
-                # Insert reaction function here, call from ack_dic[keyword][1]
-                ack_dic[keyword][1]
+                # Call reaction function
+                keyword_ph[keyword].react
                 continue
-        
-        # check if data was acknowledgment
-        #could be implemented in keyword check
-        for acknowledgment in ack_status_dic:
             
-            #set acknowledgment to True
-            if data == acknowledgment and ack_status_dic[acknowledgment] == False :
-                ack_status_dic[acknowledgment] = True
+            # check if data was acknowledgment
+            elif data == ack_dic[keyword]:
+                if keyword_ph[keyword].status == False :
+                    keyword_ph[keyword].status = True
+                    keyword_ph[keyword].ack_react
+                    continue
+            
+            else:
+                # data has not been recognised as a keyword or acknowledgement
+                print('Undetermined message:', data)
                 continue
-        
-        # data has not been recognised as a keyword or acknowledgement
-        print('Undetermined message:', data)
-        continue
                 
     # end of loop}
     
