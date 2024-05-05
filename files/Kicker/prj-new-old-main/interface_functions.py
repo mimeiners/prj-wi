@@ -46,7 +46,7 @@ class connection( socket.socket , keyword_class , Thread ):
         
         #Chat GPT lässt grüßen
         self._connection_status = False
-        self._thread = threading.Thread(target=self._ping_check , args = self._connection_status)
+        self._thread = threading.Thread(target=self._ping_check)
         self._thread.daemon = True  # Der Thread wird als Hintergrundthread ausgeführt
         self._thread.start()
     
@@ -54,10 +54,7 @@ class connection( socket.socket , keyword_class , Thread ):
 
     def _ping_check(self):
         while True:
-            if self._connection_status == False:
-                pass
-            else:
-                self.send_thread(['ping' , 1])
+            with port_lock: self.send_thread(['ping' , 1])
             time.sleep(1)
     
     def connection_status(self):
@@ -74,6 +71,8 @@ class connection( socket.socket , keyword_class , Thread ):
             message_encoded = message.encode( self.format_ )
             with port_lock: self.server_connection_obj.sendall( message_encoded )
             
+            # If the message was a keyword -> acknowledgement management
+            
             for keyword in ack_dic:
                 if message == keyword and timeout != -1:
                     # set acknowledgment to False, waiting position
@@ -86,10 +85,10 @@ class connection( socket.socket , keyword_class , Thread ):
                         wait_time += 0.1
                     
                     # react to ACK or NACK
-                    if self.keyword_class_dic[ message ].ack_status == False and wait_time >= timeout:
+                    if wait_time >= timeout:
                         self.keyword_class_dic[ message ].ack_TOE
                         
-                    if self.keyword_class_dic[ message ].ack_status == True and wait_time < timeout:
+                    if wait_time < timeout:
                         self.keyword_class_dic[ message ].ack_react
                     
                     # reset acknowledgment flag
@@ -97,13 +96,25 @@ class connection( socket.socket , keyword_class , Thread ):
 
         return
     
+    
+    
     def keyword_checks(self, keyword_dic):
         keyword_class_dic = {}
         for keyword in keyword_dic:
             keyword_class_dic[ keyword ] = keyword_class( keyword , keyword_dic[keyword] )
+        
+        keyword_class_dic[ 'ping' ].ack_react = self._ping_ack_react()
+        keyword_class_dic[ 'ping' ].ack_TOE = self._ping_nack_react()
+        
         return keyword_class_dic
         
+    def _ping_ack_react(self):
+       self._connection_status = True
+    def _ping_nack_react(self):
+       self._connection_status = False
+       
     
+       
     def recv(self, length):
         self.raw_data = self.server_connection_obj.recv( length )
         self.data = self.raw_data.decode( self.format_ )
@@ -152,11 +163,17 @@ def server_interface():
     
     
     # Create dictionary of connections | Reference Dictionary for all Connections !
+    drone_connection = None
+    extern_connection_1 = None
+    extern_connection_2 = None
+    dynamic_connection = None
+    
+    
     global connect_dic
-    connect_dic = {'drone' :  None,         # Connection type Objekt for Drone
-                   'extern1' : None,        # Connection type Objekt for extern excess or future use
-                   'extern2' : None,        # ...
-                   'dynamic': None}         # Connection type Objekt for dynamic use. Description in server.listen() Header
+    connect_dic = {'drone' :  drone_connection,         # Connection type Objekt for Drone
+                   'extern1' : extern_connection_1,        # Connection type Objekt for extern excess or future use
+                   'extern2' : extern_connection_2,        # ...
+                   'dynamic': dynamic_connection}         # Connection type Objekt for dynamic use. Description in server.listen() Header
     
     
     
@@ -274,24 +291,26 @@ def server_listen( socket_objekt , target_address = None ):
             # check if client is drone client
             if client_address == target_address:
                 drone_connection = connection( connection_type_objekt )
-                connect_dic['drone'] = ( drone_connection , client_address )
+                connect_dic['drone'] = drone_connection
             
             # check if external connection/ non system critical connection is open
             elif connect_dic['extern1'] == None:
                 extern_connection_1 = connection( connection_type_objekt )
-                connect_dic['extern1'] = ( extern_connection_1 , client_address )
+                connect_dic['extern1'] = extern_connection_1
             
             # check if external connection/ non system critical connection is open
             elif connect_dic['extern2'] == None:
                 extern_connection_2 = connection( connection_type_objekt )
-                connect_dic['extern2'] = ( extern_connection_2 , client_address )
+                connect_dic['extern2'] = extern_connection_2
             
             # dynamic connection if external connections are already used
             else :
-                dyn_con = connect_dic['dynamic'][0]
-                dyn_con.close()
+                if connect_dic['dynamic'] != None:
+                    connect_dic['dynamic'].close()
                 dynamic_connection = connection( connection_type_objekt )
-                connect_dic['dynamic'] = ( dynamic_connection , client_address )
+                connect_dic['dynamic'] = dynamic_connection
+                
+            
         
     # end of loop}
     
@@ -405,7 +424,7 @@ def server_recv( connection_type ):
         for keyword in ack_dic:
             #send acknowledgement
             if data == keyword:
-                connection_ph.send_thread( ack_dic[ keyword ] )
+                with port_lock: connection_ph.send_thread( ack_dic[ keyword ] )
                 
                 # Call reaction function
                 keyword_ph[keyword].react
@@ -413,9 +432,9 @@ def server_recv( connection_type ):
             
             # check if data was acknowledgment
             elif data == ack_dic[keyword]:
-                if keyword_ph[keyword].status == False :
-                    keyword_ph[keyword].status = True
-                    keyword_ph[keyword].ack_react
+                # if timeout in send function was -1 then keyword_ph[keyword].ack_status = None and no reaction is triggered!
+                if keyword_ph[keyword].ack_status == False :
+                    keyword_ph[keyword].ack_status = True
                     continue
             
             else:
