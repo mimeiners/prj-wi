@@ -15,7 +15,7 @@ import time
 import threading
 import threading as thr
 
-
+# define current status and settings of a keyword
 class keyword_class:
     
     def __init__(self, keyword, ack, keyword_func = None , ack_func = None , ack_TOE_func = None):
@@ -28,14 +28,14 @@ class keyword_class:
         self.ack_TOE = ack_TOE_func
 
         
-
+# automatically run a function in a thread
 class Thread(threading.Thread):
     def __init__(self, t , *args):
         threading.Thread.__init__(self, target=t, args=args)
         self.start()
     
 
-
+# expand connection object for project
 class connection( socket.socket , keyword_class , Thread ):
     
     def __init__(self , server_connection_obj , format_ = 'utf-8'):
@@ -51,20 +51,22 @@ class connection( socket.socket , keyword_class , Thread ):
         self._thread.start()
     
 
-
+    #Thread which pings the client each second
     def _ping_check(self):
         while True:
             with port_lock: self.send_thread(['ping' , 1])
             time.sleep(1)
     
+    #retuen current connection Bool of this connection
     def connection_status(self):
         return self._connection_status
 
 
-
+    # But in Thread for less script interference
     def send_thread(self , args ):
         Thread(self.send , args )
- 
+    
+    # Send to connection patner and handle ACK
     def send(self, message, timeout = 0):
         if self._connection_status == False: return
         else:
@@ -97,25 +99,27 @@ class connection( socket.socket , keyword_class , Thread ):
         return
     
     
-    
+    #create keyword_class_dic containing the keyword settings classes
     def keyword_checks(self, keyword_dic):
         keyword_class_dic = {}
         for keyword in keyword_dic:
             keyword_class_dic[ keyword ] = keyword_class( keyword , keyword_dic[keyword] )
-        
+            
+        #define ping ack and nack reaction function
         keyword_class_dic[ 'ping' ].ack_react = self._ping_ack_react()
         keyword_class_dic[ 'ping' ].ack_TOE = self._ping_nack_react()
         
         return keyword_class_dic
-        
+     
+    #define ping ack and nack reaction function
     def _ping_ack_react(self):
        self._connection_status = True
     def _ping_nack_react(self):
        self._connection_status = False
        
     
-       
-    def recv(self, length):
+    # inner working recv function for call von server_recv
+    def _recv(self, length):
         self.raw_data = self.server_connection_obj.recv( length )
         self.data = self.raw_data.decode( self.format_ )
         return self.data
@@ -406,7 +410,7 @@ def server_recv( connection_type ):
         elif connect_dic[ connection_type ].connection_status() == True:
              connection_ph = connect_dic[ connection_type ]
              keyword_ph = connection_ph.keyword_class_dic
-             data = connection_ph.recv(1024)
+             data = connection_ph._recv(1024)
         
         
         # if weird connection_type_object appears, send Error to cmd, continue
