@@ -18,22 +18,30 @@ import threading as thr
 
 class keyword_class:
     
-    def __init__(self, keyword, ack, keyword_func = None , ack_TmE_func = None):
+    def __init__(self, keyword, ack, keyword_func = None , ack_func = None , ack_TOE_func = None):
         
         self.keyword = keyword
         self.ack = ack
-        self.ack_status =  False
+        self.ack_status =  None
         self.react = keyword_func
-        self.ack_tm = ack_TmE_func
-    
+        self.ack_react = ack_func
+        self.ack_tm = ack_TOE_func
 
-
-class connection(socket.socket, keyword_class):
-    
-    def __init__(self , server_interface_obj , format_ = 'utf-8'):
         
-        self.server_interface_obj = server_interface_obj
-        self.keyword_list = self.keyword_checks( ack_dic )
+
+class Thread(threading.Thread):
+    def __init__(self, t , *args):
+        threading.Thread.__init__(self, target=t, args=args)
+        self.start()
+    
+
+
+class connection( socket.socket , keyword_class , Thread ):
+    
+    def __init__(self , server_connection_obj , format_ = 'utf-8'):
+        
+        self.server_connection_obj = server_connection_obj
+        self.keyword_class_dic = self.keyword_checks( ack_dic )
         self.format_ = format_
         self.data = self.recv()
         
@@ -43,50 +51,60 @@ class connection(socket.socket, keyword_class):
         self._thread.daemon = True  # Der Thread wird als Hintergrundthread ausgeführt
         self._thread.start()
     
-    
+
+
     def _ping_check(self):
         while True:
             if self._connection_status == False:
-                time.sleep(1)
-                continue
+                pass
             else:
-                self.send('ping' , 1)
+                self.send_thread(['ping' , 1])
+            time.sleep(1)
     
     def connection_status(self):
         return self._connection_status
+
+
+
+    def send_thread(self , args ):
+        Thread(self.send , args )
  
-    
     def send(self, keyword, timeout = 0):
         if self._connection_status == False: return
         else:
             message = keyword.encode( self.format_ )
-            self.server_interface_obj.sendall( keyword )
+            with port_lock: self.server_connection_obj.sendall( message )
             
             # set acknowledgment to False, waiting position
-            self.keyword_list
+            self.keyword_class_dic[ keyword ].ack_status = False
             
             # wait for acknowledgment
             wait_time = 0
-            while ack_status_dic[message_str] == False or wait_time < timeout:
+            while self.keyword_class_dic[ keyword ].ack_status == False and wait_time < timeout:
                 time.sleep(0.1)
                 wait_time += 0.1
             
-            # reset acknowledgment flag
-            ack_status_dic[message_str] = None
+            # react to ACK or NACK
+            if self.keyword_class_dic[ keyword ].ack_status == False and wait_time >= timeout:
+                self.keyword_class_dic[ keyword ].ack_tm
+                
+            if self.keyword_class_dic[ keyword ].ack_status == True and wait_time < timeout:
+                self.keyword_class_dic[ keyword ].ack_react
             
-            #if timeout was reached react
-            if wait_time < timeout:
-                reaction_to_timeout = None
- 
+            # reset acknowledgment flag
+            self.keyword_class_dic[ keyword ].ack_status = None
+            return
+
+    
     def keyword_checks(self, keyword_dic):
-        self.keyword_list = []
+        keyword_class_dic = {}
         for keyword in keyword_dic:
-            self.keyword_list.append(keyword_class(keyword, ack_dic[keyword]))
-        return self.keyword_list
+            keyword_class_dic[ keyword ] = keyword_class( keyword , keyword_dic[keyword] )
+        return keyword_class_dic
         
     
     def recv(self):
-        self.raw_data = self.server_interface_obj.recv(1024)
+        self.raw_data = self.server_connection_obj.recv(1024)
         self.data = self.raw_data.decode( self.format_ )
         return self.data
     
@@ -122,7 +140,8 @@ auther : Marvin Otten
 
 def server_interface():
     
-    ## Initialize Socket on Serverside
+    ## Initialize Interface
+    
     # Create Serverside Socket objekt
     server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
@@ -138,16 +157,6 @@ def server_interface():
                    'extern2' : None,        # ...
                    'dynamic': None}         # Connection type Objekt for dynamic use. Description in server.listen() Header
     
-    
-    # Create acknowledgment status dictionary which saves the status of an received acknowledgment
-    global ack_status_dic
-    ack_status_dic = {'hi' : None,
-               'drone_in_position' : None,
-               'received_newgoal' : None,
-               'received_foul' : None,
-               'received_gameover' : None,
-               'waiting' : None,
-               'gaming' : None}
     
     
     # Create acknowledgment dictionary which pairs up keywords with acknowledgment and reaction
@@ -167,10 +176,14 @@ def server_interface():
     global connect_dic_lock
     connect_dic_lock = thr.lock()
     
+    # Create thread lock for access to port
+    global port_lock
+    port_lock = thr.lock()
+    
     ## Interface managment threads
     # List of Threads for continues listen and receive function for all connections
     connect_threadlist = [thr.Thread(target= server_listen,
-                                      args= [server_interface_obj, connect_dic],
+                                      args= [server_interface_obj],
                                       kwargs= { ('Client_IP_Adress as str' , 'Port as int') }),   #FIND IP ADRESS AND PORT!!
                           
                           thr.Thread(target= server_recv_man,
@@ -259,21 +272,25 @@ def server_listen( socket_objekt , target_address = None ):
         with connect_dic_lock:
             # check if client is drone client
             if client_address == target_address:
-                connect_dic['drone'] = (connection_type_objekt , client_address)
+                drone_connection = connection( connection_type_objekt )
+                connect_dic['drone'] = ( drone_connection , client_address )
             
             # check if external connection/ non system critical connection is open
             elif connect_dic['extern1'] == None:
-                connect_dic['extern1'] = (connection_type_objekt , client_address)
+                extern_connection_1 = connection( connection_type_objekt )
+                connect_dic['extern1'] = ( extern_connection_1 , client_address )
             
             # check if external connection/ non system critical connection is open
             elif connect_dic['extern2'] == None:
-                connect_dic['extern2'] = (connection_type_objekt , client_address)
+                extern_connection_2 = connection( connection_type_objekt )
+                connect_dic['extern2'] = ( extern_connection_2 , client_address )
             
             # dynamic connection if external connections are already used
             else :
                 dyn_con = connect_dic['dynamic'][0]
                 dyn_con.close()
-                connect_dic['dynamic'] = (connection_type_objekt , client_address)
+                dynamic_connection = connection( connection_type_objekt )
+                connect_dic['dynamic'] = ( dynamic_connection , client_address )
         
     # end of loop}
     
@@ -355,8 +372,6 @@ def server_recv( connection_type ):
     
     global connect_dic
     
-    global ack_status_dic
-    
     global ack_dic
     
     # Check for some operation determing variable
@@ -366,7 +381,7 @@ def server_recv( connection_type ):
         
     
         # if Connection exists, receive 1024 sized string
-        if type( connect_dic[connection_type] ) == tuple:
+        if connect_dic[ connection_type].connection_status() == True:
             connection_type_objekt = connect_dic[connection_type][0]
             data = connection_type_objekt.recv(1024)
             data = data.decode('utf-8')
@@ -413,41 +428,5 @@ def server_recv( connection_type ):
     return
 
 
-
-
-#%%
-
-#serverside send function. Might be updated to systemwide send function
-
-def server_sendall( message_str , connection_type_object = connect_dic['drone'][0], timeout = 0):
     
-    import ack_status_dic
-    
-    # connection not established, continue with normal operation
-    if connection_type_object == None : return
-    
-    # send message
-    message_str = message_str.encode('utf-8')
-    connection_type_object.sendall(message_str)
-    
-    # set acknowledgment to False, waiting position
-    ack_status_dic[message_str] = False
-    
-    # wait for acknowledgment
-    wait_time = 0
-    while ack_status_dic[message_str] == False or wait_time < timeout:
-        time.sleep(0.1)
-        wait_time += 0.1
-    
-    # reset acknowledgment flag
-    ack_status_dic[message_str] = None
-    
-    #if timeout was reached react
-    if wait_time < timeout:
-        reaction_to_timeout = None
-    
-    return
-    
-
-
 
