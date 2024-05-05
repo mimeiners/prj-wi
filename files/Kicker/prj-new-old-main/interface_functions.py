@@ -15,52 +15,147 @@ import time
 import threading as thr
 
 
-class keyword_func():
+class ping:
     
-    def ping_func():
-        return
-    def ping_ack_tm():
+    def __init__(self):
+        
+        self.keyword = 'ping'
+        self.ack = 'hi'
+        self.react = self.ping_func()
+        self.ack_tm = self.ack_tm()
+    
+    def ping_func(self):
         return
     
-    def notify_drone_connect_func():
+    def ping_ack_tm(self):
         return
-    def notify_drone_connect_ack_tm():
+
+
+class notify_drone_connect:
+    
+    def __init__(self):
+        
+        self.keyword = 'notify_drone_connect'
+        self.ack = 'connection_established'
+        self.react = self.notify_drone_connect_func()
+        self.ack_tm = self.notify_drone_connect_ack_tm()
+    
+    def notify_drone_connect_func(self):
         return
+    def notify_drone_connect_ack_tm(self):
+        return
+
+
+class notify_start_permission:
+    
+    def __init__(self):
+        
+        self.keyword = 'notify_start_permission'
+        self.ack = 'drone_in_position'
+        self.react = self.notify_start_permission_func()
+        self.ack_tm = self.notify_start_permission_ack_tm()
     
     def notify_start_permission_func():
         return
     def notify_start_permission_ack_tm():
         return
     
+
+class notify_gamestart:
+    
+    def __init__(self):
+        
+        self.keyword = 'notify_gamestart'
+        self.ack = 'game_started'
+        self.react = self.notify_gamestart_func()
+        self.ack_tm = self.notify_gamestart_ack_tm()
+    
     def notify_gamestart_func():
         return
     def notify_gamestart_ack_tm():
         return
+
+
+class notify_newgoal:
+    
+    def __init__(self):
+        
+        self.keyword = 'notify_newgoal'
+        self.ack = 'received_newgoal'
+        self.react = self.notify_newgoal_func()
+        self.ack_tm = self.notify_newgoal_ack_tm()
     
     def notify_newgoal_func():
         return
     def notify_newgoal_ack_tm():
         return
+
+
+class notify_foul:
+    
+    def __init__(self):
+        
+        self.keyword = 'notify_foul'
+        self.ack = 'received_foul'
+        self.react = self.notify_foul_func()
+        self.ack_tm = self.notify_foul_ack_tm()
     
     def notify_foul_func():
         return
     def notify_foul_ack_tm():
         return
+
+
+class notify_gameover:
+    
+    def __init__(self):
+        
+        self.keyword = 'notify_gameover'
+        self.ack = 'received_foul'
+        self.react = self.notify_gameover_func()
+        self.ack_tm = self.notify_gameover_ack_tm()
     
     def notify_gameover_func():
         return
     def notify_gameover_ack_tm():
         return
+
+
+class please_wait:
+    
+    def __init__(self):
+        
+        self.keyword = 'please_wait'
+        self.ack = 'waiting'
+        self.react = self.please_wait_func()
+        self.ack_tm = self.please_wait_ack_tm()
     
     def please_wait_func():
         return
     def please_wait_ack_tm():
         return
+
+
+class please_resume:
+    
+    def __init__(self):
+        
+        self.keyword = 'please_resume'
+        self.ack = 'gaming'
+        self.react = self.please_resume_func()
+        self.ack_tm = self.please_resume_ack_tm()
     
     def please_resume_func():
         return
     def please_resume_ack_tm():
         return
+
+
+class connection(socket.socket):
+    
+    def __init__(self, server_interface_obj):
+        
+        self.server_interface_obj = server_interface_obj
 
 #%%
 
@@ -363,7 +458,7 @@ def server_recv( connection_type ):
                 connection_type_objekt.sendall( ack_dic[keyword][0])
                 
                 # Insert reaction function here, call from ack_dic[keyword][1]
-                react_to_keyword_function_call = None
+                ack_dic[keyword][1]
                 continue
         
         # check if data was acknowledgment
