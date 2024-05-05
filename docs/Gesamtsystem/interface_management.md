@@ -4,11 +4,80 @@ Diese Beschreibungen dienen als Leitfaden für die Entwicklung und kontinuierlic
 
 Da von der Serverside aus mehrere Verbindungen möglich sind muss der Zugriff innerhalb der Threads Kollisionsfrei verlaufen. Geplant ist dafür die Function "threading.lock" und dessen Komplimentärfunktionen. Die Umsetzung dieser muss aber noch im Detail ermitttelt werden. Bis jetzt ist geplant das diese Bedingungen über "with" abgerufen.
 
+Innerhalb vieler Funktionskritischer Schleifen wird noch die Variable some_var abgerufen welche ersetzt werden soll durch eine global systemstatus Variable.
+
 ### Setup
 
 Der Aufbau des System besteht aus zwei Hauptcomputern. Der Computer von Wohninvest, welcher im folgenden als Server bezeichnet wird, und der Computer von AuVARes welcher als Client oder Drohnen Client bezeichnet wird. Es werden Optionen offen gehalten für einen dritten Computer und/oder einer externen Quelle zur Überwachung des Systems. Der Server ist der Ansprechpatner aller Clients und ist als notwendige Hardware des Kickers von Wohninvest zu betrachten.
 
+### Nutzer Handbuch
+
+#### Verbindung bestimmen
+
+Die Verbindung zu einem Clienten ist repräsentiert in einem Klassenobjekt der Klasse "connection". Alle Klassenobjekte befinden sich in dem globalen Dictionary "connect_dic".
+
+    global connect_dic
+    connect_dic = {'drone' : drone_connection,
+                   'extern1' : extern_connection_1,
+                   'extern2' : extern_connection_2,
+                   'dynamic': dynamic_connection} 
+
+Solange noch keine Vebindung gefunden wurde sind diese Objekte nur ein 'None' und haben keine Funktion. Sobald die Verbindung hinzugefügt wurde, was automatisch geschieht sobald eine Verbindung gefunden wurde, enstehen die entsprechenden Klassenobjekte.
+
+Für das bisherige System ist nur die Verbindung "drone_connection" von Bedeutung. Die anderen Verbindungen dienen erstmal als Platzhalter, sind aber theoretisch schon funktional.
+
+Um die Verbindung zu nutzen muss diese nur aus den Dictionary aufgeruden werden. Eine Variable ist dabei hilfreich
+
+    verbindung_variable = connect_dic['drone']
+
+#### Funktionen der Verbindung
+
+    connection.send( message , timeout = 0 )
+
+message : Argument des Typs str. Sollte ein definiertes Keyword sein. Leerzeichen   werden Nicht ignoriert.
+
+timeout : Argument des Typs int. Bestimmt wie lange auf ein ACK gewartet wird.
+|timeout = -1 | timeout = 0 | timeout = n |
+|-|-|-|
+| ACK wird ignoriert, keine Reaktion wird ausgelöst | Time out error Funktion wird sofort ausgelöst | n Sekunden Wartezeit (0.1 Sekunden Genauigkeit) um das ACK zu erwarten. Wird ACK empfangen so wird die ACK Reaktionsfunktion ausgelöst. Wird n überschritten wird die Time out error Funktion wird sofort ausgelöst |
+
+Die Funktion "connection.send" sendet den Inhalt des string arguments "message" an den Verbindungspatner des Verbindungsobjektes und überwacht ob ein ACK empfangen wird.
+
+    connection.send_thread( args )
+
+args : Argument des Typs list. Liste aus Argumenten welche an "connection.send" weitergegeben werden.
+
+Funktional passiert in dieser Funktion das gleiche wie bei "connection.send" aber sie findet in einem eigenen Thread start. Definition, start und ende werden von der Funktion selbst durchgeführt. So behindert das Warten auf ein ACK den den Ablauf des Programms. Die Reaktionsfunktionen auf ACK und NACK finden ebenfalls in dem Thread statt.
+
+    connection_status()
+
+Diese Funktion gibt den Status einer Verbindung wieder, nachdem diese mindestens einmal nicht dynamisch (als dynamic_connection) initialisiert wurde. Zurückgegeben wird True oder False. Der Zustand wird automatisch über sekündliche Pings
+###### Empfangen
+
+Empfangen und Interpretieren von Nachrichten geschieht automatisch. Reaktion auf Keywords, ACK und NACK wir über die Reaktionsfunktionen bestimmt. Diese werden definiert in dem Unterdictionary "connection.keyword_class_dic" . Diese Unterdictionary ist ein Dictionary bestehend aus allen offiziellen Keywords und dazugehörigen Keywordklassen. Über "connection.keyword_class_dic['keyword']" lässt sich somit auf die Eigenschaften eines Keywords zugreifen.
+
+    connection.keyword_class_dic['keyword'].ack_status
+
+Variable mit Eigenschaften. Gibt Status eine ACK von einerm Keyword an.
+
+|None|False|True|
+|-|-|-|
+|Es wird kein ACK von diesem Keyword erwartet|Es wird ein ACK von diesem Keyword erwartet aber noch nicht empfangen|Ein ACK wurde von diesem Keyword ampfangen|
+
+    connection.keyword_class_dic['keyword'].react
+
+Diese Variable weißt dem Keyword eine Reaktionsfunktion zu. Im undefininierten Fall wird ein None wiedergegeben.
+
+    connection.keyword_class_dic['keyword'].ack_react
+
+Diese Variable weißt dem ACK dieses Keyword eine Reaktionsfunktion zu. Im undefininierten Fall wird ein None wiedergegeben.
+
+    connection.keyword_class_dic['keyword'].ack_TOE
+
+Diese Variable weißt dem NACK dieses Keyword eine Reaktionsfunktion zu. Im undefininierten Fall wird ein None wiedergegeben.
 ### Schnittstelle
+
+## Ab hier noch nicht geupdated
 
 Innerhalb aller beteiligten Teilnehmer des lokalen Netzwerkes soll zur erfolgreichen Verbindung eine "..._interface()" Funktion vorhanden sein. Im Falle des Servers liegt die Funktion "server_interface" vor. Der Drohnen Client hat die Funktion "network_connection" dafür vorgesehen. Diese Funktion dient dazu die Verbindung zu einem Verbindungspartner aufzubauen, zu organisieren und zu empfangen.
 
