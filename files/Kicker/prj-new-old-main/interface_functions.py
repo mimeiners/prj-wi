@@ -15,148 +15,49 @@ import time
 import threading as thr
 
 
-class ping:
+class keyword_class:
     
-    def __init__(self):
+    def __init__(self, keyword, ack, keyword_func = None , ack_TmE_func = None):
         
-        self.keyword = 'ping'
-        self.ack = 'hi'
-        self.react = self.ping_func()
-        self.ack_tm = self.ack_tm()
+        self.keyword = keyword
+        self.ack = ack
+        self.ack_status =  False
+        self.react = keyword_func
+        self.ack_tm = ack_TmE_func
     
-    def ping_func(self):
-        return
-    
-    def ping_ack_tm(self):
-        return
 
 
-class notify_drone_connect:
-    
-    def __init__(self):
+class Thread(threading.Thread):
+    def __init__(self, t, *args):
+        threading.Thread.__init__(self, target=t, args=args)
+        self.start()
         
-        self.keyword = 'notify_drone_connect'
-        self.ack = 'connection_established'
-        self.react = self.notify_drone_connect_func()
-        self.ack_tm = self.notify_drone_connect_ack_tm()
-    
-    def notify_drone_connect_func(self):
-        return
-    def notify_drone_connect_ack_tm(self):
-        return
 
 
-class notify_start_permission:
-    
-    def __init__(self):
-        
-        self.keyword = 'notify_start_permission'
-        self.ack = 'drone_in_position'
-        self.react = self.notify_start_permission_func()
-        self.ack_tm = self.notify_start_permission_ack_tm()
-    
-    def notify_start_permission_func():
-        return
-    def notify_start_permission_ack_tm():
-        return
-    
-
-class notify_gamestart:
-    
-    def __init__(self):
-        
-        self.keyword = 'notify_gamestart'
-        self.ack = 'game_started'
-        self.react = self.notify_gamestart_func()
-        self.ack_tm = self.notify_gamestart_ack_tm()
-    
-    def notify_gamestart_func():
-        return
-    def notify_gamestart_ack_tm():
-        return
-
-
-class notify_newgoal:
-    
-    def __init__(self):
-        
-        self.keyword = 'notify_newgoal'
-        self.ack = 'received_newgoal'
-        self.react = self.notify_newgoal_func()
-        self.ack_tm = self.notify_newgoal_ack_tm()
-    
-    def notify_newgoal_func():
-        return
-    def notify_newgoal_ack_tm():
-        return
-
-
-class notify_foul:
-    
-    def __init__(self):
-        
-        self.keyword = 'notify_foul'
-        self.ack = 'received_foul'
-        self.react = self.notify_foul_func()
-        self.ack_tm = self.notify_foul_ack_tm()
-    
-    def notify_foul_func():
-        return
-    def notify_foul_ack_tm():
-        return
-
-
-class notify_gameover:
-    
-    def __init__(self):
-        
-        self.keyword = 'notify_gameover'
-        self.ack = 'received_foul'
-        self.react = self.notify_gameover_func()
-        self.ack_tm = self.notify_gameover_ack_tm()
-    
-    def notify_gameover_func():
-        return
-    def notify_gameover_ack_tm():
-        return
-
-
-class please_wait:
-    
-    def __init__(self):
-        
-        self.keyword = 'please_wait'
-        self.ack = 'waiting'
-        self.react = self.please_wait_func()
-        self.ack_tm = self.please_wait_ack_tm()
-    
-    def please_wait_func():
-        return
-    def please_wait_ack_tm():
-        return
-
-
-class please_resume:
-    
-    def __init__(self):
-        
-        self.keyword = 'please_resume'
-        self.ack = 'gaming'
-        self.react = self.please_resume_func()
-        self.ack_tm = self.please_resume_ack_tm()
-    
-    def please_resume_func():
-        return
-    def please_resume_ack_tm():
-        return
-
-
-class connection(socket.socket):
+class connection(socket.socket, keyword_class, Thread):
     
     def __init__(self, server_interface_obj):
         
         self.server_interface_obj = server_interface_obj
-
+        self.keyword_list = self.keyword_checks(ack_dic)
+        self.data = self.recv('utf-8')
+        self.connection_status = self.send_ping()
+    
+    
+    def keyword_checks(self, keyword_dic):
+        self.keyword_list = []
+        for keyword in keyword_dic:
+            self.keyword_list.append(keyword_class(keyword, ack_dic[keyword]))
+        return self.keyword_list
+        
+    
+    def recv(self, format_):
+        self.raw_data = self.server_interface_obj.recv(1024)
+        self.data = self.raw_data.decode(format_)
+        return self.data
+    
+    def send_ping(self):
+        
 #%%
 
 ### server_interface()
@@ -207,26 +108,26 @@ def server_interface():
     
     # Create acknowledgment status dictionary which saves the status of an received acknowledgment
     global ack_status_dic
-    ack_status_dic = {'hi' : False,
-               'drone_in_position' : False,
-               'received_newgoal' : False,
-               'received_foul' : False,
-               'received_gameover' : False,
-               'waiting' : False,
-               'gaming' : False}
+    ack_status_dic = {'hi' : None,
+               'drone_in_position' : None,
+               'received_newgoal' : None,
+               'received_foul' : None,
+               'received_gameover' : None,
+               'waiting' : None,
+               'gaming' : None}
     
     
     # Create acknowledgment dictionary which pairs up keywords with acknowledgment and reaction
     global ack_dic
-    ack_dic = {'ping' : ['hi'],
-               'notify_drone_connect' : ['connection_established'],
-               'notify_start_permission' : ['drone_in_position'],
-               'notify_gamestart' : ['game_started'],
-               'notify_newgoal' : ['received_newgoal'],
-               'notify_foul' : ['received_foul'],
-               'notify_gameover' : ['received_gameover'],
-               'please_wait' : ['waiting'],
-               'please_resume' : ['gaming']}
+    ack_dic = {'ping' : 'hi',
+               'notify_drone_connect' : 'connection_established',
+               'notify_start_permission' : 'drone_in_position',
+               'notify_gamestart' : 'game_started',
+               'notify_newgoal' : 'received_newgoal',
+               'notify_foul' : 'received_foul',
+               'notify_gameover' : 'received_gameover',
+               'please_wait' : 'waiting',
+               'please_resume' : 'gaming'}
     
     
     # Create thread lock for access to connect_dic
