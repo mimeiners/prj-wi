@@ -41,7 +41,7 @@ class connection( socket.socket , keyword_class , Thread ):
     def __init__(self , server_connection_obj , format_ = 'utf-8'):
         
         self.server_connection_obj = server_connection_obj
-        self.keyword_class_dic = self.keyword_checks( ack_dic )
+        self.keyword_class_dic = self._keyword_checks( ack_dic )
         self.format_ = format_
         
         #Chat GPT lässt grüßen
@@ -100,7 +100,7 @@ class connection( socket.socket , keyword_class , Thread ):
     
     
     #create keyword_class_dic containing the keyword settings classes
-    def keyword_checks(self, keyword_dic):
+    def _keyword_checks(self, keyword_dic):
         keyword_class_dic = {}
         for keyword in keyword_dic:
             keyword_class_dic[ keyword ] = keyword_class( keyword , keyword_dic[keyword] )
