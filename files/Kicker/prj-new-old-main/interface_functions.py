@@ -14,6 +14,54 @@ import socket
 import time
 import threading as thr
 
+
+class keyword_func():
+    
+    def ping_func():
+        return
+    def ping_ack_tm():
+        return
+    
+    def notify_drone_connect_func():
+        return
+    def notify_drone_connect_ack_tm():
+        return
+    
+    def notify_start_permission_func():
+        return
+    def notify_start_permission_ack_tm():
+        return
+    
+    def notify_gamestart_func():
+        return
+    def notify_gamestart_ack_tm():
+        return
+    
+    def notify_newgoal_func():
+        return
+    def notify_newgoal_ack_tm():
+        return
+    
+    def notify_foul_func():
+        return
+    def notify_foul_ack_tm():
+        return
+    
+    def notify_gameover_func():
+        return
+    def notify_gameover_ack_tm():
+        return
+    
+    def please_wait_func():
+        return
+    def please_wait_ack_tm():
+        return
+    
+    def please_resume_func():
+        return
+    def please_resume_ack_tm():
+        return
+
 #%%
 
 ### server_interface()
@@ -374,156 +422,3 @@ def server_sendall( message_str , connection_type_object = connect_dic['drone'][
 
 
 
-
-#%%
-
-### client_interface()
-# Clientside main implementation of interface
-'''
-This function defines the clientside connection. The function is designed to
-operate inside a thread and will handle the connection to the Server aswell as 
-receiving messages.
-
-The operation order first initializes some needed variables or objects. As only
-one connection is needed it serves as gateway to futher interface action. To achieve
-that the connection function is called in a while loop. If an Timeout Interrupt
-occurs, the Exception continues the loop. If a connection is found the loop breaks.
-
-To allow the handling of an interupting connection, the search for a connection
-and the thread/s for the recv/other function/s is placed in a while loop aswell.
-If the connection gets interrupted, the thread are suppose to return and allow
-the loop to enter the next iteration which once again tries to connect to the server.
-
-ver. 1.0.0
-    
-auther : Marvin Otten
-
-'''
-
-def client_interface():
-    
-    # Create acknowledgment status dictionary which saves the status of an received acknowledgment
-    global ack_status_dic
-    ack_status_dic = {'hi' : False,
-                'connection_established' : False,
-                'drone_in_position' : False,
-                'game_started' : False,
-                'received_newgoal' : False,
-                'received_foul' : False,
-                'received_gameover' : False,
-                'waiting' : False,
-                'gaming' : False}
-    
-    
-    # Create acknowledgment dictionary which pairs up keywords with acknowledgment and reaction
-    global ack_dic
-    ack_dic = {'ping' : ['hi'],
-               'notify_drone_connect' : ['connection_established'],
-               'notify_start_permission' : ['drone_in_position'],
-               'notify_gamestart' : ['game_started'],
-               'notify_newgoal' : ['received_newgoal'],
-               'notify_foul' : ['received_foul'],
-               'notify_gameover' : ['received_gameover'],
-               'please_wait' : ['waiting'],
-               'please_resume' : ['gaming']}
-    
-    # Create clientside Socket objekt
-    client_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    # Define IP adress and the used Port number of the target Server
-    server_add = ('localhost',10000)  #FIND IP ADRESS AND PORT!!!!!!!
-    
-    
-    # Connect to Server
-    some_var = False
-    while some_var == True:
-    # This first loop allows for reconnection with the Server if the connection
-    # gets interrupted. For that to happen, the threads need to contain a return
-    # based on the connection status.
-    
-    # {start of loop
-        # try to connect with the server, ignore timeout. If no connection is
-        # possible all interface action is blocked trough this loop.
-        some_var = False
-        while some_var == True:
-            try: 
-                client_interface_obj.connect(server_add)
-                break
-            
-            except: continue
-    
-        ## Interface managment threads
-        # List of Threads for continues recieve. Implemented as list to allow for easy expansion
-        connect_threadlist = [thr.Thread(target= client_recv,
-                                          args= [ client_interface_obj ],
-                                          kwargs= {})]
-        
-        #start threats
-        for thread in connect_threadlist:
-            thread.start()
-        
-        #wait for threads to join once programm is finished | thread internal check
-        for thread in connect_threadlist:
-            thread.join()  
-    
-    # end of loop}
-    
-    return
-
-
-
-
-#%%%
-
-# Clientside receive function
-
-#WIP | Stop Bedingug fehlt
-
-def client_recv( connection_type_object ):
-        
-    global connect_dic
-    
-    global ack_status_dic
-    
-    global ack_dic
-    
-    # Check for some operation determing variable
-    some_var = False
-    while some_var == True:
-    # {start of loop
-        
-        data = connection_type_object.recv(1024)
-        data = data.decode('utf-8')
-        
-        
-        # Data if/else Tree here! Interpret all messages!
-        
-        # check if nothing was send
-        if data == '': continue
-        
-        # check if data was keyword
-        for keyword in ack_dic:
-            #send acknowledgement
-            if data == keyword:
-                connection_type_object.sendall( ack_dic[keyword][0] )
-                
-                # Insert reaction function here, call from ack_dic[keyword][1]
-                react_to_keyword_function_call = None
-                continue
-        
-        # check if data was acknowledgment
-        #could be implemented in keyword check
-        for acknowledgment in ack_status_dic:
-            
-            #set acknowledgment to True
-            if data == acknowledgment and ack_status_dic[acknowledgment] == False :
-                ack_status_dic[acknowledgment] = True
-                continue
-        
-        # data has not been recognised as a keyword or acknowledgement
-        print('Undetermined message:', data)
-        continue
-                
-    # end of loop}
-    
-    return
