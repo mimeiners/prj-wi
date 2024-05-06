@@ -38,7 +38,7 @@ class Thread(threading.Thread):
 # expand connection object for project
 class connection( socket.socket , keyword_class , Thread ):
     
-    def __init__(self , server_connection_obj , format_ = 'utf-8'):
+    def __init__(self , server_connection_obj , ack_dic , format_ = 'utf-8'):
         
         self.server_connection_obj = server_connection_obj
         self.keyword_class_dic = self._keyword_checks( ack_dic )
@@ -51,6 +51,7 @@ class connection( socket.socket , keyword_class , Thread ):
         self._thread.start()
     
 
+
     #Thread which pings the client each second
     def _ping_check(self):
         while True:
@@ -62,41 +63,47 @@ class connection( socket.socket , keyword_class , Thread ):
         return self._connection_status
 
 
+
     # But in Thread for less script interference
     def send_thread(self , args ):
         Thread(self.send , args )
     
     # Send to connection patner and handle ACK
-    def send(self, message, timeout = 0):
+    def send(self, message, timeout = -1):
         if self._connection_status == False: return
         else:
             message_encoded = message.encode( self.format_ )
             with port_lock: self.server_connection_obj.sendall( message_encoded )
             
             # If the message was a keyword -> acknowledgement management
-            
             for keyword in ack_dic:
                 if message == keyword and timeout != -1:
-                    # set acknowledgment to False, waiting position
-                    self.keyword_class_dic[ message ].ack_status = False
-                    
-                    # wait for acknowledgment
-                    wait_time = 0
-                    while self.keyword_class_dic[ message ].ack_status == False and wait_time < timeout:
-                        time.sleep(0.1)
-                        wait_time += 0.1
-                    
-                    # react to ACK or NACK
-                    if wait_time >= timeout:
-                        self.keyword_class_dic[ message ].ack_TOE
-                        
-                    if wait_time < timeout:
-                        self.keyword_class_dic[ message ].ack_react
-                    
-                    # reset acknowledgment flag
-                    self.keyword_class_dic[ message ].ack_status = None
-
+                    self._ack_check( message , timeout )
         return
+
+    # acknowledgement management
+    def _ack_check(self, keyword, timeout):
+        # set acknowledgment to False, waiting position
+        self.keyword_class_dic[ keyword ].ack_status = False
+        
+        # wait for acknowledgment
+        wait_time = 0
+        while self.keyword_class_dic[ keyword ].ack_status == False and wait_time < timeout:
+            time.sleep(0.1)
+            wait_time += 0.1
+        
+        # react to ACK or NACK
+        if wait_time >= timeout:
+            self.keyword_class_dic[ keyword ].ack_TOE
+            
+        if wait_time < timeout:
+            self.keyword_class_dic[ keyword ].ack_react
+        
+        # reset acknowledgment flag
+        self.keyword_class_dic[ keyword ].ack_status = None
+
+
+        
     
     
     #create keyword_class_dic containing the keyword settings classes
@@ -271,6 +278,7 @@ def server_listen( socket_objekt , target_address = None ):
     
     global connect_dic
     global connect_dic_lock
+    global ack_dic
     
     # Check for some operation determing variable
     some_var = False
@@ -294,24 +302,24 @@ def server_listen( socket_objekt , target_address = None ):
         with connect_dic_lock:
             # check if client is drone client
             if client_address == target_address:
-                drone_connection = connection( connection_type_objekt )
+                drone_connection = connection( connection_type_objekt , ack_dic )
                 connect_dic['drone'] = drone_connection
             
             # check if external connection/ non system critical connection is open
             elif connect_dic['extern1'] == None:
-                extern_connection_1 = connection( connection_type_objekt )
+                extern_connection_1 = connection( connection_type_objekt , ack_dic )
                 connect_dic['extern1'] = extern_connection_1
             
             # check if external connection/ non system critical connection is open
             elif connect_dic['extern2'] == None:
-                extern_connection_2 = connection( connection_type_objekt )
+                extern_connection_2 = connection( connection_type_objekt , ack_dic )
                 connect_dic['extern2'] = extern_connection_2
             
             # dynamic connection if external connections are already used
             else :
                 if connect_dic['dynamic'] != None:
                     connect_dic['dynamic'].close()
-                dynamic_connection = connection( connection_type_objekt )
+                dynamic_connection = connection( connection_type_objekt , ack_dic )
                 connect_dic['dynamic'] = dynamic_connection
                 
             
