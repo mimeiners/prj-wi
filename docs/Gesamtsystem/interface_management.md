@@ -34,14 +34,16 @@ Um die Verbindung zu nutzen muss diese nur aus den Dictionary aufgeruden werden.
 
     connection.send( message , timeout = -1 )
 
-message : Argument des Typs str. Sollte ein definiertes Keyword sein. Leerzeichen   werden Nicht ignoriert.
+message : Argument des Typs str. Sollte ein definiertes Keyword sein. Leerzeichen   werden Nicht ignoriert. Eine Codierung ist nicht nötig sondern wird intern durchgeführt.
 
 timeout : Argument des Typs int. Bestimmt wie lange auf ein ACK gewartet wird.
 |timeout = -1 | timeout = 0 | timeout = n |
 |-|-|-|
-| ACK wird ignoriert, keine Reaktion wird ausgelöst | TOE Funktion wird sofort ausgelöst | n Sekunden Wartezeit (0.1 Sekunden Genauigkeit) um das ACK zu erwarten. Wird ACK empfangen so wird die ACK Reaktionsfunktion ausgelöst. Wird n überschritten wird die Time out error Funktion sofort ausgelöst |
+| ACK wird ignoriert, keine Reaktion wird ausgelöst | TOE Funktion wird sofort ausgelöst | n Sekunden Wartezeit (0.1 Sekunden Genauigkeit) um das ACK zu erwarten. Wird ACK empfangen so wird die ACK Reaktionsfunktion ausgelöst. Wird n überschritten wird die TOE Funktion sofort ausgelöst |
 
 Die Funktion "connection.send" sendet den Inhalt des string arguments "message" an den Verbindungspatner des Verbindungsobjektes und überwacht ob ein ACK empfangen wird.
+
+Die Funktion returned ein True wenn die Nachricht gesendet wurde und das ACK abgearbeitet wurde oder ein False wenn die Nachricht nicht gesendet wurde.
 
     connection.send_thread( args )
 
@@ -49,7 +51,9 @@ args : Argument des Typs list. Liste aus Argumenten welche an "connection.send" 
 
 Funktional passiert in dieser Funktion das gleiche wie bei "connection.send" aber sie findet in einem eigenen Thread start. Definition, start und ende werden von der Funktion selbst durchgeführt. So behindert das Warten auf ein ACK den den Ablauf des Programms. Die Reaktionsfunktionen auf ACK und NACK finden ebenfalls in dem Thread statt.
 
-    connection_status()
+Es wird aber kein Wert returned da Threads dies nicht können. Um sicher zu gehen das eine Nachricht gesendet wurde sollte connection.connection_status() abgerufen werden.
+
+    connection.connection_status()
 
 Diese Funktion gibt den Status einer Verbindung wieder, nachdem diese mindestens einmal nicht dynamisch (als dynamic_connection) initialisiert wurde. Zurückgegeben wird True oder False. Der Zustand wird automatisch über sekündliche Pings aktualisiert.
 
@@ -57,15 +61,24 @@ Diese Funktion gibt den Status einer Verbindung wieder, nachdem diese mindestens
 
 Empfangen und Interpretieren von Nachrichten geschieht automatisch. Reaktion auf Keywords, ACK und NACK wir über die Reaktionsfunktionen bestimmt. Diese werden definiert in dem Unterdictionary "connection.keyword_class_dic" . Diese Unterdictionary ist ein Dictionary bestehend aus allen offiziellen Keywords und dazugehörigen Keywordklassen. Über "connection.keyword_class_dic['keyword']" lässt sich somit auf die Eigenschaften eines Keywords zugreifen.
 
+    connection.keyword_class_dic['keyword'].keyword
+
+Gibt das dazugehörige Keyword an.
+
+
+    connection.keyword_class_dic['keyword'].ack
+
+Gibt das dazugehörige ACK an.
+
     connection.keyword_class_dic['keyword'].ack_status
 
-Objekt des Typs NoneType, False oder True. Gibt Status eines ACK von einem Keyword an.
+Objekt des Typs NoneType oder Bool. Gibt Status eines ACK von einem Keyword an.
 
 |None|False|True|
 |-|-|-|
 |Es wird kein ACK von diesem Keyword erwartet|Es wird ein ACK von diesem Keyword erwartet aber noch nicht empfangen|Ein ACK wurde von diesem Keyword ampfangen|
 
-Nachdem ein ACK empfangen oder die Timeout Zeit überschritten wurde wird die der Status automatisch wieder auf None gesetzt.
+Nachdem ein ACK empfangen oder die Timeout Zeit überschritten wurde wird der Status automatisch wieder auf None gesetzt.
 
     connection.keyword_class_dic['keyword'].react
 
