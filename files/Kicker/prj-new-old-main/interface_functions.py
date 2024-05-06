@@ -38,7 +38,7 @@ class Thread(threading.Thread):
 # expand connection object for project
 class connection( socket.socket , keyword_class , Thread ):
     
-    def __init__(self , server_connection_obj , ack_dic , format_ = 'utf-8'):
+    def __init__(self , server_connection_obj = None , ack_dic = {} , format_ = 'utf-8'):
         
         self.server_connection_obj = server_connection_obj
         self.keyword_class_dic = self._keyword_checks( ack_dic )
@@ -70,8 +70,7 @@ class connection( socket.socket , keyword_class , Thread ):
     
     # Send to connection patner and handle ACK
     def send(self, message, timeout = -1):
-        if self._connection_status == False: return
-        else:
+        try:
             message_encoded = message.encode( self.format_ )
             with port_lock: self.server_connection_obj.sendall( message_encoded )
             
@@ -79,7 +78,10 @@ class connection( socket.socket , keyword_class , Thread ):
             for keyword in ack_dic:
                 if message == keyword and timeout != -1:
                     self._ack_check( message , timeout )
-        return
+            return True
+        
+        except:
+            return False
 
     # acknowledgement management
     def _ack_check(self, keyword, timeout):
@@ -174,10 +176,10 @@ def server_interface():
     
     
     # Create dictionary of connections | Reference Dictionary for all Connections !
-    drone_connection = None
-    extern_connection_1 = None
-    extern_connection_2 = None
-    dynamic_connection = None
+    drone_connection = connection()
+    extern_connection_1 = connection()
+    extern_connection_2 = connection()
+    dynamic_connection = connection()
     
     
     global connect_dic
@@ -306,18 +308,18 @@ def _server_listen( socket_objekt , target_address = None ):
                 connect_dic['drone'] = drone_connection
             
             # check if external connection/ non system critical connection is open
-            elif connect_dic['extern1'] == None:
+            elif connect_dic['extern1'].server_connection_obj == None:
                 extern_connection_1 = connection( connection_type_objekt , ack_dic )
                 connect_dic['extern1'] = extern_connection_1
             
             # check if external connection/ non system critical connection is open
-            elif connect_dic['extern2'] == None:
+            elif connect_dic['extern2'].server_connection_obj == None:
                 extern_connection_2 = connection( connection_type_objekt , ack_dic )
                 connect_dic['extern2'] = extern_connection_2
             
             # dynamic connection if external connections are already used
             else :
-                if connect_dic['dynamic'] != None:
+                if connect_dic['dynamic'].server_connection_obj != None:
                     connect_dic['dynamic'].close()
                 dynamic_connection = connection( connection_type_objekt , ack_dic )
                 connect_dic['dynamic'] = dynamic_connection
