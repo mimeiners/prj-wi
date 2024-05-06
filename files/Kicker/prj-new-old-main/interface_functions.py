@@ -211,11 +211,11 @@ def server_interface():
     
     ## Interface managment threads
     # List of Threads for continues listen and receive function for all connections
-    connect_threadlist = [thr.Thread(target= server_listen,
+    connect_threadlist = [thr.Thread(target= _server_listen,
                                       args= [server_interface_obj],
                                       kwargs= { ('Client_IP_Adress as str' , 'Port as int') }),   #FIND IP ADRESS AND PORT!!
                           
-                          thr.Thread(target= server_recv_man,
+                          thr.Thread(target= _server_recv_man,
                                       args= [],
                                       kwargs= {})]
     
@@ -274,7 +274,7 @@ ver. 1.1.0
 auther : Marvin Otten
 '''
 
-def server_listen( socket_objekt , target_address = None ):
+def _server_listen( socket_objekt , target_address = None ):
     
     global connect_dic
     global connect_dic_lock
@@ -349,14 +349,14 @@ ver. 1.2.0
 auther : Marvin Otten
 
 '''
-def server_recv_man():
+def _server_recv_man():
     
     global connect_dic
     
     # Create list of threads for each connection
     recv_threadlist = []
     for connection_type in connect_dic:
-        recv_threadlist.append(thr.Thread(target= server_recv,
+        recv_threadlist.append(thr.Thread(target= _server_recv,
                                               args= [ connection_type ],
                                               kwargs= {}))
     
@@ -400,7 +400,7 @@ ver. 1.0.1
 auther : Marvin Otten
 
 '''
-def server_recv( connection_type ):
+def _server_recv( connection_type ):
     
     global connect_dic
     
@@ -412,47 +412,56 @@ def server_recv( connection_type ):
     # {start of loop
         
         # if connection has not been established, continue
-        if connection_type == None: continue
+        if connection_type == None:
+            time.sleep(1)
+            continue
     
         # if Connection exists, receive 1024 sized string
         elif connect_dic[ connection_type ].connection_status() == True:
-             connection_ph = connect_dic[ connection_type ]
-             keyword_ph = connection_ph.keyword_class_dic
-             data = connection_ph._recv(1024)
+             data = connect_dic[ connection_type ]._recv(1024)
         
         
         # if weird connection_type_object appears, send Error to cmd, continue
         else :
-            print('Error: undetermined Connection type :', type( connect_dic[ connection_type ] ))
+            print('Error: undetermined Connection :', connect_dic[ connection_type ] )
             continue
         
+        _data_interpret( data , connection_type )
         
-        # Data if/else Tree here! Interpret all messages!
-        
-        # check if nothing was send
-        if data == '': continue
-        
-        # check if data was keyword
-        for keyword in ack_dic:
-            #send acknowledgement
-            if data == keyword:
-                with port_lock: connection_ph.send_thread( ack_dic[ keyword ] )
-                
-                # Call reaction function
-                keyword_ph[keyword].react
-                continue
+        return
+    
+
+
+#%%
+def _data_interpret( data , connection_type ):
+    
+    connection_ph = connect_dic[ connection_type ]
+    keyword_ph = connection_ph.keyword_class_dic
+    
+    # check if nothing was send
+    if data == '': return
+
+    # check if data was keyword
+    for keyword in ack_dic:
+        #send acknowledgement
+        if data == keyword:
+            with port_lock: connection_ph.send_thread( ack_dic[ keyword ] )
             
-            # check if data was acknowledgment
-            elif data == ack_dic[keyword]:
-                # if timeout in send function was -1 then keyword_ph[keyword].ack_status = None and no reaction is triggered!
-                if keyword_ph[keyword].ack_status == False :
-                    keyword_ph[keyword].ack_status = True
-                    continue
+            # Call reaction function
+            keyword_ph[keyword].react
+            return
             
-            else:
-                # data has not been recognised as a keyword or acknowledgement
-                print('Undetermined message:', data)
-                continue
+        # check if data was acknowledgment
+        elif data == ack_dic[keyword]:
+            # if timeout in send function was -1 then keyword_ph[keyword].ack_status = None and no reaction is triggered!
+            if keyword_ph[keyword].ack_status == False :
+                keyword_ph[keyword].ack_status = True
+                return
+            
+        else:
+            # data has not been recognised as a keyword or acknowledgement
+            print('Undetermined message:', data)
+            continue
                 
     # end of loop}
     
