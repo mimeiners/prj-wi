@@ -75,7 +75,7 @@ class connection( socket.socket , keyword_class , Thread ):
             with port_lock: self.server_connection_obj.sendall( message_encoded )
             
             # If the message was a keyword -> acknowledgement management
-            for keyword in ack_dic:
+            for keyword in ack_dic:             #take ack dic from connection attribute ack_dic!!!
                 if message == keyword and timeout != -1:
                     self._ack_check( message , timeout )
             return True
@@ -444,7 +444,7 @@ def _data_interpret( data , connection_type ):
     if data == '': return
 
     # check if data was keyword
-    for keyword in ack_dic:
+    for keyword in ack_dic:             #take ack dic from connection attribute ack_dic!!!
         #send acknowledgement
         if data == keyword:
             with port_lock: connection_ph.send_thread( ack_dic[ keyword ] )
@@ -454,7 +454,7 @@ def _data_interpret( data , connection_type ):
             return
             
         # check if data was acknowledgment
-        elif data == ack_dic[keyword]:
+        elif data == ack_dic[keyword]:             #take ack dic from connection attribute ack_dic!!!
             # if timeout in send function was -1 then keyword_ph[keyword].ack_status = None and no reaction is triggered!
             if keyword_ph[keyword].ack_status == False :
                 keyword_ph[keyword].ack_status = True
