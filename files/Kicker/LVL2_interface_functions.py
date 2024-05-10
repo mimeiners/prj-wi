@@ -297,12 +297,12 @@ def _server_recv( connection_type ):
     # {start of loop
         
         # if connection has not been established, continue
-        if connection_type == None:
+        if connect_dic[ connection_type ]._connection_status() == False:
             time.sleep(1)
             continue
     
         # if Connection exists, receive 1024 sized string
-        elif connect_dic[ connection_type ].connection_status() == True:
+        elif connect_dic[ connection_type ]._connection_status() == True:
              data = connect_dic[ connection_type ]._recv(1024)
         
         
