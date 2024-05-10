@@ -141,7 +141,7 @@ class connection( socket.socket , keyword_class , Thread ):
     #Thread which pings the client each second
     def _ping_check(self):
         while True:
-            with port_lock: self.send_thread(['ping' , 1])
+            with port_lock: self.send('ping' , 1)
             time.sleep(1)
     
     #retuen current connection Bool of this connection
