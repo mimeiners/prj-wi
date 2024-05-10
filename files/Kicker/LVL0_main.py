@@ -11,7 +11,7 @@ __status__ = "WIP"
 
 from time import sleep
 import threading
-import MAIN_system_threads_funcs as f
+import LVL1_funcs as f
 
 
 
