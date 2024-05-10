@@ -14,125 +14,8 @@ import socket
 import time
 import threading
 import threading as thr
+import LVL3_classes as SIF
 
-# define current status and settings of a keyword
-class keyword_class:
-    
-    def __init__(self, keyword, ack, keyword_func = None , ack_func = None , ack_TOE_func = None):
-        
-        self.keyword = keyword
-        self.ack = ack
-        self.ack_status =  None
-        self.react = keyword_func
-        self.ack_react = ack_func
-        self.ack_TOE = ack_TOE_func
-
-        
-# automatically run a function in a thread
-class Thread(threading.Thread):
-    def __init__(self, t , *args):
-        threading.Thread.__init__(self, target=t, args=args)
-        self.start()
-    
-
-# expand connection object for project
-class connection( socket.socket , keyword_class , Thread ):
-    
-    def __init__(self , server_connection_obj = None , ack_dic = {} , format_ = 'utf-8'):
-        
-        self.server_connection_obj = server_connection_obj
-        self.keyword_class_dic = self._keyword_checks( ack_dic )
-        self.format_ = format_
-        
-        #Chat GPT lässt grüßen
-        self._connection_status = False
-        self._thread = threading.Thread(target=self._ping_check)
-        self._thread.daemon = True  # Der Thread wird als Hintergrundthread ausgeführt
-        self._thread.start()
-    
-
-
-    #Thread which pings the client each second
-    def _ping_check(self):
-        while True:
-            with port_lock: self.send_thread(['ping' , 1])
-            time.sleep(1)
-    
-    #retuen current connection Bool of this connection
-    def connection_status(self):
-        return self._connection_status
-
-
-
-    # But in Thread for less script interference
-    def send_thread(self , args ):
-        Thread(self.send , args )
-    
-    # Send to connection patner and handle ACK
-    def send(self, message, timeout = -1):
-        try:
-            message_encoded = message.encode( self.format_ )
-            with port_lock: self.server_connection_obj.sendall( message_encoded )
-            
-            # If the message was a keyword -> acknowledgement management
-            for keyword in ack_dic:             #take ack dic from connection attribute ack_dic!!!
-                if message == keyword and timeout != -1:
-                    self._ack_check( message , timeout )
-            return True
-        
-        except:
-            return False
-
-    # acknowledgement management
-    def _ack_check(self, keyword, timeout):
-        # set acknowledgment to False, waiting position
-        self.keyword_class_dic[ keyword ].ack_status = False
-        
-        # wait for acknowledgment
-        wait_time = 0
-        while self.keyword_class_dic[ keyword ].ack_status == False and wait_time < timeout:
-            time.sleep(0.1)
-            wait_time += 0.1
-        
-        # react to ACK or NACK
-        if wait_time >= timeout:
-            self.keyword_class_dic[ keyword ].ack_TOE
-            
-        if wait_time < timeout:
-            self.keyword_class_dic[ keyword ].ack_react
-        
-        # reset acknowledgment flag
-        self.keyword_class_dic[ keyword ].ack_status = None
-
-
-        
-    
-    
-    #create keyword_class_dic containing the keyword settings classes
-    def _keyword_checks(self, keyword_dic):
-        keyword_class_dic = {}
-        for keyword in keyword_dic:
-            keyword_class_dic[ keyword ] = keyword_class( keyword , keyword_dic[keyword] )
-            
-        #define ping ack and nack reaction function
-        keyword_class_dic[ 'ping' ].ack_react = self._ping_ack_react()
-        keyword_class_dic[ 'ping' ].ack_TOE = self._ping_nack_react()
-        
-        return keyword_class_dic
-     
-    #define ping ack and nack reaction function
-    def _ping_ack_react(self):
-       self._connection_status = True
-    def _ping_nack_react(self):
-       self._connection_status = False
-       
-    
-    # inner working recv function for call von server_recv
-    def _recv(self, length):
-        self.raw_data = self.server_connection_obj.recv( length )
-        self.data = self.raw_data.decode( self.format_ )
-        return self.data
-    
     
 #%%
 
@@ -176,10 +59,10 @@ def server_interface():
     
     
     # Create dictionary of connections | Reference Dictionary for all Connections !
-    drone_connection = connection()
-    extern_connection_1 = connection()
-    extern_connection_2 = connection()
-    dynamic_connection = connection()
+    drone_connection = SIF.connection()
+    extern_connection_1 = SIF.connection()
+    extern_connection_2 = SIF.connection()
+    dynamic_connection = SIF.connection()
     
     
     global connect_dic
@@ -190,7 +73,7 @@ def server_interface():
     
     
     
-    # Create acknowledgment dictionary which pairs up keywords with acknowledgment and reaction
+    # Create acknowledgment dictionary which pairs up keywords with acknowledgment
     global ack_dic
     ack_dic = {'ping' : 'hi',
                'notify_drone_connect' : 'connection_established',
@@ -304,24 +187,24 @@ def _server_listen( socket_objekt , target_address = None ):
         with connect_dic_lock:
             # check if client is drone client
             if client_address == target_address:
-                drone_connection = connection( connection_type_objekt , ack_dic )
+                drone_connection = SIF.connection( connection_type_objekt , ack_dic )
                 connect_dic['drone'] = drone_connection
             
             # check if external connection/ non system critical connection is open
             elif connect_dic['extern1'].server_connection_obj == None:
-                extern_connection_1 = connection( connection_type_objekt , ack_dic )
+                extern_connection_1 = SIF.connection( connection_type_objekt , ack_dic )
                 connect_dic['extern1'] = extern_connection_1
             
             # check if external connection/ non system critical connection is open
             elif connect_dic['extern2'].server_connection_obj == None:
-                extern_connection_2 = connection( connection_type_objekt , ack_dic )
+                extern_connection_2 = SIF.connection( connection_type_objekt , ack_dic )
                 connect_dic['extern2'] = extern_connection_2
             
             # dynamic connection if external connections are already used
             else :
                 if connect_dic['dynamic'].server_connection_obj != None:
                     connect_dic['dynamic'].close()
-                dynamic_connection = connection( connection_type_objekt , ack_dic )
+                dynamic_connection = SIF.connection( connection_type_objekt , ack_dic )
                 connect_dic['dynamic'] = dynamic_connection
                 
             
