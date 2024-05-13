@@ -22,7 +22,7 @@ Liste für Reaktion für empfangene Nachrichten, Kickerseite
 
 | Keyword | Keyword Reaktion | ACK Reaktion | NACK Reaktion | Kommentare |
 |-|-|-|-|-|
-| ping | sende ACK | setze Status der Verbindung auf True | Setze Status der Verbindung auf False | |
+| ping |  | setze Status der Verbindung auf True | Setze Status der Verbindung auf False | ACK reaktion und NACK sind Hardcoded |
 | notify_drone_connect | | | | Sinn noch unbekannt. Der Verbindung status der entsprechenden Klassen Instanz sollte den gleichen Zweck aktive erfüllen |
 | notify_start_permission | | sys_status auf ingame setzen | | Ein NACK steht nicht zur Erwartung, die Verbindung sollte zuvor überprüft werden. Ansonsten können wir auch einfach nen TOE setzen und sagen das der Verbindungsstatus auf False gesetzt werdem soll. Das macht aber schon der Ping. Ein return reicht also auch. |
 | notify_gamestart | | | | Entsprechende Aufgaben sind bereits im ACK von notify_start_position, solle die getrennt sein? Sobald die Drohne in Position ist soll es ja losgehen |
@@ -31,6 +31,8 @@ Liste für Reaktion für empfangene Nachrichten, Kickerseite
 | notify_gameover | | | | hat eigene Reaktionen |
 | please_wait | sys_status auf wait ingame setzen | | | |
 | please_resume | sys_status auf ingame setzen | | | |
+
+Standardmäßig wird bei jedem empfangenen Keyword automatisch ein ACK gesendet.
 
 ## Version:01 ##
 | Sender  | Schlüsselwort  | Beschreibung |ACK|
