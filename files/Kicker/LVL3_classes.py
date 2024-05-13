@@ -1,31 +1,80 @@
 # -*- coding: utf-8 -*-
 """
-This file is suppose to include system wide used function
-
 Level 3
 
+This file includes system wide used functions
 """
+
+__author__ = "Lukas Haberkorn", "Marvin Otten"
+__version__ = "1.1.0"
+__status__ = "WIP"
 
 import time
 import threading
 
-
+def init():
+    '''
+    Has to be run before all other level 3 functions to initialize global variables
+    '''
+    global goals_player1; goals_player1 = 0 # might become obsolete with usage of the database, but can be left in after testing
+    global goals_player2; goals_player2 = 0
+    global sys_status; sys_status = "init"
+    global status_lock; status_lock = threading.lock()
 
 # game status control - - - - - - - - - - - - - - - - - - - -
-'''
-desc
-'''
-sys_status = None        # None as start value
-
-status_lock = threading.lock()
-
 
 def set_status( arg_ , delay = 0):
+    '''
+
+    sys_status should be string: "init"|"wait_pre"|"ingame"|"wait_ingame"
+    '''
     time.sleep( delay )
-    global sys_status
+    global sys_status; global status_lock
     with status_lock:
         sys_status = arg_
     
+
+#%% reaction functions, what to do when specific game events occur
+
+# game status reactions - - - - - - - - - - - - - - - - - - - -
+
+def react_goal( player ):
+    '''
+    called by the exception in the goal sensor thread
+    '''
+    global goals_player1; global goals_player2
+    set_status("wait_ingame")
+    if player == 1: # add goal to the correct player
+        goals_player1 += 1
+    else:
+        goals_player2 += 1
+
+    # >>> UPDATE DATABASE HERE
+
+    if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
+        if connection.connection_status == True:
+            connection.send(drone_connection, "notify_gameover", 3) # sending keyword for gameover
+        else:
+            set_status("wait_pre", 10)
+    else: # no win condition was met
+        if connection.connection_status == True:
+            connection.send(drone_connection, "notify_newgoal", 3) # sending keyword for new goal
+        else:
+            set_status("ingame", 10)
+
+
+def react_foul():
+    '''
+    called by the exception in the foul sensor thread
+    '''
+    set_status("wait_ingame")
+    if connection.connection_status == True:
+        connection.send(drone_connection, "notify_foul", 3) # sending keyword for foul
+    else:
+        set_status("wait_pre", 10)
+
+
+
 
 #%%
 # generate Exception  - - - - - - - - - - - - - - - - - - - -
@@ -221,8 +270,3 @@ class connection( socket.socket , keyword_class , Thread ):
         self.raw_data = self.server_connection_obj.recv( length )
         self.data = self.raw_data.decode( self.format_ )
         return self.data
-
-
-
-#%% reaction functions, they modify the While-bools to control tasks
-# game status reactions - - - - - - - - - - - - - - - - - - - -
