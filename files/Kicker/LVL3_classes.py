@@ -6,32 +6,29 @@ Level 3
 
 """
 
+import time
+import threading
+
+
+
 # game status control - - - - - - - - - - - - - - - - - - - -
 '''
 desc
 '''
-global game_running; game_running = False
-global game_paused;  game_paused  = False
+global sys_status = None        # None as start value
 
-def set_status(change):
-    global game_running
-    global game_paused
-    match change:
-        case "start":
-            print("ℹ️ Game has been started")
-            game_running = True
-        case "end":
-            print("ℹ️ Game has been finished")
-            game_running = False
-        case "pause":
-            print("ℹ️ Game has been paused")
-            game_paused = True
-        case "resume":
-            print("ℹ️ Game has been resumed")
-            game_paused = False
+status_lock = threading.lock()
+
+
+def set_status( arg_ , delay = 0):
+    time.sleep( delay )
+    global sys_status
+    with status_lock:
+        sys_status = arg_
     
 
 #%%
+# generate Exception  - - - - - - - - - - - - - - - - - - - -
 
 """
 !!Initialize Exception class object!!
@@ -83,11 +80,15 @@ class userdefined_Exception(Exception):
         super().__init__(self.reaktion)
 
 
-#%%
 
-# Imports for Inteface management
 
 #%%
+# interface connection classes - - - - - - - - - - - - - - - - - - - -
+
+"""
+Desc
+"""
+
 #import globally needed libraries
 import socket
 import time
@@ -220,6 +221,8 @@ class connection( socket.socket , keyword_class , Thread ):
         self.raw_data = self.server_connection_obj.recv( length )
         self.data = self.raw_data.decode( self.format_ )
         return self.data
-    
-#%% reaction functions, they modify the While-bools to control tasks
 
+
+
+#%% reaction functions, they modify the While-bools to control tasks
+# game status reactions - - - - - - - - - - - - - - - - - - - -
