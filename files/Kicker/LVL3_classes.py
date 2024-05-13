@@ -15,7 +15,7 @@ import threading
 '''
 desc
 '''
-global sys_status = None        # None as start value
+sys_status = None        # None as start value
 
 status_lock = threading.lock()
 
