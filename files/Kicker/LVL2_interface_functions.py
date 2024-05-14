@@ -54,7 +54,8 @@ def server_interface():
     server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     # Define IP adress and the used Port number and bind them to the Socket object
-    server_add = ('localhost',10000)  #FIND IP ADRESS AND PORT!!!!!!!
+    server_ip = socket.gethostbyname()
+    server_add = ( server_ip , 10000 )  #FIND IP ADRESS AND PORT!!!!!!!
     server_interface_obj.bind(server_add)
     
     
