@@ -1,34 +1,25 @@
 """
 
-M A I N:
-Level 0
+LEVEL 0
+Initializing the first threading level
 
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __status__ = "WIP"
 
 
 from time import sleep
 import threading
-import LVL1_funcs as f
-
+import LVL1_funcs as lvl1
 
 
 # Thread level one
-
-'''
-f.set_status("start")
-print(f.game_paused)
-f.set_status("pause")
-print(f.game_paused)
-'''
-
-main_threadlist = [ threading.Thread( target = f.sensors,
+main_threadlist = [ threading.Thread( target = lvl1.sensors,
                                       args = [],
                                       kwargs = {}),
                     
-                    threading.Thread( target = f.interface,
+                    threading.Thread( target = lvl1.interface,
                                       args = [],
                                       kwargs = {}) ]
 
