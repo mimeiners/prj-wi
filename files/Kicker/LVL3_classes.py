@@ -201,15 +201,6 @@ class userdefined_Exception(Exception):
 Desc
 """
 
-
-# Create thread lock for access to connect_dic
-global connect_dic_lock
-connect_dic_lock = thr.lock()
-
-# Create thread lock for access to port
-global port_lock
-port_lock = thr.lock()
-    
 # define current status and settings of a keyword
 class keyword_class:
     
@@ -235,10 +226,14 @@ class connection( socket.socket , keyword_class , Thread ):
     
     def __init__(self , server_connection_obj = None , ack_dic = {} , format_ = 'utf-8'):
         
+        global port_lock
+        global connect_dic_lock
+        
         self.server_connection_obj = server_connection_obj
         self.keyword_class_dic = self._keyword_checks( ack_dic )
         self.format_ = format_
         self.ack_dic = ack_dic
+        self.port_lock = port_lock
         
         #Chat GPT lässt grüßen
         self._connection_status = False
@@ -251,7 +246,7 @@ class connection( socket.socket , keyword_class , Thread ):
     #Thread which pings the client each second
     def _ping_check(self):
         while True:
-            with port_lock: self.send('ping' , 1)
+            with self.port_lock: self.send('ping' , 1)
             time.sleep(1)
     
     #retuen current connection Bool of this connection
@@ -268,7 +263,7 @@ class connection( socket.socket , keyword_class , Thread ):
     def send(self, message, timeout = -1):
         try:
             message_encoded = message.encode( self.format_ )
-            with port_lock: self.server_connection_obj.sendall( message_encoded )
+            with self.port_lock: self.server_connection_obj.sendall( message_encoded )
             
             # If the message was a keyword -> acknowledgement management
             for keyword in self.ack_dic:
