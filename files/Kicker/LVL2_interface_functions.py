@@ -48,57 +48,11 @@ auther : Marvin Otten
 
 def server_interface():
     
-    ## Initialize Interface
-    
-    # Create Serverside Socket objekt
-    server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    # Define IP adress and the used Port number and bind them to the Socket object
-    server_ip = socket.gethostbyname()
-    server_add = ( server_ip , 10000 )  #FIND IP ADRESS AND PORT!!!!!!!
-    server_interface_obj.bind(server_add)
-    
-    
-    # Create dictionary of connections | Reference Dictionary for all Connections !
-    drone_connection = SIF.connection()
-    extern_connection_1 = SIF.connection()
-    extern_connection_2 = SIF.connection()
-    dynamic_connection = SIF.connection()
-    
-    
-    global connect_dic
-    connect_dic = {'drone' :  drone_connection,         # Connection type Objekt for Drone
-                   'extern1' : extern_connection_1,        # Connection type Objekt for extern excess or future use
-                   'extern2' : extern_connection_2,        # ...
-                   'dynamic': dynamic_connection}         # Connection type Objekt for dynamic use. Description in server.listen() Header
-    
-    
-    
-    # Create acknowledgment dictionary which pairs up keywords with acknowledgment
-    global ack_dic
-    ack_dic = {'ping' : 'hi',
-               'notify_drone_connect' : 'connection_established',
-               'notify_start_permission' : 'drone_in_position',
-               'notify_gamestart' : 'game_started',
-               'notify_newgoal' : 'received_newgoal',
-               'notify_foul' : 'received_foul',
-               'notify_gameover' : 'received_gameover',
-               'please_wait' : 'waiting',
-               'please_resume' : 'gaming'}
-    
-    
-    # Create thread lock for access to connect_dic
-    global connect_dic_lock
-    connect_dic_lock = thr.lock()
-    
-    # Create thread lock for access to port
-    global port_lock
-    port_lock = thr.lock()
     
     ## Interface managment threads
     # List of Threads for continues listen and receive function for all connections
     connect_threadlist = [thr.Thread(target= _server_listen,
-                                      args= [server_interface_obj],
+                                      args= [SIF.server_interface_obj],
                                       kwargs= { ('Client_IP_Adress as str' , 'Port as int') }),   #FIND IP ADRESS AND PORT!!
                           
                           thr.Thread(target= _server_recv_man,
