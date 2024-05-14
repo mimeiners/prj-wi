@@ -16,7 +16,7 @@ import threading
 import LVL2_interface_functions as infu
 import LVL2_goal_detection as gode
 import LVL2_pregame as pregame
-#import LVL2_foul_detection as fode 
+import LVL2_foul_detection as fode
 
 
 #%%
@@ -29,7 +29,7 @@ def sensors():
                                           args = [],
                                           kwargs = {}),
                         
-                        threading.Thread( target = foul,
+                        threading.Thread( target = fode.foul(),
                                           args = [],
                                           kwargs = {}) ]
     #start threads
@@ -52,8 +52,8 @@ def pregame():
 
 # Main funtion interface, definition and management
 
-def interface(): # Marvin
-    pass
+def interface():
+    infu.server_interface()
 
 
 

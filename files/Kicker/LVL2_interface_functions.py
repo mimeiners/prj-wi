@@ -120,9 +120,7 @@ def _server_listen( socket_objekt , target_address = None ):
     global connect_dic_lock
     global ack_dic
     
-    # Check for some operation determing variable
-    some_var = False
-    while some_var == True:
+    while True:
     # {start of loop
     
         # look for connection
@@ -246,25 +244,10 @@ def _server_recv( connection_type ):
     
     global ack_dic
     
-    # Check for some operation determing variable
-    some_var = False
-    while some_var == True:
+    while True:
     # {start of loop
-        
-        # if connection has not been established, continue
-        if connect_dic[ connection_type ]._connection_status() == False:
-            time.sleep(1)
-            continue
-    
-        # if Connection exists, receive 1024 sized string
-        elif connect_dic[ connection_type ]._connection_status() == True:
-             data = connect_dic[ connection_type ]._recv(1024)
-        
-        
-        # if weird connection_type_object appears, send Error to cmd, continue
-        else :
-            print('Error: undetermined Connection :', connect_dic[ connection_type ] )
-            continue
+
+        data = connect_dic[ connection_type ]._recv(1024)
         
         _data_interpret( data , connection_type )
         
@@ -274,7 +257,11 @@ def _server_recv( connection_type ):
 
 #%%
 def _data_interpret( data , connection_type ):
-    
+
+    global port_lock
+
+    global ack_dic
+
     connection_ph = connect_dic[ connection_type ]
     keyword_ph = connection_ph.keyword_class_dic
     
