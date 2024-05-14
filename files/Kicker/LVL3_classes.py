@@ -127,7 +127,8 @@ def react_foul( connection_obj ):
         set_status("wait_pre", 10)
 
 
-
+def react_drone_in_position():
+    global drone_in_position; drone_in_position = True
 
 #%%
 # generate Exception  - - - - - - - - - - - - - - - - - - - -

@@ -5,7 +5,7 @@ Initializing the first threading level
 
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __status__ = "WIP"
 
 
@@ -25,7 +25,7 @@ main_threadlist = [ threading.Thread( target = lvl1.sensors,
                                       args = [],
                                       kwargs = {}),
 
-                    threading.Thread( target = PREGAME WIP,
+                    threading.Thread( target = lvl1.pregame,
                                       args = [],
                                       kwargs = {}) ]
 
