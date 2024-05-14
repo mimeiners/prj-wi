@@ -1,19 +1,21 @@
 """
 
-M O D U L E S bzw. F U N C T I O N S:
-Level 1
+LEVEL 1
+Initializing the second threading level with sensors and interface
 
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __status__ = "WIP"
 
 
 import sockets
 from time import sleep
 import threading
-#import TASKS
 
+import LVL2_interface_functions as infu
+import LVL2_goal_detection as gode
+#import LVL2_foul_detection as fode 
 
 
 #%%
@@ -31,10 +33,11 @@ def sensors():
 
 
 def goal():
-    return
+    gode.goal()
 
 def foul():
-    return
+    #fode.foul() ?
+    pass
 
 
 #%%
@@ -42,5 +45,4 @@ def foul():
 # Main funtion interface, definition and management
 
 def interface(): # Marvin
-
     pass
