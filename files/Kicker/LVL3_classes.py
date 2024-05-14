@@ -25,7 +25,6 @@ def init():
 
 def set_status( arg_ , delay = 0):
     '''
-
     sys_status should be string: "init"|"wait_pre"|"ingame"|"wait_ingame"
     '''
     time.sleep( delay )
@@ -44,21 +43,24 @@ def react_goal( player ):
     '''
     global goals_player1; global goals_player2
     set_status("wait_ingame")
+
     if player == 1: # add goal to the correct player
         goals_player1 += 1
-    else:
+    
+    if player == 2:
         goals_player2 += 1
 
-    # >>> UPDATE DATABASE HERE
-
     if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
-        if connection.connection_status == True:
-            connection.send(drone_connection, "notify_gameover", 3) # sending keyword for gameover
+        # >>> UPDATE DATABASE HERE
+        if drone_connection.connection_status == True:
+            drone_connection.send( "notify_gameover", 3) # sending keyword for gameover
         else:
             set_status("wait_pre", 10)
+
     else: # no win condition was met
-        if connection.connection_status == True:
-            connection.send(drone_connection, "notify_newgoal", 3) # sending keyword for new goal
+        # >>> UPDATE DATABASE HERE
+        if drone_connection.connection_status == True:
+            drone_connection.send( "notify_newgoal", 3) # sending keyword for new goal
         else:
             set_status("ingame", 10)
 
@@ -68,8 +70,8 @@ def react_foul():
     called by the exception in the foul sensor thread
     '''
     set_status("wait_ingame")
-    if connection.connection_status == True:
-        connection.send(drone_connection, "notify_foul", 3) # sending keyword for foul
+    if drone_connection.connection_status == True:
+        drone_connection.send( "notify_foul", 3) # sending keyword for foul
     else:
         set_status("wait_pre", 10)
 
