@@ -128,7 +128,7 @@ def _ack_react( ack ):
     if ack == 'hi':
         global connection_status
         connection_status = True
-        
+        lvl3.set_connection_status(True)
         pass
         
     elif ack == 'connecting_drone':
@@ -186,6 +186,7 @@ def _ping():
     while True:
         with port_lock: connection_type_objekt.sendall( ping )
         connection_status = False
+        lvl3.set_connection_status(False)
         time.sleep(1)
         print(connection_status)
 

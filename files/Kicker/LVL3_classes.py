@@ -6,7 +6,7 @@ This file includes system wide used functions and variables
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 __status__ = "WIP"
 
 
@@ -22,6 +22,7 @@ def init():
     global goals_player2; goals_player2 = 0
     global sys_status; sys_status = "init"
     global status_lock; status_lock = threading.Lock()
+    global connection_status; connection_status = False
     print("Status is: init")
  
 
@@ -38,6 +39,11 @@ def set_status( arg_ , delay = 0):
         print("Status is:", arg_)
         sys_status = arg_
     
+
+
+def set_connection_status( set_status ):
+    global connection_status
+    connection_status = set_status
 
 
 # reaction functions, what to do when specific game events occur - - - - - - - - - - - - - - - - - - - -
