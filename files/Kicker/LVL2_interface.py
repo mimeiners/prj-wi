@@ -201,60 +201,61 @@ desc
 
 
 
+def interface():
+
+    ## Initialize Interface
+
+    # Create acknowledgment dictionary which pairs up keywords with acknowledgment
+    ack_dic = {'ping' : 'hi',
+            'notify_drone_connect' : 'connection_established',
+            'notify_start_permission' : 'drone_in_position',
+            'notify_gamestart' : 'game_started',
+            'notify_newgoal' : 'received_newgoal',
+            'notify_foul' : 'received_foul',
+            'notify_gameover' : 'received_gameover',
+            'please_wait' : 'waiting',
+            'please_resume' : 'gaming'}
 
 
-## Initialize Interface
-
-# Create acknowledgment dictionary which pairs up keywords with acknowledgment
-ack_dic = {'ping' : 'hi',
-           'notify_drone_connect' : 'connection_established',
-           'notify_start_permission' : 'drone_in_position',
-           'notify_gamestart' : 'game_started',
-           'notify_newgoal' : 'received_newgoal',
-           'notify_foul' : 'received_foul',
-           'notify_gameover' : 'received_gameover',
-           'please_wait' : 'waiting',
-           'please_resume' : 'gaming'}
 
 
 
+    # Create thread lock for access to port
+    global port_lock ; port_lock = threading.Lock()
+
+    global connection_status ; connection_status = False
+
+    # Create Serverside Socket objekt
+    server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Define IP adress and the used Port number and bind them to the Socket object
+    server_interface_obj.bind(('localhost' , 10000))
 
 
-# Create thread lock for access to port
-global port_lock ; port_lock = threading.Lock()
+    # look for connection
+    server_interface_obj.listen(0)
 
-global connection_status ; connection_status = False
-
-# Create Serverside Socket objekt
-server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Define IP adress and the used Port number and bind them to the Socket object
-server_interface_obj.bind(('localhost' , 10000))
+            
+    # create conncetion object
+    global connection_type_objekt
+    connection_type_objekt , client_address = server_interface_obj.accept()
+    connection_status = True
 
 
-# look for connection
-server_interface_obj.listen(0)
+    if_threadlist = [threading.Thread(target= _ping,
+                                    args= [],
+                                    kwargs= {}),
+                        
+                    threading.Thread(target= _recv,
+                                    args= [],
+                                    kwargs= {})]
 
+    #start threats
+    for thread in if_threadlist:
+        thread.start()
         
-# create conncetion object
-global connection_type_objekt
-connection_type_objekt , client_address = server_interface_obj.accept()
-connection_status = True
+    #wait for threads to join once programm is finished | thread internal check
+    for thread in if_threadlist:
+        thread.join()
+    return
 
-
-if_threadlist = [threading.Thread(target= _ping,
-                                  args= [],
-                                  kwargs= {}),
-                      
-                 threading.Thread(target= _recv,
-                                  args= [],
-                                  kwargs= {})]
-
-#start threats
-for thread in if_threadlist:
-    thread.start()
-    
-#wait for threads to join once programm is finished | thread internal check
-for thread in if_threadlist:
-    thread.join()
-  
