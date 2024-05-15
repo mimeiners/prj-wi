@@ -6,7 +6,7 @@ Pregame stuff
 > a lot of stuff using interface is commented out
 """
 __author__ = "Lukas Haberkorn"
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 __status__ = "WIP"
 
 
@@ -31,16 +31,19 @@ def pregame():
             drone_on_button = True # DEBUG, should be polled from Website
             while not drone_on_button:
                 time.sleep(0.01)
-
-#             if drone_connection.connection_status() == True:
-#                 drone_connection.send( "notify_drone_powered" )
-#             else:
-#                 print("tja es ist keine auvares da oder was") #?? was machen wir dann?
+            
+            for i in range(5):
+                if lvl3.connection_status == True:
+                    INTERFACE???.send( "notify_drone_powered" )
+                    break
+                time.sleep(0.33)
+            else:
+                print("tja es ist keine auvares da oder was") #?? was machen wir dann?
         
         # 2.    
             # wait for "notify_drone_connected"
-#             while not lvl3.drone_connected:
-#                 time.sleep(0.01)
+            while not lvl3.drone_connected:
+                time.sleep(0.01)
 
         # 3.    
             # check user hat pressed start button, tell auvares
@@ -48,17 +51,20 @@ def pregame():
             while not start_button:
                 time.sleep(0.01)
 
-#             if drone_connection.connection_status() == True:
-#                 drone_connection.send( "notify_start_permission" )
-#             else:
-#                 print("tja es ist keine auvares da oder was") #?? was machen wir dann?
+            for i in range(5):
+                if lvl3.connection_status == True:
+                    INTERFACE???.send( "notify_start_permission" )
+                    break
+                time.sleep(0.33)
+            else:
+                print("tja es ist keine auvares da oder was") #?? was machen wir dann?
 
         # 4.
             # wait for "notify_gamestart"
-#             while not lvl3.drone_wants_gamestart:
-#                 time.sleep(0.01)
+            while not lvl3.drone_wants_gamestart:
+                time.sleep(0.01)
 
-            # wait for start button & drone in position ACK
+
             lvl3.set_status("ingame")
             lvl3.react_drone_connected(False)
             lvl3.react_drone_wants_gamestart(False)
