@@ -3,9 +3,10 @@
 LEVEL 2
 Pregame stuff
 
+> a lot of stuff using interface is commented out
 """
 __author__ = "Lukas Haberkorn"
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __status__ = "WIP"
 
 
@@ -13,11 +14,11 @@ import LVL3_classes as lvl3
 import time
 
 def pregame():
-    global connect_dic
-    drone_connection = connect_dic['drone']
-    #drone_connection = lvl3.connect_dic['drone']
-    drone_connection.keyword_class_dic["notify_drone_connected"].ack_react = lvl3.react_drone_connected(True)
-    drone_connection.keyword_class_dic["notify_gamestart"].ack_react = lvl3.react_drone_wants_gamestart(True)
+#     global connect_dic
+#     drone_connection = connect_dic['drone']
+#     #drone_connection = lvl3.connect_dic['drone']
+#     drone_connection.keyword_class_dic["notify_drone_connected"].ack_react = lvl3.react_drone_connected(True)
+#     drone_connection.keyword_class_dic["notify_gamestart"].ack_react = lvl3.react_drone_wants_gamestart(True)
     while True:
         if lvl3.sys_status == "init": # only directly after poweron
             # >>> wait for init to be done??
@@ -31,15 +32,15 @@ def pregame():
             while not drone_on_button:
                 time.sleep(0.01)
 
-            if drone_connection.connection_status() == True:
-                drone_connection.send( "notify_drone_powered" )
-            else:
-                print("tja es ist keine auvares da oder was") #?? was machen wir dann?
+#             if drone_connection.connection_status() == True:
+#                 drone_connection.send( "notify_drone_powered" )
+#             else:
+#                 print("tja es ist keine auvares da oder was") #?? was machen wir dann?
         
         # 2.    
             # wait for "notify_drone_connected"
-            while not lvl3.drone_connected:
-                time.sleep(0.01)
+#             while not lvl3.drone_connected:
+#                 time.sleep(0.01)
 
         # 3.    
             # check user hat pressed start button, tell auvares
@@ -47,15 +48,15 @@ def pregame():
             while not start_button:
                 time.sleep(0.01)
 
-            if drone_connection.connection_status() == True:
-                drone_connection.send( "notify_start_permission" )
-            else:
-                print("tja es ist keine auvares da oder was") #?? was machen wir dann?
+#             if drone_connection.connection_status() == True:
+#                 drone_connection.send( "notify_start_permission" )
+#             else:
+#                 print("tja es ist keine auvares da oder was") #?? was machen wir dann?
 
         # 4.
             # wait for "notify_gamestart"
-            while not lvl3.drone_wants_gamestart:
-                time.sleep(0.01)
+#             while not lvl3.drone_wants_gamestart:
+#                 time.sleep(0.01)
 
             # wait for start button & drone in position ACK
             lvl3.set_status("ingame")

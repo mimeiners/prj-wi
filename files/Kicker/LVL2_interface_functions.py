@@ -1,4 +1,16 @@
-# -*- coding: utf-8 -*-
+"""
+
+LEVEL 2
+interface stuff
+
+> obsolete
+"""
+
+__author__ = "Marvin Otten"
+__version__ = "1.1.1"
+__status__ = "obsolete"
+
+
 """
 The following functions are for use in different scripts and will carry the the
 transfer of data between the Kicker PC, referenced as Server, and Drone PC,
@@ -40,14 +52,12 @@ by the "server_recv()" function, based on which acknowledgment message has
 been received. The function which send the first message will reset the flag to
 None.
 
-ver. 1.1.0
-    
-auther : Marvin Otten
-
 '''
 
 def server_interface():
     
+    while SIF.use_interface == False:
+        time.sleep(1)
     
     ## Interface managment threads
     # List of Threads for continues listen and receive function for all connections

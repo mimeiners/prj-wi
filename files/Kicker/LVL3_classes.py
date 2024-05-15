@@ -1,12 +1,14 @@
-# -*- coding: utf-8 -*-
 """
-Level 3
 
+Level 3
 This file includes system wide used functions
+
+> commented out interface stuff in react_goal()
+> custom exception not used anymore
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __status__ = "WIP"
 
 
@@ -20,57 +22,61 @@ def init():
     '''
     Has to be run before all other level 3 functions to initialize global variables
     '''
+    
+    global use_interface; use_interface = False # ONLY USED FOR TESTING
+    
     global goals_player1; goals_player1 = 0 # might become obsolete with usage of the database, but can be left in after testing
     global goals_player2; goals_player2 = 0
     global sys_status; sys_status = "init"
-    global status_lock; status_lock = threading.lock()
+    global status_lock; status_lock = threading.Lock()
+    print("Status is: init")
+    if use_interface:
+        ## Initialize Interface
+
+        # Create Serverside Socket objekt
+        server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        # Define IP adress and the used Port number and bind them to the Socket object
+        server_ip = socket.gethostbyname()
+        server_add = ( server_ip , 10000 )  #FIND IP ADRESS AND PORT!!!!!!!
+        server_interface_obj.bind(server_add)
+        
+        
+        # Create dictionary of connections | Reference Dictionary for all Connections !
+        drone_connection = connection()
+        extern_connection_1 = connection()
+        extern_connection_2 = connection()
+        dynamic_connection = connection()
+        
+        
+        global connect_dic
+        connect_dic = {'drone' :  drone_connection,         # Connection type Objekt for Drone
+                       'extern1' : extern_connection_1,        # Connection type Objekt for extern excess or future use
+                       'extern2' : extern_connection_2,        # ...
+                       'dynamic': dynamic_connection}         # Connection type Objekt for dynamic use. Description in server.listen() Header
+        
+        
+        
+        # Create acknowledgment dictionary which pairs up keywords with acknowledgment
+        global ack_dic
+        ack_dic = {'ping' : 'hi',
+                   'notify_drone_connect' : 'connection_established',
+                   'notify_start_permission' : 'drone_in_position',
+                   'notify_gamestart' : 'game_started',
+                   'notify_newgoal' : 'received_newgoal',
+                   'notify_foul' : 'received_foul',
+                   'notify_gameover' : 'received_gameover',
+                   'please_wait' : 'waiting',
+                   'please_resume' : 'gaming'}
     
-    ## Initialize Interface
-    
-    # Create Serverside Socket objekt
-    server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    # Define IP adress and the used Port number and bind them to the Socket object
-    server_ip = socket.gethostbyname()
-    server_add = ( server_ip , 10000 )  #FIND IP ADRESS AND PORT!!!!!!!
-    server_interface_obj.bind(server_add)
-    
-    
-    # Create dictionary of connections | Reference Dictionary for all Connections !
-    drone_connection = connection()
-    extern_connection_1 = connection()
-    extern_connection_2 = connection()
-    dynamic_connection = connection()
-    
-    
-    global connect_dic
-    connect_dic = {'drone' :  drone_connection,         # Connection type Objekt for Drone
-                   'extern1' : extern_connection_1,        # Connection type Objekt for extern excess or future use
-                   'extern2' : extern_connection_2,        # ...
-                   'dynamic': dynamic_connection}         # Connection type Objekt for dynamic use. Description in server.listen() Header
-    
-    
-    
-    # Create acknowledgment dictionary which pairs up keywords with acknowledgment
-    global ack_dic
-    ack_dic = {'ping' : 'hi',
-               'notify_drone_connect' : 'connection_established',
-               'notify_start_permission' : 'drone_in_position',
-               'notify_gamestart' : 'game_started',
-               'notify_newgoal' : 'received_newgoal',
-               'notify_foul' : 'received_foul',
-               'notify_gameover' : 'received_gameover',
-               'please_wait' : 'waiting',
-               'please_resume' : 'gaming'}
-    
-    
+
     # Create thread lock for access to connect_dic
     global connect_dic_lock
-    connect_dic_lock = thr.lock()
+    connect_dic_lock = thr.Lock()
     
     # Create thread lock for access to port
     global port_lock
-    port_lock = thr.lock()
+    port_lock = thr.Lock()
     
 
 # game status control - - - - - - - - - - - - - - - - - - - -
@@ -82,7 +88,7 @@ def set_status( arg_ , delay = 0):
     time.sleep( delay )
     global sys_status; global status_lock
     with status_lock:
-        print("Status is: ", arg_, "\n")
+        print("Status is:", arg_)
         sys_status = arg_
     
 
@@ -98,25 +104,32 @@ def react_goal( player , connection_obj ):
 
     if player == 1: # add goal to the correct player
         goals_player1 += 1
+        print("player 1 scored")
     
     elif player == 2:
         goals_player2 += 1
+        print("player 2 scored")
 
     if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
         # >>> UPDATE DATABASE HERE
-        if connection_obj.connection_status == True:
-            connection_obj.send( "notify_gameover", 3) # sending keyword for gameover
-        else:
-            time.sleep(10)
+#         if connection_obj.connection_status == True:
+#             connection_obj.send( "notify_gameover", 3) # sending keyword for gameover
+#         else:
+#             time.sleep(10)
+        print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
+        time.sleep(5)
         set_status("wait_pre")
+        goals_player1 = 0; goals_player2 = 0 # Resetting AFTER writing to database!!
 
     else: # no win condition was met
         # >>> UPDATE DATABASE HERE
-        if connection_obj.connection_status == True:
-            connection_obj.send( "notify_newgoal", 3) # sending keyword for new goal
-        else:
-            time.sleep(10)
+#         if connection_obj.connection_status == True:
+#             connection_obj.send( "notify_newgoal", 3) # sending keyword for new goal
+#         else:
+#             time.sleep(10)
+        time.sleep(2)
         set_status("ingame")
+        print("we continue with ", goals_player1,":", goals_player2)
 
 
 def react_foul( connection_obj ):
