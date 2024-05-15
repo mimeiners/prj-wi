@@ -50,7 +50,6 @@ def _data_interpret( data ):
 
     global connection_type_objekt
     
-    global connection_status
     
     # check if nothing was send
     if data == '': return
@@ -125,9 +124,12 @@ def _keyword_react( keyword ):
 
 
 def _ack_react( ack ):
+
+    import LVL3_classes as lvl3
+
     if ack == 'hi':
-        global connection_status
-        connection_status = True
+
+        lvl3.connection_status = True
         lvl3.set_connection_status(True)
         pass
         
@@ -171,11 +173,11 @@ desc
 
 def _ping():
     
+    import LVL3_classes as lvl3
+
     global connection_type_objekt
     
     global ack_dic
-    
-    global connection_status
     
     global port_lock
     
@@ -185,10 +187,10 @@ def _ping():
     
     while True:
         with port_lock: connection_type_objekt.sendall( ping )
-        connection_status = False
+        lvl3.connection_status = False
         lvl3.set_connection_status(False)
         time.sleep(1)
-        print(connection_status)
+        print(lvl3.connection_status)
 
 
 
@@ -202,6 +204,8 @@ desc
 
 
 def interface():
+
+    import LVL3_classes as lvl3
 
     ## Initialize Interface
 
@@ -223,7 +227,7 @@ def interface():
     # Create thread lock for access to port
     global port_lock ; port_lock = threading.Lock()
 
-    global connection_status ; connection_status = False
+    lvl3.connection_status = False
 
     # Create Serverside Socket objekt
     server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -239,7 +243,7 @@ def interface():
     # create conncetion object
     global connection_type_objekt
     connection_type_objekt , client_address = server_interface_obj.accept()
-    connection_status = True
+    lvl3.connection_status = True
 
 
     if_threadlist = [threading.Thread(target= _ping,
