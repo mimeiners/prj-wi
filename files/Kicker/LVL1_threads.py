@@ -3,20 +3,17 @@
 LEVEL 1 (formerly 0 and 1)
 Initializing the first and second threading level
 
-> foul detetction thread is commented out
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __status__ = "WIP"
 
 
-import time
 import threading
-#import sockets
 import LVL2_interface_functions as infu
 import LVL2_goal_detection as gode
 import LVL2_pregame as pre
-#import LVL2_foul_detection as fode
+import LVL2_foul_detection as fode
 import LVL3_classes as lvl3
 
 
@@ -30,9 +27,9 @@ def sensors():
                                           args = [],
                                           kwargs = {}),
                         
-#                        threading.Thread( target = fode.foul,
-#                                          args = [],
-#                                          kwargs = {})
+                        threading.Thread( target = fode.foul,
+                                          args = [],
+                                          kwargs = {})
                         ]
     #start threads
     for thread in main_threadlist:
