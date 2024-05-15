@@ -128,9 +128,9 @@ def _ack_react( ack ):
     import LVL3_classes as lvl3
 
     if ack == 'hi':
-
-        lvl3.connection_status = True
+        
         lvl3.set_connection_status(True)
+
         pass
         
     elif ack == 'connecting_drone':
@@ -187,10 +187,9 @@ def _ping():
     
     while True:
         with port_lock: connection_type_objekt.sendall( ping )
-        lvl3.connection_status = False
         lvl3.set_connection_status(False)
         time.sleep(1)
-        print(lvl3.connection_status)
+        print( lvl3.set_connection_status() )
 
 
 
@@ -227,7 +226,7 @@ def interface():
     # Create thread lock for access to port
     global port_lock ; port_lock = threading.Lock()
 
-    lvl3.connection_status = False
+    lvl3.set_connection_status( False )
 
     # Create Serverside Socket objekt
     server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -243,7 +242,7 @@ def interface():
     # create conncetion object
     global connection_type_objekt
     connection_type_objekt , client_address = server_interface_obj.accept()
-    lvl3.connection_status = True
+    lvl3.set_connection_status( True )
 
 
     if_threadlist = [threading.Thread(target= _ping,
