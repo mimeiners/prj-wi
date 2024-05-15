@@ -61,4 +61,6 @@ def pregame():
             lvl3.set_status("ingame")
             lvl3.react_drone_connected(False)
             lvl3.react_drone_wants_gamestart(False)
+        else:
+            time.sleep(0.01)
             

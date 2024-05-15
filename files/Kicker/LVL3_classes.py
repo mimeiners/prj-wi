@@ -9,11 +9,12 @@ __author__ = "Lukas Haberkorn", "Marvin Otten"
 __version__ = "1.1.0"
 __status__ = "WIP"
 
-#import globally needed libraries
+
 import socket
 import time
 import threading
 import threading as thr
+
 
 def init():
     '''
@@ -81,12 +82,12 @@ def set_status( arg_ , delay = 0):
     time.sleep( delay )
     global sys_status; global status_lock
     with status_lock:
+        print("Status is: ", arg_, "\n")
         sys_status = arg_
     
 
-#%% reaction functions, what to do when specific game events occur
 
-# game status reactions - - - - - - - - - - - - - - - - - - - -
+# reaction functions, what to do when specific game events occur - - - - - - - - - - - - - - - - - - - -
 
 def react_goal( player , connection_obj ):
     '''
@@ -98,7 +99,7 @@ def react_goal( player , connection_obj ):
     if player == 1: # add goal to the correct player
         goals_player1 += 1
     
-    if player == 2:
+    elif player == 2:
         goals_player2 += 1
 
     if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
@@ -106,14 +107,16 @@ def react_goal( player , connection_obj ):
         if connection_obj.connection_status == True:
             connection_obj.send( "notify_gameover", 3) # sending keyword for gameover
         else:
-            set_status("wait_pre", 10)
+            time.sleep(10)
+        set_status("wait_pre")
 
     else: # no win condition was met
         # >>> UPDATE DATABASE HERE
         if connection_obj.connection_status == True:
             connection_obj.send( "notify_newgoal", 3) # sending keyword for new goal
         else:
-            set_status("ingame", 10)
+            time.sleep(10)
+        set_status("ingame")
 
 
 def react_foul( connection_obj ):
@@ -124,7 +127,8 @@ def react_foul( connection_obj ):
     if connection_obj.connection_status == True:
         connection_obj.send( "notify_foul", 3) # sending keyword for foul
     else:
-        set_status("wait_pre", 10)
+        time.sleep(5)
+    set_status("ingame")
 
 
 def react_drone_connected(state):
@@ -132,12 +136,16 @@ def react_drone_connected(state):
     boolean argument
     '''
     global drone_connected; drone_connected = state
+    print("Drone connected: ", drone_connected)
+
 
 def react_drone_wants_gamestart(state):
     '''
     boolean argument
     '''
     global drone_wants_gamestart; drone_wants_gamestart = state
+    print("Drone wants the game to start: ", drone_wants_gamestart)
+
 
 #%%
 # generate Exception  - - - - - - - - - - - - - - - - - - - -
@@ -178,10 +186,8 @@ my_own_Exception.att1|att2|att3 = my_new_object
 
 
 This Class has been brought to you by ChatGPT
-
 """
         
-            
             
 class userdefined_Exception(Exception):
     def __init__(self, reaction = None , att1 = None , att2 = None , att3 = None):
@@ -196,11 +202,9 @@ class userdefined_Exception(Exception):
 
 #%%
 # interface connection classes - - - - - - - - - - - - - - - - - - - -
-
 """
 Desc
 """
-
 # define current status and settings of a keyword
 class keyword_class:
     
