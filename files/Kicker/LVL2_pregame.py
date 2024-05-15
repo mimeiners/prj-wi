@@ -5,7 +5,7 @@ Pregame stuff
 
 """
 __author__ = "Lukas Haberkorn"
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __status__ = "WIP"
 
 
