@@ -128,12 +128,16 @@ def _ack_react( ack ):
     if ack == 'hi':
         global connection_status
         connection_status = True
+        
         pass
-
-    elif ack == 'connection_established':
+        
+    elif ack == 'connecting_drone':
         pass
     
-    elif ack == 'drone_in_position':
+    elif ack == 'waiting_for_startbutton':
+        pass
+    
+    elif ack == 'positioning_drone':
         pass
     
     elif ack == 'game_started':
@@ -145,7 +149,7 @@ def _ack_react( ack ):
     elif ack == 'received_foul':
         pass
     
-    elif ack == 'received_gameover':
+    elif ack == 'received_gamover':
         pass
     
     elif ack == 'waiting':
@@ -153,7 +157,7 @@ def _ack_react( ack ):
     
     elif ack == 'gaming':
         pass
-    
+
     return
 
 
