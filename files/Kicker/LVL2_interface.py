@@ -6,7 +6,7 @@ interface for sending keywords/receiving ACKs
 """
 
 __author__ = "Marvin Otten"
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __status__ = "WIP"
 
 #import globally needed libraries
