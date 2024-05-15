@@ -1,83 +1,30 @@
 """
 
 Level 3
-This file includes system wide used functions
+This file includes system wide used functions and variables
 
-> commented out interface stuff in react_goal()
-> custom exception not used anymore
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.1.2"
+__version__ = "2.0.0"
 __status__ = "WIP"
 
 
-import socket
 import time
 import threading
-import threading as thr
 
 
 def init():
     '''
     Has to be run before all other level 3 functions to initialize global variables
     '''
-    
-    global use_interface; use_interface = False # ONLY USED FOR TESTING
-    
-    global goals_player1; goals_player1 = 0 # might become obsolete with usage of the database, but can be left in after testing
+    global goals_player1; goals_player1 = 0
     global goals_player2; goals_player2 = 0
     global sys_status; sys_status = "init"
     global status_lock; status_lock = threading.Lock()
     print("Status is: init")
-    if use_interface:
-        ## Initialize Interface
+ 
 
-        # Create Serverside Socket objekt
-        server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        
-        # Define IP adress and the used Port number and bind them to the Socket object
-        server_ip = socket.gethostbyname()
-        server_add = ( server_ip , 10000 )  #FIND IP ADRESS AND PORT!!!!!!!
-        server_interface_obj.bind(server_add)
-        
-        
-        # Create dictionary of connections | Reference Dictionary for all Connections !
-        drone_connection = connection()
-        extern_connection_1 = connection()
-        extern_connection_2 = connection()
-        dynamic_connection = connection()
-        
-        
-        global connect_dic
-        connect_dic = {'drone' :  drone_connection,         # Connection type Objekt for Drone
-                       'extern1' : extern_connection_1,        # Connection type Objekt for extern excess or future use
-                       'extern2' : extern_connection_2,        # ...
-                       'dynamic': dynamic_connection}         # Connection type Objekt for dynamic use. Description in server.listen() Header
-        
-        
-        
-        # Create acknowledgment dictionary which pairs up keywords with acknowledgment
-        global ack_dic
-        ack_dic = {'ping' : 'hi',
-                   'notify_drone_connect' : 'connection_established',
-                   'notify_start_permission' : 'drone_in_position',
-                   'notify_gamestart' : 'game_started',
-                   'notify_newgoal' : 'received_newgoal',
-                   'notify_foul' : 'received_foul',
-                   'notify_gameover' : 'received_gameover',
-                   'please_wait' : 'waiting',
-                   'please_resume' : 'gaming'}
-    
-
-    # Create thread lock for access to connect_dic
-    global connect_dic_lock
-    connect_dic_lock = thr.Lock()
-    
-    # Create thread lock for access to port
-    global port_lock
-    port_lock = thr.Lock()
-    
 
 # game status control - - - - - - - - - - - - - - - - - - - -
 
@@ -95,7 +42,7 @@ def set_status( arg_ , delay = 0):
 
 # reaction functions, what to do when specific game events occur - - - - - - - - - - - - - - - - - - - -
 
-def react_goal( player , connection_obj ):
+def react_goal( player , connection_obj ): # reaction to event in goal_detection thread
     '''
     called by the exception in the goal sensor thread
     '''
@@ -132,7 +79,7 @@ def react_goal( player , connection_obj ):
         print("we continue with ", goals_player1,":", goals_player2)
 
 
-def react_foul( connection_obj ):
+def react_foul( connection_obj ): # reaction to event in foul_detection thread
     '''
     called by the exception in the foul sensor thread
     '''
@@ -144,7 +91,7 @@ def react_foul( connection_obj ):
     set_status("ingame")
 
 
-def react_drone_connected(state):
+def react_drone_connected( state ): # reaction to keyword
     '''
     boolean argument
     '''
@@ -152,7 +99,7 @@ def react_drone_connected(state):
     print("Drone connected: ", drone_connected)
 
 
-def react_drone_wants_gamestart(state):
+def react_drone_wants_gamestart( state ): # reaction to keyword
     '''
     boolean argument
     '''
@@ -160,86 +107,14 @@ def react_drone_wants_gamestart(state):
     print("Drone wants the game to start: ", drone_wants_gamestart)
 
 
-#%%
-# generate Exception  - - - - - - - - - - - - - - - - - - - -
-
-"""
-!!Initialize Exception class object!!
-
-This class allows any user to create her/his own local Exception and raise it at
-will. After importing this class, define your own Exception by setting
-
-my_own_Exception = userdefined_Exception( reaction = my_Exception_function() )
-
-and calling
-
-raise my_own_Exception
-
-anywhere in your programm. Then, inside your Exception handling, for Example an
-"except" block, you can access all attributes of this class instance
-
-except userdefine_Exception as e:
-    e.reaktion
-
-to call your function. If you don't want to call a function but simply refer to
-an object like a varibale, list, array ... you can do so with the other class
-attributes (you can use reaction aswell).
-
-my_own_Exception = userdefined_Exception( att1|att2|att3 = my_object )
+def react_drone_pleasewait(): # reaction to keyword
+    set_status("wait_ingame")
+    print(" ### GAME PAUSED by AuVAReS ### ")
 
 
-!!Add to initialized Exception class object!!
-
-If you want to add something to an already established Exception you can do so
-by calling the initialized class object and your desired attribute and redifine
-at like a variable
-
-my_own_Exception.reaction = my_new_Exception_function()
-my_own_Exception.att1|att2|att3 = my_new_object
-
-
-This Class has been brought to you by ChatGPT
-"""
-        
-            
-class userdefined_Exception(Exception):
-    def __init__(self, reaction = None , att1 = None , att2 = None , att3 = None):
-        self.reaction = reaction
-        self.att1 = att1
-        self.att2 = att2
-        self.att3 = att3
-        super().__init__(self.reaction)
-
-
-
-
-#%%
-# interface connection classes - - - - - - - - - - - - - - - - - - - -
-"""
-Desc
-"""
-# define current status and settings of a keyword
-class keyword_class:
-    
-    def __init__(self, keyword, ack, keyword_func = None , ack_func = None , ack_TOE_func = None):
-        
-        self.keyword = keyword
-        self.ack = ack
-        self.ack_status =  None
-        self.react = keyword_func
-        self.ack_react = ack_func
-        self.ack_TOE = ack_TOE_func
-
-        
-# automatically run a function in a thread
-class Thread(threading.Thread):
-    def __init__(self, t , *args):
-        threading.Thread.__init__(self, target=t, args=args)
-        self.start()
-    
-
-# expand connection object for project
-class connection( socket.socket , keyword_class , Thread ):
+def react_drone_pleaseresume(): # reaction to keyword
+    set_status("ingame")
+    print(" ### GAME RESUMED by AuVAReS ### ")
     
     def __init__(self , server_connection_obj = None , ack_dic = {} , format_ = 'utf-8'):
         
