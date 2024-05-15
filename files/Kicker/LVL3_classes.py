@@ -6,7 +6,7 @@ This file includes system wide used functions
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __status__ = "WIP"
 
 
