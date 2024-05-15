@@ -20,8 +20,10 @@ def init():
     '''
     global goals_player1; goals_player1 = 0
     global goals_player2; goals_player2 = 0
+
     global sys_status; sys_status = "init"
     global status_lock; status_lock = threading.Lock()
+    
     global connection_status; connection_status = False
     print("Status is: init")
  
