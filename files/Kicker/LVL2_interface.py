@@ -1,14 +1,19 @@
-# -*- coding: utf-8 -*-
 """
-Created on Wed May 15 06:54:25 2024
 
-@author: User
+Level 2
+interface for sending keywords/receiving ACKs
+
 """
+
+__author__ = "Marvin Otten"
+__version__ = "1.0.2"
+__status__ = "WIP"
 
 #import globally needed libraries
 import socket
 import time
 import threading
+import LVL3_classes as lvl3
 
 
 #%%
@@ -28,8 +33,6 @@ def _recv():
         data = data.decode()
         
         _data_interpret( data )
-        
-    return
     
 
 
@@ -84,18 +87,23 @@ def _data_interpret( data ):
     return
 
                  
-def _keyword_react(keyword):
+def _keyword_react( keyword ):
     
     if keyword == 'ping':
         pass
-        
-    elif keyword == 'notify_drone_connect':
+
+    elif keyword == "notify_drone_powered":
+        pass
+
+    elif keyword == 'notify_drone_connected':
+        lvl3.react_drone_connected()
         pass
     
     elif keyword == 'notify_start_permission':
         pass
     
     elif keyword == 'notify_gamestart':
+        lvl3.react_drone_wants_gamestart()
         pass
     
     elif keyword == 'notify_newgoal':
@@ -108,23 +116,20 @@ def _keyword_react(keyword):
         pass
     
     elif keyword == 'please_wait':
+        lvl3.react_drone_pleasewait()
         pass
     
     elif keyword == 'please_resume':
+        lvl3.react_drone_pleaseresume()
         pass
-    
-    return
-
 
 
 def _ack_react( ack ):
     if ack == 'hi':
         global connection_status
         connection_status = True
-        print('AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
-        
         pass
-        
+
     elif ack == 'connection_established':
         pass
     
