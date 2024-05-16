@@ -6,7 +6,7 @@ interface for sending keywords/receiving ACKs
 """
 
 __author__ = "Marvin Otten"
-__version__ = "1.0.3"
+__version__ = "1.0.3.1"
 __status__ = "WIP"
 
 #import globally needed libraries
@@ -18,11 +18,30 @@ import LVL3_classes as lvl3
 
 #%%
 
-
 '''
 desc
 '''
 def _recv():
+
+    '''
+
+    Desc:
+
+    This function is called in the excuting function interface()
+    and should only be called there. After a connection is established
+    this function runs as a Thread parallel to _ping()
+
+    Func:
+
+    This function allows for continuous receiving of messages.
+    The received data is decoded (utf-8) and given as an argument
+    to the function _data_interpret which interprets the data based
+    on systemwide keywords. Afterwards the function receives a new message.
+
+    The included while loop for continues operation does not include
+    a condition but loops indefintly (v. 1.0.3.1). Ther is no return.
+    '''
+
     
     global connection_type_objekt
     
@@ -30,7 +49,7 @@ def _recv():
     # {start of loop
 
         data = connection_type_objekt.recv(1024)
-        data = data.decode()
+        data = data.decode('utf-8')
         
         _data_interpret( data )
     
