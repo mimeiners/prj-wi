@@ -207,7 +207,7 @@ def interface():
     ## Initialize Interface
 
     # Create acknowledgment dictionary which pairs up keywords with acknowledgment
-    global ack
+    global ack_dic
     ack_dic = {'ping' : 'hi',
             'notify_drone_connect' : 'connection_established',
             'notify_start_permission' : 'drone_in_position',
