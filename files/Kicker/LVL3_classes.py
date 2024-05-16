@@ -6,7 +6,7 @@ This file includes system wide used functions and variables
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 __status__ = "WIP"
 
 
@@ -55,6 +55,7 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
     called by the exception in the goal sensor thread
     '''
     global goals_player1; global goals_player2
+    global connection_status
     set_status("wait_ingame")
 
     if player == 1: # add goal to the correct player
@@ -67,12 +68,12 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
 
     if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
         # >>> UPDATE DATABASE HERE
-#         if connection_obj.connection_status == True:
-#             data = "notify_gameover"
-#             data.encode('utf-8')
-#             connection_obj.sendall( data ) # sending keyword for foul
-#         else:
-#             time.sleep(10)
+        if connection_status == True:
+            data = "notify_gameover"
+            data.encode('utf-8')
+            connection_obj.sendall( data ) # sending keyword for foul
+        else:
+            time.sleep(10)
         print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
         time.sleep(5)
         set_status("wait_pre")
@@ -80,12 +81,12 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
 
     else: # no win condition was met
         # >>> UPDATE DATABASE HERE
-#         if connection_obj.connection_status == True:
-#             data = "notify_newgoal"
-#             data.encode('utf-8')
-#             connection_obj.sendall( data ) # sending keyword for foul
-#         else:
-#             time.sleep(10)
+        if connection_status == True:
+            data = "notify_newgoal"
+            data.encode('utf-8')
+            connection_obj.sendall( data ) # sending keyword for foul
+        else:
+            time.sleep(10)
         time.sleep(2)
         set_status("ingame")
         print("we continue with ", goals_player1,":", goals_player2)
@@ -95,8 +96,9 @@ def react_foul( connection_obj ): # reaction to event in foul_detection thread
     '''
     called by the exception in the foul sensor thread
     '''
+    global connection_status
     set_status("wait_ingame")
-    if connection_obj.connection_status == True:
+    if connection_status == True:
         data = "notify_foul"
         data.encode('utf-8')
         connection_obj.sendall( data ) # sending keyword for foul

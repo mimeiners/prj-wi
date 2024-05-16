@@ -3,26 +3,24 @@
 LEVEL 2
 Pregame stuff
 
-> a lot of stuff using interface is commented out
+> connection_obj has to be passed here somehow
+
 """
+
 __author__ = "Lukas Haberkorn"
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 __status__ = "WIP"
 
 
 import LVL3_classes as lvl3
 import time
 
+
 def pregame():
-#     global connect_dic
-#     drone_connection = connect_dic['drone']
-#     #drone_connection = lvl3.connect_dic['drone']
-#     drone_connection.keyword_class_dic["notify_drone_connected"].ack_react = lvl3.react_drone_connected(True)
-#     drone_connection.keyword_class_dic["notify_gamestart"].ack_react = lvl3.react_drone_wants_gamestart(True)
     while True:
         if lvl3.sys_status == "init": # only directly after poweron
             # >>> wait for init to be done??
-            time.sleep(5) # ???
+            time.sleep(3) # ???
             lvl3.set_status("wait_pre")
 
         if lvl3.sys_status == "wait_pre": # after init or gameover
@@ -34,7 +32,9 @@ def pregame():
             
             for i in range(5):
                 if lvl3.connection_status == True:
-                    INTERFACE???.send( "notify_drone_powered" )
+                    data = "notify_drone_powered"
+                    data.encode('utf-8')
+                    connection_obj.sendall( data ) # sending keyword for foul
                     break
                 time.sleep(0.33)
             else:
@@ -53,7 +53,9 @@ def pregame():
 
             for i in range(5):
                 if lvl3.connection_status == True:
-                    INTERFACE???.send( "notify_start_permission" )
+                    data = "notify_start_permission"
+                    data.encode('utf-8')
+                    connection_obj.sendall( data ) # sending keyword for foul
                     break
                 time.sleep(0.33)
             else:
