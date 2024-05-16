@@ -22,7 +22,8 @@ def init():
     global goals_player2; goals_player2 = 0
 
     global sys_status; sys_status = "init"
-    global status_lock; status_lock = threading.Lock()
+    global status_lock; status_lock = threading.Lock()          # Lock for changing system status
+    global port_lock ; port_lock = threading.Lock()             # Lock for sending
     
     global connection_status; connection_status = False
     print("Status is: init")
@@ -41,8 +42,6 @@ def init():
 
     set_connection_status( True )
 
-    #Lock for access to port
-    global port_lock ; port_lock = threading.Lock()
 
 # game status control - - - - - - - - - - - - - - - - - - - -
 

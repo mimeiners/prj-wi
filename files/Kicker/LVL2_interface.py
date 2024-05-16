@@ -84,28 +84,23 @@ def _data_interpret( data ):
         if data == keyword:
 
             ack = ack_dic[ keyword ].encode('utf-8')
-            with port_lock: connection_type_objekt.sendall( ack )
-
-            print('here is keyword : ', data)
-            
+            with port_lock: 
+                connection_type_objekt.sendall( ack )
+                time.sleep(0.1)
+            ##print('here is keyword : ', data)
             _keyword_react( data )
             
             return
             
         # check if data was acknowledgment
         elif data == ack_dic[ keyword ]:
-            print('here is ack: ', data)
-            
+            ##print('here is ack: ', data)
             _ack_react( data )
             
             return
         
-            
-        else:
-            # data has not been recognised as a keyword or acknowledgement
-            print('Undetermined message:', data)
-            return
-                
+    # data has not been recognised as a keyword or acknowledgement
+    ##print('Undetermined message:', data)          
     # end of loop}
     
     return
@@ -207,9 +202,11 @@ def _ping():
     ping = ping.encode('utf-8')
     
     while True:
-        with port_lock: connection_type_objekt.sendall( ping )
+        with port_lock:
+            connection_type_objekt.sendall( ping )
+            time.sleep(0.1)
         lvl3.set_connection_status(False)
-        time.sleep(1)
+        time.sleep(0.9)
 
 
 
@@ -239,30 +236,6 @@ def interface():
             'please_wait' : 'waiting',
             'please_resume' : 'gaming'}
 
-
-
-
-
-    # Create thread lock for access to port
-    global port_lock ; port_lock = threading.Lock()
-
-    lvl3.set_connection_status( False )
-
-    # Create Serverside Socket objekt
-    server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Define IP adress and the used Port number and bind them to the Socket object
-    server_interface_obj.bind(('localhost' , 10000))
-
-
-    # look for connection
-    server_interface_obj.listen(0)
-
-            
-    # create conncetion object
-    global connection_type_objekt
-    connection_type_objekt , client_address = server_interface_obj.accept()
-    lvl3.set_connection_status( True )
 
 
     if_threadlist = [threading.Thread(target= _ping,
