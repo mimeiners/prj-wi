@@ -172,7 +172,6 @@ def _ack_react( ack ):
 
 
 
-
 #%%
 
 '''
@@ -190,7 +189,6 @@ def _ping():
             lvl3.set_connection_status(False)
             time.sleep(0.1)
         time.sleep(0.9)
-
 
 
     

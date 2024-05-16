@@ -12,7 +12,7 @@ __status__ = "WIP"
 
 import time
 import threading
-
+import socket
 
 def init():
     '''
@@ -27,6 +27,7 @@ def init():
     
     global connection_status; connection_status = False
     print("Status is: init")
+
 
     ## initialize Server connection
     # Create Serverside Socket objekt
