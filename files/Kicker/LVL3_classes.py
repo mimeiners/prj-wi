@@ -68,7 +68,9 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
     if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
         # >>> UPDATE DATABASE HERE
 #         if connection_obj.connection_status == True:
-#             connection_obj.send( "notify_gameover", 3) # sending keyword for gameover
+#             data = "notify_gameover"
+#             data.encode('utf-8')
+#             connection_obj.sendall( data ) # sending keyword for foul
 #         else:
 #             time.sleep(10)
         print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
@@ -79,7 +81,9 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
     else: # no win condition was met
         # >>> UPDATE DATABASE HERE
 #         if connection_obj.connection_status == True:
-#             connection_obj.send( "notify_newgoal", 3) # sending keyword for new goal
+#             data = "notify_newgoal"
+#             data.encode('utf-8')
+#             connection_obj.sendall( data ) # sending keyword for foul
 #         else:
 #             time.sleep(10)
         time.sleep(2)
@@ -93,7 +97,9 @@ def react_foul( connection_obj ): # reaction to event in foul_detection thread
     '''
     set_status("wait_ingame")
     if connection_obj.connection_status == True:
-        connection_obj.send( "notify_foul", 3) # sending keyword for foul
+        data = "notify_foul"
+        data.encode('utf-8')
+        connection_obj.sendall( data ) # sending keyword for foul
     else:
         time.sleep(5)
     set_status("ingame")
