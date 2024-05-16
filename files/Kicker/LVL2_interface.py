@@ -200,8 +200,6 @@ def _ping():
 
     global connection_type_objekt
     
-    global ack_dic
-    
     global port_lock
     
     
@@ -212,7 +210,6 @@ def _ping():
         with port_lock: connection_type_objekt.sendall( ping )
         lvl3.set_connection_status(False)
         time.sleep(1)
-        print( lvl3.set_connection_status() )
 
 
 
