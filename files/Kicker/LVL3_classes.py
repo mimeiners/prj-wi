@@ -71,6 +71,8 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
     '''
     global goals_player1; global goals_player2
     global connection_status
+    global port_lock
+    
     set_status("wait_ingame")
 
     if player == 1: # add goal to the correct player
@@ -112,6 +114,8 @@ def react_foul( connection_obj ): # reaction to event in foul_detection thread
     called by the exception in the foul sensor thread
     '''
     global connection_status
+    global port_lock
+
     set_status("wait_ingame")
     if connection_status == True:
         data = "notify_foul"
