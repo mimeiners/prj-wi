@@ -40,13 +40,10 @@ a condition but loops indefintly (v. 1.0.3.1). Ther is no return.
 
 def _recv():
 
-    
-    global connection_type_objekt
-    
     while True:
     # {start of loop
 
-        data = connection_type_objekt.recv(1024)
+        data = lvl3.connection_type_objekt.recv(1024)
         data = data.decode('utf-8')
         
         _data_interpret( data )
@@ -67,12 +64,7 @@ The argumented
 
 def _data_interpret( data ):
 
-    global port_lock
-
     global ack_dic
-
-    global connection_type_objekt
-    
     
     # check if nothing was send
     if data == '': return
@@ -82,21 +74,19 @@ def _data_interpret( data ):
     
         #send acknowledgement
         if data == keyword:
-
             ack = ack_dic[ keyword ].encode('utf-8')
-            with port_lock: 
-                connection_type_objekt.sendall( ack )
+            with lvl3.port_lock: 
+                lvl3.connection_type_objekt.sendall( ack )
                 time.sleep(0.1)
+
             ##print('here is keyword : ', data)
             _keyword_react( data )
-            
             return
             
         # check if data was acknowledgment
         elif data == ack_dic[ keyword ]:
             ##print('here is ack: ', data)
             _ack_react( data )
-            
             return
         
     # data has not been recognised as a keyword or acknowledgement
@@ -191,21 +181,14 @@ desc
 
 def _ping():
     
-    import LVL3_classes as lvl3
-
-    global connection_type_objekt
-    
-    global port_lock
-    
-    
     ping = "ping"
     ping = ping.encode('utf-8')
     
     while True:
-        with port_lock:
-            connection_type_objekt.sendall( ping )
+        with lvl3.port_lock:
+            lvl3.connection_type_objekt.sendall( ping )
+            lvl3.set_connection_status(False)
             time.sleep(0.1)
-        lvl3.set_connection_status(False)
         time.sleep(0.9)
 
 
