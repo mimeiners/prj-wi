@@ -26,8 +26,23 @@ def init():
     
     global connection_status; connection_status = False
     print("Status is: init")
- 
 
+    ## initialize Server connection
+    # Create Serverside Socket objekt
+    server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_interface_obj.bind(('localhost' , 10000))
+    
+    # look for connection
+    server_interface_obj.listen(0)
+    
+    # create conncetion object      | FUNCTION WAITS HERE UNTIL CONNECTION HAS BEEN FOUND
+    global connection_type_objekt
+    connection_type_objekt , client_address = server_interface_obj.accept()
+
+    set_connection_status( True )
+
+    #Lock for access to port
+    global port_lock ; port_lock = threading.Lock()
 
 # game status control - - - - - - - - - - - - - - - - - - - -
 
