@@ -82,8 +82,10 @@ def _data_interpret( data ):
     
         #send acknowledgement
         if data == keyword:
+
             ack = ack_dic[ keyword ].encode('utf-8')
             with port_lock: connection_type_objekt.sendall( ack )
+
             print('here is keyword : ', data)
             
             _keyword_react( data )
@@ -151,9 +153,7 @@ def _ack_react( ack ):
     import LVL3_classes as lvl3
 
     if ack == 'hi':
-        
         lvl3.set_connection_status(True)
-
         pass
         
     elif ack == 'connecting_drone':
