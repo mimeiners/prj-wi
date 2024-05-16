@@ -31,7 +31,7 @@ def init():
     # Create Serverside Socket objekt
     server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_interface_obj.bind(('localhost' , 10000))
-    
+
     # look for connection
     server_interface_obj.listen(0)
     
@@ -86,7 +86,7 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
         if connection_status == True:
             data = "notify_gameover"
             data.encode('utf-8')
-            connection_obj.sendall( data ) # sending keyword for foul
+            with port_lock : connection_obj.sendall( data ) # sending keyword for foul
         else:
             time.sleep(10)
         print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
@@ -99,7 +99,7 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
         if connection_status == True:
             data = "notify_newgoal"
             data.encode('utf-8')
-            connection_obj.sendall( data ) # sending keyword for foul
+            with port_lock : connection_obj.sendall( data ) # sending keyword for foul
         else:
             time.sleep(10)
         time.sleep(2)
@@ -116,7 +116,7 @@ def react_foul( connection_obj ): # reaction to event in foul_detection thread
     if connection_status == True:
         data = "notify_foul"
         data.encode('utf-8')
-        connection_obj.sendall( data ) # sending keyword for foul
+        with port_lock : connection_obj.sendall( data ) # sending keyword for foul
     else:
         time.sleep(5)
     set_status("ingame")
