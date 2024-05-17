@@ -95,7 +95,9 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
         if connection_status == True:
             data = "notify_gameover"
             data.encode('utf-8')
-            with port_lock : connection_obj.sendall( data ) # sending keyword for foul
+            with port_lock :
+                connection_obj.sendall( data ) # sending keyword for foul
+                time.sleep(0.1)
         else:
             time.sleep(10)
         print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
@@ -108,7 +110,9 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
         if connection_status == True:
             data = "notify_newgoal"
             data.encode('utf-8')
-            with port_lock : connection_obj.sendall( data ) # sending keyword for foul
+            with port_lock :
+                connection_obj.sendall( data ) # sending keyword for foul
+                time.sleep(0.1)
         else:
             time.sleep(10)
         time.sleep(2)
