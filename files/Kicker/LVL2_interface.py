@@ -6,7 +6,7 @@ interface for sending keywords/receiving ACKs
 """
 
 __author__ = "Marvin Otten"
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 __status__ = "WIP"
 
 #import globally needed libraries
@@ -253,6 +253,10 @@ desc
 def interface():
 
     import LVL3_classes as lvl3
+
+    # wait for connection
+    while lvl3.connection_type_object == None:
+        time.sleep(0.1)
 
     ## Initialize Interface
 
