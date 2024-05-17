@@ -6,7 +6,7 @@ interface for sending keywords/receiving ACKs
 """
 
 __author__ = "Marvin Otten"
-__version__ = "1.0.3.2"
+__version__ = "1.0.4"
 __status__ = "WIP"
 
 #import globally needed libraries
@@ -19,22 +19,19 @@ import LVL3_classes as lvl3
 #%%
 
 '''
+_recv()
 
-Desc:
+Desc:   This function is called in the excuting function interface()
+        and should only be called there. After a connection is established
+        this function runs as a Thread parallel to _ping()
 
-This function is called in the excuting function interface()
-and should only be called there. After a connection is established
-this function runs as a Thread parallel to _ping()
+Func:   This function allows for continuous receiving of messages.
+        The received data is decoded (utf-8) and given as an argument
+        to the function _data_interpret which interprets the data based
+        on systemwide keywords. Afterwards the function receives a new message.
 
-Func:
-
-This function allows for continuous receiving of messages.
-The received data is decoded (utf-8) and given as an argument
-to the function _data_interpret which interprets the data based
-on systemwide keywords. Afterwards the function receives a new message.
-
-The included while loop for continues operation does not include
-a condition but loops indefintly (v. 1.0.3.1). Ther is no return.
+        The included while loop for continues operation does not include
+        a condition but loops indefintly (v. 1.0.4). There is no return.
 '''
 
 
@@ -53,13 +50,20 @@ def _recv():
 #%%
 
 '''
-Desc:
+_data_interpret( data )
 
-This function is called in _recv(). While excuting, _recv() is blocked.
+Desc:   This function is called in _recv(). While excuting, _recv() is blocked.
 
-Func:
+Func:   The argumente is chaecked for content anf then compared to entries inside
+        the ack_dic, which serves as a databse for all keywords and acknowledgemenets.
+        If an keyword or a acknowledgement is detected the appropiate rection is called
+        from the function _keyword_react() or _ack_react().
 
-The argumented
+        Additionally, if a keyword is detected, an acknowledment is automatically send.
+
+Argument:
+
+data : str type object. Provided by _recv(). Needs to be decoded.
 '''
 
 def _data_interpret( data ):
@@ -69,33 +73,51 @@ def _data_interpret( data ):
     # check if nothing was send
     if data == '': return
 
-    # check if data was keyword
+    # check if data was keyword/ack
     for keyword in ack_dic:             #take ack dic from connection attribute ack_dic!!!
     
-        #send acknowledgement
+        # check if data is keyword
         if data == keyword:
             ack = ack_dic[ keyword ].encode('utf-8')
+            #send acknowledgement
             with lvl3.port_lock: 
                 lvl3.connection_type_objekt.sendall( ack )
                 time.sleep(0.1)
 
             ##print('here is keyword : ', data)
+            # call react to keyword
             _keyword_react( data )
             return
             
         # check if data was acknowledgment
         elif data == ack_dic[ keyword ]:
             ##print('here is ack: ', data)
+            # call react to acknowledgement
             _ack_react( data )
             return
         
-    # data has not been recognised as a keyword or acknowledgement
+    # data has not been recognised as a keyword or acknowledgement | No reaction given as of v.1.0.4
     ##print('Undetermined message:', data)          
     # end of loop}
     
     return
 
-                 
+
+'''
+_keyword_react( keyword )
+
+Desc :  This function is called in _data_interpret and habours the reactions
+        of a received keyword.
+
+Func :  Based on the provided keyword, an if-based reaction is called.
+        This function is only called if a keyword has been detected in _recv(),
+        an else-condition is therfore not necessary but could help for debugging.
+
+Arguments : 
+
+keyword : str type object. Provided by _recv() if keyword is detected.
+'''
+
 def _keyword_react( keyword ):
     
     if keyword == 'ping':
@@ -132,6 +154,21 @@ def _keyword_react( keyword ):
         lvl3.react_drone_pleaseresume()
         pass
 
+
+'''
+_ack_react( ack )
+
+Desc :  This function is called in _data_interpret and habours the reactions
+        of a received acknowledgement.
+
+Func :  Based on the provided acknowledgement, an if-based reaction is called.
+        This function is only called if a acknowledgement has been detected in _recv(),
+        an else-condition is therfore not necessary but could help for debugging.
+
+Arguments : 
+
+keyword : str type object. Provided by _recv() if acknowledgement is detected.
+'''
 
 def _ack_react( ack ):
 
@@ -175,7 +212,20 @@ def _ack_react( ack ):
 #%%
 
 '''
-desc
+_ping()
+
+Desc :  This function is called in the excuting function interface()
+        and should only be called there. After a connection is established
+        this function runs as a Thread parallel to _recv()
+
+Func :  To check for an uninterrupted connection, a ping-keyword is send 
+        every second. As long as the corresponding acknowledgement has not
+        received, the global connection status is set to False. If the
+        acknowledgement has been reeceived, it's corresponding
+        reaction in _ack_react() will set the connection status to True.
+
+        This function might change to only set the connection status to
+        False once a NACK has been recieved.
 '''
 
 def _ping():
