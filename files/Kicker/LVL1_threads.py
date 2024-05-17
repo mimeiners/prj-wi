@@ -5,12 +5,12 @@ Initializing the first and second threading level
 
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.1.2"
-__status__ = "WIP"
+__version__ = "1.1.3"
+__status__ = "good"
 
 
 import threading
-import LVL2_interface_functions as infu
+import LVL2_interface as infa
 import LVL2_goal_detection as gode
 import LVL2_pregame as pre
 import LVL2_foul_detection as fode
@@ -51,7 +51,7 @@ main_threadlist = [ threading.Thread( target = sensors,
                                       args = [],
                                       kwargs = {}),
                     
-                    threading.Thread( target = infu.server_interface,
+                    threading.Thread( target = infa.interface,
                                       args = [],
                                       kwargs = {}),
 

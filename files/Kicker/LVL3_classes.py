@@ -6,7 +6,7 @@ This file includes system wide used functions and variables
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "2.1.1"
+__version__ = "2.1.2"
 __status__ = "WIP"
 
 
@@ -38,8 +38,8 @@ def init():
     server_interface_obj.listen(0)
     
     # create conncetion object      | FUNCTION WAITS HERE UNTIL CONNECTION HAS BEEN FOUND
-    global connection_type_objekt
-    connection_type_objekt , client_address = server_interface_obj.accept()
+    global connection_type_object
+    connection_type_object , client_address = server_interface_obj.accept()
 
     set_connection_status( True )
 

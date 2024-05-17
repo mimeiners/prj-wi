@@ -8,7 +8,7 @@ Pregame stuff
 """
 
 __author__ = "Lukas Haberkorn"
-__version__ = "1.1.4"
+__version__ = "1.1.5"
 __status__ = "WIP"
 
 
@@ -34,7 +34,7 @@ def pregame():
                 if lvl3.connection_status == True:
                     data = "notify_drone_powered"
                     data.encode('utf-8')
-                    connection_obj.sendall( data ) # sending keyword for foul
+                    lvl3.connection_type_object.sendall( data ) # sending keyword for foul
                     break
                 time.sleep(0.33)
             else:
@@ -55,7 +55,7 @@ def pregame():
                 if lvl3.connection_status == True:
                     data = "notify_start_permission"
                     data.encode('utf-8')
-                    connection_obj.sendall( data ) # sending keyword for foul
+                    lvl3.connection_type_object.sendall( data ) # sending keyword for foul
                     break
                 time.sleep(0.33)
             else:
