@@ -4,6 +4,8 @@ LEVEL 2
 Pregame stuff
 
 > connection_obj has to be passed here somehow
+> drone_on_button and start_button need to be polled from website
+> sending messages for changing infos on website are still missing
 
 """
 
@@ -17,10 +19,12 @@ import time
 
 
 def pregame():
+    '''
+    This function is running as a thread in LVL1; handles all the pregame tasks 
+    '''
     while True:
         if lvl3.sys_status == "init": # only directly after poweron
-            # >>> wait for init to be done??
-            time.sleep(3) # ???
+            time.sleep(3) # wait for init to be done, how long?? (WAP, Website)
             lvl3.set_status("wait_pre")
 
         if lvl3.sys_status == "wait_pre": # after init or gameover
@@ -40,7 +44,7 @@ def pregame():
                     break
                 time.sleep(0.33)
             else:
-                print("tja es ist keine auvares da oder was") #?? was machen wir dann?
+                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
         
         # 2.    
             # wait for "notify_drone_connected"
@@ -63,7 +67,7 @@ def pregame():
                     break
                 time.sleep(0.33)
             else:
-                print("tja es ist keine auvares da oder was") #?? was machen wir dann?
+                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
         # 4.
             # wait for "notify_gamestart"

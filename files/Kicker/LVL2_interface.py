@@ -1,6 +1,6 @@
 """
 
-Level 2
+LEVEL 2
 interface for sending keywords/receiving ACKs
 
 """

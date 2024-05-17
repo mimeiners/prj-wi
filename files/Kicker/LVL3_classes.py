@@ -1,12 +1,15 @@
 """
 
-Level 3
+LEVEL 3
 This file includes system wide used functions and variables
+
+> currently we do not differentiate who made a foul
+> initialize Server connection in init() has to be adapted for no connection
 
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "2.1.2"
+__version__ = "2.1.3"
 __status__ = "WIP"
 
 
@@ -16,10 +19,12 @@ import socket
 
 def init():
     '''
-    Has to be run before all other level 3 functions to initialize global variables
+    !! Has to be run before all other level 3 functions to initialize global variables
     '''
     global goals_player1; goals_player1 = 0
     global goals_player2; goals_player2 = 0
+    global drone_connected; drone_connected = False
+    global drone_wants_gamestart; drone_wants_gamestart = False
 
     global sys_status; sys_status = "init"
     global status_lock; status_lock = threading.Lock()          # Lock for changing system status
@@ -64,8 +69,10 @@ def set_status( arg_ , delay = 0):
         sys_status = arg_
     
 
-
 def set_connection_status( set_status ):
+    '''
+    boolean set_status
+    '''
     global connection_status
     connection_status = set_status
 
