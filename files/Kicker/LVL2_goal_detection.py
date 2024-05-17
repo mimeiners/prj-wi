@@ -5,7 +5,7 @@ Goal detection via GPIO
 
 """
 __author__ = "Lukas Haberkorn"
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __status__ = "good"
 
 import RPi.GPIO as GPIO
@@ -23,8 +23,8 @@ def goal():
     while True:
         if lvl3.sys_status == "ingame":
             if GPIO.input(13) == GPIO.LOW:
-                lvl3.react_goal(1,0)
+                lvl3.react_goal(1, lvl3.connection_type_object)
             if GPIO.input(15) == GPIO.LOW:
-                lvl3.react_goal(2,0)
+                lvl3.react_goal(2, lvl3.connection_type_object)
         else:
             time.sleep(0.01)

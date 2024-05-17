@@ -7,7 +7,7 @@ Foul detection via GPIO
 
 """
 __author__ = "Lukas Haberkorn"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __status__ = "untested"
 
 import RPi.GPIO as GPIO
@@ -25,8 +25,8 @@ def foul():
     while True:
         if lvl3.sys_status == "ingame":
             if GPIO.input(38) == GPIO.LOW:
-                lvl3.react_foul()
+                lvl3.react_foul( lvl3.connection_type_object )
             if GPIO.input(40) == GPIO.LOW:
-                lvl3.react_foul()
+                lvl3.react_foul( lvl3.connection_type_object )
         else:
             time.sleep(0.01)
