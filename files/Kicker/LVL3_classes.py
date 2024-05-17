@@ -30,19 +30,26 @@ def init():
 
 
     ## initialize Server connection
-    # Create Serverside Socket objekt
+    global connection_type_object ; connection_type_object = None
+    find_thread = threading.Thread( target = _find_connection(), args = [], kwargs = [])
+    find_thread.daemon = True
+    find_thread.start()
+
+
+
+def _find_connection():
     server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_interface_obj.bind(('localhost' , 10000))
 
     # look for connection
     server_interface_obj.listen(0)
     
-    # create conncetion object      | FUNCTION WAITS HERE UNTIL CONNECTION HAS BEEN FOUND
+    # create conncetion object
     global connection_type_object
     connection_type_object , client_address = server_interface_obj.accept()
 
     set_connection_status( True )
-
+    return
 
 # game status control - - - - - - - - - - - - - - - - - - - -
 
