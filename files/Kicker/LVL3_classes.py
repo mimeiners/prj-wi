@@ -35,6 +35,7 @@ def init():
 
 
     ## initialize Server connection
+    global ping_ack_flag ; ping_ack_flag = False
     global connection_type_object ; connection_type_object = None
     find_thread = threading.Thread( target = _find_connection(), args = [], kwargs = [])
     find_thread.daemon = True

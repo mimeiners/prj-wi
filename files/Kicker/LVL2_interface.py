@@ -175,6 +175,7 @@ def _ack_react( ack ):
     import LVL3_classes as lvl3
 
     if ack == 'hi':
+        lvl3.ping_ack_flag(True)
         lvl3.set_connection_status(True)
         pass
         
@@ -236,10 +237,10 @@ def _ping():
     while True:
         with lvl3.port_lock:
             lvl3.connection_type_objekt.sendall( ping )
-            lvl3.set_connection_status(False)
+            lvl3.ping_ack_flag = False
             time.sleep(0.1)
         time.sleep(0.9)
-
+        if lvl3.ping_ack_flag == False : lvl3.set_connection_status(False)
 
     
 #%%
