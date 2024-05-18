@@ -52,14 +52,20 @@ Eine einfache Möglichkeit ist es mit dem Pi ein W-LAN Hotspot einzurichten und 
 <br>
 
 ### Die Website
-Die Datei: *save_names.php* ist eine einfache Webseite, in der man die Spielernamen eintragen kann. Die eingetragenen Namen werden dann in *PlaverNames.txt* geschrieben und sollen später vom Python-Skript ausgelesen werden.<br>
-Beide Dateien (*save_names.php* & *PlaverNames.txt*) sollen unter **/var/www/html** abgelegt werden. <br>
+Die Datei: *start_site.php* ist eine einfache Webseite, in der man die Spielernamen eintragen kann. Die eingetragenen Namen werden dann in *PlayerNames.txt* geschrieben und sollen später vom Python-Skript ausgelesen werden.<br>
+Beide Dateien (*start_site.php* & *PlaverNames.txt*) sollen unter **/var/www/html** abgelegt werden. Selbes gillt auch für die retlichen Datein (*drone_check.php*, *back_home.php*, *DroneCheck.txt*) sowie dem Ordner *Pictues* in welchem sich das HSB-Logo befindet.<br>
 <br>
-Da auf *PlaverNames.txt* geschrieben werden soll, fehlen noch die Berechtigungen dafür. Dies geben wir mit:
+Dazugekommen ist jetzt der Verweis auf eine Weitere Seite (*drone_check.php*) in welcher man bestätigen muss, ob es sicher ist für die Drohne zu starten. Anschließend wird man auf eine Weitere Seite verwiesen (*back_home.php*) in der die eingetragenen Namen stehen. Auf dieser seite wir dit dem **Return** Button die beiden *txt* geleehrt und man wird wieder auf die *start_site.php* verwiesen. 
+<br>
+Da auf *PlayerNames.txt* und *DroneCheck.txt* geschrieben werden soll, fehlen noch die Berechtigungen dafür. Dies geben wir mit:
 ~~~
 sudo chmod 666 /var/www/html/PlayerNames.txt
 ~~~
-Damit sollte alles eingerichtet sein und jedes Skript sollte nun in der Lagen sein, die in *PlaverNames.txt* abgelegten Namen zu lesen und zu schreiben.<br>
+und 
+~~~
+sudo chmod 666 /var/www/html/DroneCheck.txt
+~~~
+Damit sollte alles eingerichtet sein und jedes Skript sollte nun in der Lagen sein, die abgelegten Namen zu lesen und zu schreiben.<br>
 <br>
-Damit sich die Namen in der Datei nicht anhäufen, empfiehlt es sich diese nach dem Auslesen zu löschen.<br>
+Dazu gibt es noch ein Python-Skript names *website.py* in welchem sich alle dazu benötigten Funktionen befinden mit einem einfachen loop zum testen.
 
