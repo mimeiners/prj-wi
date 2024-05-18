@@ -53,7 +53,7 @@ Eine einfache Möglichkeit ist es mit dem Pi ein W-LAN Hotspot einzurichten und 
 
 ### Die Website
 Die Datei: *start_site.php* ist eine einfache Webseite, in der man die Spielernamen eintragen kann. Die eingetragenen Namen werden dann in *PlayerNames.txt* geschrieben und sollen später vom Python-Skript ausgelesen werden.<br>
-Beide Dateien (*start_site.php* & *PlaverNames.txt*) sollen unter **/var/www/html** abgelegt werden. Selbes gillt auch für die retlichen Datein (*drone_check.php*, *back_home.php*, *DroneCheck.txt*) sowie dem Ordner *Pictues* in welchem sich das HSB-Logo befindet.<br>
+Beide Dateien (*start_site.php* & *PlaverNames.txt*) sollen unter **/var/www/html** abgelegt werden. Selbes gillt auch für die retlichen Datein (*drone_check.php*, *back_home.php*, *DroneCheck.txt*) sowie dem Ordner *Pictues* in welchem sich das HSB-Logo befindet. Alle in **WebSiteFiles**<br>
 <br>
 Dazugekommen ist jetzt der Verweis auf eine Weitere Seite (*drone_check.php*) in welcher man bestätigen muss, ob es sicher ist für die Drohne zu starten. Anschließend wird man auf eine Weitere Seite verwiesen (*back_home.php*) in der die eingetragenen Namen stehen. Auf dieser seite wir dit dem **Return** Button die beiden *txt* geleehrt und man wird wieder auf die *start_site.php* verwiesen. 
 <br>
