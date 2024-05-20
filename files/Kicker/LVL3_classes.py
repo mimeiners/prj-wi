@@ -57,6 +57,22 @@ def _find_connection():
     set_connection_status( True )
     return
 
+def server_send( keyword , delay = 10**-3 ):
+    '''
+    global function for sending data with the interface.
+
+    "keyword" should be str type keyword.
+    '''
+
+    global port_lock
+    global connection_type_objekt
+    
+    if connection_status == True:
+        with port_lock :
+            connection_type_objekt.sendall(keyword)
+            time.sleep(delay)
+
+
 # game status control - - - - - - - - - - - - - - - - - - - -
 
 def set_status( arg_ , delay = 0):
