@@ -40,7 +40,7 @@ def _recv():
     while True:
     # {start of loop
 
-        data = lvl3.connection_type_objekt.recv(1024)
+        data = lvl3.connection_type_object.recv(1024)
         data = data.decode('utf-8')
         
         _data_interpret( data )
@@ -234,7 +234,7 @@ def _ping():
     
     while True:
         with lvl3.port_lock:
-            lvl3.connection_type_objekt.sendall( ping )
+            lvl3.connection_type_object.sendall( ping )
             lvl3.ping_ack_flag = False
             time.sleep(10**-3)
         time.sleep(0.999)
