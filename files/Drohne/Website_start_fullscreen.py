@@ -9,7 +9,7 @@ import subprocess
 
 def display_website_fullscreen():
     # URL der Webseite
-    url = "https://www.example.com"  # Ersetzen Sie dies durch die URL der Webseite, die Sie anzeigen möchten
+    url = "https://www.example.com"  # Ersetze dies durch die URL der Webseite, die Sie anzeigen möchten
 
     # Öffnen der URL im Webbrowser im Vollbildmodus
     try:
