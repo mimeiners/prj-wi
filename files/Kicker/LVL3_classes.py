@@ -4,12 +4,14 @@ LEVEL 3
 This file includes system wide used functions and variables
 
 > currently we do not differentiate who made a foul
-> initialize Server connection in init() has to be adapted for no connection
+> initialize Server connection in init() has to be adapted for no connection / timeouts
+> CHANGE database host address
+> we never check DB connection with client.health(), this is stupid!
 
 """
 
-__author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "2.1.3"
+__author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
+__version__ = "2.2.0"
 __status__ = "WIP"
 
 
@@ -17,14 +19,23 @@ import time
 import threading
 import socket
 
+#imports for database
+import influxdb_client
+from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client.client.write_api import SYNCHRONOUS
+
+
 def init():
     '''
     !! Has to be run before all other level 3 functions to initialize global variables
     '''
     global goals_player1; goals_player1 = 0
     global goals_player2; goals_player2 = 0
+    global player1_name; player1_name = "DEFAULT_player1"
+    global player2_name; player2_name = "DEFAULT_player2"
     global drone_connected; drone_connected = False
     global drone_wants_gamestart; drone_wants_gamestart = False
+    global gameID; gameID = 0
 
     global sys_status; sys_status = "init"
     global status_lock; status_lock = threading.Lock()          # Lock for changing system status
@@ -40,6 +51,18 @@ def init():
     find_thread = threading.Thread( target = _find_connection(), args = [], kwargs = [])
     find_thread.daemon = True
     find_thread.start()
+
+
+    # init database connection
+    host = '192.168.26.98' # TO BE CHANGED
+    port = 8086
+    token = 'Xady8ZXGEKBuRbEHaBMicR5Qcqmsdw7o9G8mu8q6gx4vsrvWiR9mV1-LLWoo26s8FaMfyZ0BVV1Hr8INrSPBCA=='
+    global bucket; bucket = 'kicker'
+    org = 'Hochschule Bremen'
+    url = "http://192.168.26.98:8086"
+
+    client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
+    global write_api; write_api = client.write_api(write_options=SYNCHRONOUS)
 
 
 
@@ -65,11 +88,11 @@ def server_send( keyword , delay = 10**-3 ):
     '''
 
     global port_lock
-    global connection_type_objekt
+    global connection_type_object
     
     if connection_status == True:
         with port_lock :
-            connection_type_objekt.sendall(keyword)
+            connection_type_object.sendall(keyword)
             time.sleep(delay)
 
 
@@ -103,19 +126,24 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
     global goals_player1; global goals_player2
     global connection_status
     global port_lock
+    global player1_name
+    global player2_name
+    global gameID
     
     set_status("wait_ingame")
 
     if player == 1: # add goal to the correct player
         goals_player1 += 1
         print("player 1 scored")
+        database_write( gameID, player1_name, goals_player1)
     
     elif player == 2:
         goals_player2 += 1
         print("player 2 scored")
+        database_write( gameID, player2_name, goals_player2)
 
     if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
-        # >>> UPDATE DATABASE HERE
+        
         if connection_status == True:
             data = "notify_gameover"
             data.encode('utf-8')
@@ -127,10 +155,10 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
         print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
         time.sleep(5)
         set_status("wait_pre")
-        goals_player1 = 0; goals_player2 = 0 # Resetting AFTER writing to database!!
+        
 
     else: # no win condition was met
-        # >>> UPDATE DATABASE HERE
+
         if connection_status == True:
             data = "notify_newgoal"
             data.encode('utf-8')
@@ -185,3 +213,21 @@ def react_drone_pleasewait(): # reaction to keyword
 def react_drone_pleaseresume(): # reaction to keyword
     set_status("ingame")
     print(" ### GAME RESUMED by AuVAReS ### ")
+
+
+
+# Database functions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def database_write( gameid, playername, goalcount ):
+    '''
+    string gameid = timestamp of first "ingame" in lvl2.pregame()
+    string playername
+    int goalcount
+    '''
+    point = (
+    Point( gameid ) # gameid = timestamp
+    .tag("Spieler", playername )
+    .field("Tore", goalcount)
+    )
+    # Schreibe Daten in die InfluxDB
+    write_api.write(bucket=bucket, org="Hochschule Bremen", record=point)
