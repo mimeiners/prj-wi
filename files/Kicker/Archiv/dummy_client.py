@@ -163,6 +163,12 @@ def client_send( keyword , delay = 10**-3 ):
 
 #%%
 
+#%%
+
+def filler():
+    return
+
+
 
 # MAIN Routine
 
@@ -182,7 +188,7 @@ ack_dic = {'ping' : 'hi',
 
 ###Connection
 #give target address
-server_address = ('localhost', 10000)
+server_address = ('10.0.0.1', 10000)            # server address for dummy testing
 print ('connecting to %s port %s' % server_address)
 #connect to address
 while True:
@@ -197,6 +203,10 @@ global port_lock ; port_lock = threading.Lock()
 #%%
 
 if_threadlist = [threading.Thread(target= _recv,
+                                  args= [],
+                                  kwargs= {}),
+
+                 threading.Thread(target= filler,
                                   args= [],
                                   kwargs= {})]
 #start threats
