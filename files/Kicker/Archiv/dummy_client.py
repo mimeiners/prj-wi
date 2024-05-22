@@ -76,24 +76,39 @@ def _keyword_react( keyword ):
         pass
 
     elif keyword == "notify_drone_powered":
+        print('RECEIVED : notify_drone_powered -> 5s')
+        time.sleep(5)
+        client_send('notify_drone_connected')
+        print('SEND : notify_drone_connected')
         pass
 
     elif keyword == 'notify_drone_connected':
         pass
     
     elif keyword == 'notify_start_permission':
+        print('RECEIVED : notify_start_permission -> 3s')
+        time.sleep(3)
+        client_send('notify_gamestart')
+        print('SEND : notify_gamestart')
         pass
     
     elif keyword == 'notify_gamestart':
         pass
     
     elif keyword == 'notify_newgoal':
+        print('RECEIVED : notify_newgoal (LETS GO)')
+        client_send('please_wait')
+        print('SEND : please_wait (kicker goal)')
         pass
     
     elif keyword == 'notify_foul':
+        print('RECEIVED : notify_foul (MAAAAAANNNN)')
+        client_send('please_wait')
+        print('SEND : please_wait (kicker foul)')
         pass
     
     elif keyword == 'notify_gameover':
+        print('RECEIVED : notify_gameover :(')
         pass
     
     elif keyword == 'please_wait':
@@ -125,6 +140,10 @@ def _ack_react( ack ):
         pass
     
     elif ack == 'game_started':
+        print('RECEIVED : game_started')
+        time.sleep(10)
+        client_send('pleased_wait')
+        print('SEND : please_wait (drone triggered)')
         pass
     
     elif ack == 'received_newgoal':
@@ -137,9 +156,14 @@ def _ack_react( ack ):
         pass
     
     elif ack == 'waiting':
+        print('RECEIVED : waiting -> 5s')
+        time.sleep(5)
+        client_send('please_resume')
+        print('SEND : please_resume')
         pass
     
     elif ack == 'gaming':
+        print('RECEIVED : gaming (Engineer Gaming)')
         pass
 
     return
@@ -158,6 +182,7 @@ def client_send( keyword , delay = 10**-3 ):
     
 
     with port_lock :
+        keyword = keyword.encode('utf-8')
         client.sendall(keyword)
         time.sleep(delay)
 
