@@ -78,7 +78,7 @@ def _data_interpret( data ):
     
         # check if data is keyword
         if data == keyword:
-            ack = ack_dic[ keyword ].encode('utf-8')
+            ack = ack_dic[ keyword ]
             #send acknowledgement
             lvl3.server_send( ack )
 

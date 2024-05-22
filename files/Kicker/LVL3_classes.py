@@ -91,6 +91,7 @@ def server_send( keyword , delay = 10**-3 ):
     global connection_type_object
     
     if connection_status == True:
+        data = keyword.encode('utf-8')
         with port_lock :
             connection_type_object.sendall(keyword)
             time.sleep(delay)

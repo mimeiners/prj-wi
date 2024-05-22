@@ -106,7 +106,6 @@ def pregame():
             for i in range(5):
                 if lvl3.connection_status == True:
                     data = "notify_drone_powered"
-                    data.encode('utf-8')
                     lvl3.server_send( data )
                     break
                 time.sleep(0.33)
@@ -128,7 +127,6 @@ def pregame():
             for i in range(5):
                 if lvl3.connection_status == True:
                     data = "notify_start_permission"
-                    data.encode('utf-8')
                     lvl3.server_send( data )
                     break
                 time.sleep(0.33)
