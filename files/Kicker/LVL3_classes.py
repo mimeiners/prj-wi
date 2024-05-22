@@ -5,13 +5,12 @@ This file includes system wide used functions and variables
 
 > currently we do not differentiate who made a foul
 > initialize Server connection in init() has to be adapted for no connection / timeouts
-> CHANGE database host address
 > we never check DB connection with client.health(), this is stupid!
 
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
-__version__ = "2.2.0"
+__version__ = "2.3.0"
 __status__ = "WIP"
 
 
