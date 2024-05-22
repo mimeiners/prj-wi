@@ -5,11 +5,12 @@ Pregame stuff
 
 > drone_on_button and start_button need to be polled from website seperately
 > sending messages for changing infos on website are still missing
+> Step 1 and 3 website GET methods should be replaced with flask
 
 """
 
 __author__ = "Lukas Haberkorn", "Martin Schwarz"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 __status__ = "WIP"
 
 
@@ -112,10 +113,15 @@ def pregame():
             else:
                 print("tja es ist kein auvares da oder was") #?? was machen wir dann?
         
-        # 2.    
-            # wait for "notify_drone_connected"
-            while not lvl3.drone_connected:
-                time.sleep(0.01)
+        # 2.   
+            for i in range(5): # try 5 times
+                if lvl3.connection_status == True: # check connection
+                    while not lvl3.drone_connected:
+                        time.sleep(0.01) # wait here for "notify_drone_connected"
+                    break
+                time.sleep(0.33)
+            else:
+                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
         # 3.    
             # wait for USER has pressed drone start button, tell auvares
@@ -134,9 +140,14 @@ def pregame():
                 print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
         # 4.
-            # wait for "notify_gamestart"
-            while not lvl3.drone_wants_gamestart:
-                time.sleep(0.01)
+            for i in range(5): # try 5 times
+                if lvl3.connection_status == True: # check connection
+                    while not lvl3.drone_wants_gamestart:
+                        time.sleep(0.01) # wait here for "notify_gamestart"
+                    break
+                time.sleep(0.33)
+            else:
+                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
             lvl3.gameID = str( time.time()//1 )
             print("Game ID is", lvl3.gameID)
@@ -144,6 +155,7 @@ def pregame():
             lvl3.set_status("ingame")
             lvl3.react_drone_connected(False)
             lvl3.react_drone_wants_gamestart(False)
+        
         else: # while "ingame" or "wait_ingame"
             time.sleep(0.05)
             if reset_check():

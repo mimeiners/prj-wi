@@ -66,6 +66,8 @@ def init():
 
 
 
+# connection functions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 def _find_connection():
     server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_interface_obj.bind(('localhost' , 10000))
@@ -96,8 +98,16 @@ def server_send( keyword , delay = 10**-3 ):
             connection_type_object.sendall(keyword)
             time.sleep(delay)
 
+def set_connection_status( set_status ):
+    '''
+    boolean set_status
+    '''
+    global connection_status
+    connection_status = set_status
 
-# game status control - - - - - - - - - - - - - - - - - - - -
+
+
+# game status control - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def set_status( arg_ , delay = 0):
     '''
@@ -110,15 +120,8 @@ def set_status( arg_ , delay = 0):
         sys_status = arg_
     
 
-def set_connection_status( set_status ):
-    '''
-    boolean set_status
-    '''
-    global connection_status
-    connection_status = set_status
 
-
-# reaction functions, what to do when specific game events occur - - - - - - - - - - - - - - - - - - - -
+# reaction functions, what to do when specific game events occur - - - - - - - - - - - - - - - - - - 
 
 def react_goal( player , connection_obj ): # reaction to event in goal_detection thread
     '''
