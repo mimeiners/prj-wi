@@ -9,62 +9,13 @@ Pregame stuff
 
 """
 
-__author__ = "Lukas Haberkorn", "Martin Schwarz"
-__version__ = "1.2.1"
+__author__ = "Lukas Haberkorn", "Martin Schwarz", "Torge Plate"
+__version__ = "1.3.0"
 __status__ = "WIP"
 
 
 import LVL3_classes as lvl3
 import time
-import os
-
-
-# functions for getting website's USER input - - - - - - - - - - - - - - - - - - -
-
-def monitor_names():
-    if os.path.exists("/var/www/html/PlayerNames.txt"):
-        with open("/var/www/html/PlayerNames.txt", "r") as names_file:
-            names = names_file.read().strip()
-        if names:
-            name1, name2 = names.split(",")
-            return name1, name2
-        else:
-            return "wait"
-    else:
-        return "emptypath"
-
-	
-def monitor_drone():
-    if os.path.exists("/var/www/html/DroneCheck.txt"):
-        with open("/var/www/html/DroneCheck.txt", "r") as Dcheck_file:
-            check = Dcheck_file.read().strip()
-        if check:
-            check == "success"
-            print("drone start")
-            return True
-        else:
-            print("wait for drone")
-            time.sleep(1)
-            return False
-    else:
-        print("no drone")
-        time.sleep(1)
-        return "emptypath"
-
-
-def reset_check():
-    if os.path.exists("/var/www/html/PlayerNames.txt"):
-        with open("/var/www/html/PlayerNames.txt", "r") as names_file:
-            names = names_file.read().strip()
-
-    if os.path.exists("/var/www/html/DroneCheck.txt"):
-        with open("/var/www/html/DroneCheck.txt", "r") as Dcheck_file:
-            check = Dcheck_file.read().strip()
-                    
-    if names == "" or check == "":
-        return True
-    return False
-
 
 
 # PREGAME Function  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -82,26 +33,13 @@ def pregame():
 
         # 1.    
             # get USER names from website
-            while monitor_names() == "emptypath" or monitor_names() == "wait":
-                match monitor_names():
-                    case "emptypath":
-                        lvl3.player1_name = "_Player 1"
-                        lvl3.player2_name = "_Player 2"
-                        break
-                    case "wait":
-                        time.sleep(0.1)
-                        continue
-                    case _:
-                        Names = monitor_names()
-                        lvl3.player1_name = Names[0]
-                        lvl3.player2_name = Names[1]
-                        break
-            
-            # wait for USER button press, drone is turned on
-            while monitor_drone() == False:
-                time.sleep(0.1)
-            if monitor_drone == "emptypath":
-                print("quasi 404") #was machen wir dann??
+            player_names = lvl3.load_player_names()
+            lvl3.player1_name = player_names.get('name1')
+            lvl3.player2_name = player_names.get('name2')
+
+            # # # # # # # # # # # # # # # # # # # # # # # # # #
+            # wait for USER button press, drone is turned on  #
+            # # # # # # # # # # # # # # # # # # # # # # # # # #
             
             # try to notify AuVAReS
             for i in range(5):
@@ -124,11 +62,10 @@ def pregame():
                 print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
         # 3.    
-            # wait for USER has pressed drone start button, tell auvares
-            while monitor_drone() == False:
-                time.sleep(0.1)
-            if monitor_drone == "emptypath":
-                print("quasi 404") #was machen wir dann??
+
+            # # # # # # # # # # # # # # # # # # # # # # # # #
+            # wait for USER has pressed drone start button  #
+            # # # # # # # # # # # # # # # # # # # # # # # # #
 
             for i in range(5):
                 if lvl3.connection_status == True:
@@ -157,6 +94,4 @@ def pregame():
             lvl3.react_drone_wants_gamestart(False)
         
         else: # while "ingame" or "wait_ingame"
-            time.sleep(0.05)
-            if reset_check():
-                lvl3.set_status("wait_pre")
+            time.sleep(0.01)

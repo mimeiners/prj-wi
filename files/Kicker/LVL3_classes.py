@@ -20,9 +20,12 @@ import threading
 import socket
 
 #imports for database
+import subprocess
+import json
 import influxdb_client
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client.client.query_api import QueryApi
 
 
 def init():
@@ -63,6 +66,10 @@ def init():
 
     client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
     global write_api; write_api = client.write_api(write_options=SYNCHRONOUS)
+    global query_api; query_api = client.query_api()
+
+    # Gunicorn starten (Synchronisation Website-Database)
+    subprocess.Popen(["/usr/bin/python3","-m","gunicorn","app:app","-b","127.0.0.1:8000"])
 
 
 
@@ -220,7 +227,7 @@ def react_drone_pleaseresume(): # reaction to keyword
 
 
 
-# Database functions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Database & Website functions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def database_write( gameid, playername, goalcount ):
     '''
@@ -235,3 +242,9 @@ def database_write( gameid, playername, goalcount ):
     )
     # Schreibe Daten in die InfluxDB
     write_api.write(bucket=bucket, org="Hochschule Bremen", record=point)
+
+
+# Funktion zum Laden der Spielerinformationen aus der JSON-Datei
+def load_player_names():
+    with open('player_names.json', 'r') as file:
+        return json.load(file)
