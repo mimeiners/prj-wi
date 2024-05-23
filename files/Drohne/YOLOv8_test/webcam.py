@@ -12,7 +12,7 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 640)  # Setze die Breite der Webcam-Auflösung
 cap.set(4, 480)  # Setze die Höhe der Webcam-Auflösung
 
-# Modell laden, aus /unix/bigdata/belehmann/PRJ_Flight_of_AI/YOLOv8/Tests_AuVAReS
+# Modell laden, aus /unix/bigdata/belehmann/PRJ_Flight_of_AI/YOLOv8/Tests_AuVAReS (FileZila)
 model = YOLO("best.pt")
 model.to(device)
 
