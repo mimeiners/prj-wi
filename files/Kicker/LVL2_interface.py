@@ -6,7 +6,7 @@ interface for sending keywords/receiving ACKs
 """
 
 __author__ = "Marvin Otten"
-__version__ = "1.0.5"
+__version__ = "1.0.6"
 __status__ = "WIP"
 
 #import globally needed libraries
@@ -40,7 +40,7 @@ def _recv():
     while True:
     # {start of loop
 
-        data = lvl3.connection_type_objekt.recv(1024)
+        data = lvl3.connection_type_object.recv(1024)
         data = data.decode('utf-8')
         
         _data_interpret( data )
@@ -78,11 +78,9 @@ def _data_interpret( data ):
     
         # check if data is keyword
         if data == keyword:
-            ack = ack_dic[ keyword ].encode('utf-8')
+            ack = ack_dic[ keyword ]
             #send acknowledgement
-            with lvl3.port_lock: 
-                lvl3.connection_type_objekt.sendall( ack )
-                time.sleep(0.1)
+            lvl3.server_send( ack )
 
             ##print('here is keyword : ', data)
             # call react to keyword
@@ -236,10 +234,10 @@ def _ping():
     
     while True:
         with lvl3.port_lock:
-            lvl3.connection_type_objekt.sendall( ping )
+            lvl3.connection_type_object.sendall( ping )
             lvl3.ping_ack_flag = False
-            time.sleep(0.1)
-        time.sleep(0.9)
+            time.sleep(10**-3)
+        time.sleep(0.999)
         if lvl3.ping_ack_flag == False : lvl3.set_connection_status(False)
 
     

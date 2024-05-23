@@ -3,20 +3,17 @@
 LEVEL 2
 Pregame stuff
 
-> connection_obj has to be passed here somehow
-> drone_on_button and start_button need to be polled from website
-> sending messages for changing infos on website are still missing
-
 """
 
-__author__ = "Lukas Haberkorn"
-__version__ = "1.1.7"
+__author__ = "Lukas Haberkorn", "Martin Schwarz", "Torge Plate"
+__version__ = "1.4.0"
 __status__ = "WIP"
 
 
 import LVL3_classes as lvl3
 import time
 
+# PREGAME Function  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def pregame():
     '''
@@ -24,60 +21,89 @@ def pregame():
     '''
     while True:
         if lvl3.sys_status == "init": # only directly after poweron
-            time.sleep(3) # wait for init to be done, how long?? (WAP, Website)
+            time.sleep(1) # wait for init to be done, how long?? (WAP, Website)
             lvl3.set_status("wait_pre")
 
         if lvl3.sys_status == "wait_pre": # after init or gameover
+
         # 1.    
-            # check USER has turned on Drone/entered names, then notify auvares
-            drone_on_button = True # DEBUG, should be polled from Website
-            while not drone_on_button:
-                time.sleep(0.01)
+            # get USER names from website
+            while True:
+                data = lvl3.json_read()
+                if data["player_1"]["name"] != "":
+                    break
+                time.sleep(0.5)
+            lvl3.player1_name = data["player_1"]["name"]
+            lvl3.player2_name = data["player_2"]["name"]
+
+            # wait for USER button press, drone is turned on
+            while True:
+                data = lvl3.json_read()
+                if data["button_power"] == "True":
+                    break
+                time.sleep(0.5)
             
+            # try to notify AuVAReS
             for i in range(5):
                 if lvl3.connection_status == True:
                     data = "notify_drone_powered"
-                    data.encode('utf-8')
-                    with lvl3.port_lock :
-                        lvl3.connection_type_object.sendall( data ) # sending keyword for foul
-                        time.sleep(0.1)
+                    lvl3.server_send( data )
                     break
                 time.sleep(0.33)
             else:
                 print("tja es ist kein auvares da oder was") #?? was machen wir dann?
         
-        # 2.    
-            # wait for "notify_drone_connected"
-            while not lvl3.drone_connected:
-                time.sleep(0.01)
+        # 2.   
+            for i in range(5): # try 5 times
+                if lvl3.connection_status == True: # check connection
+                    while not lvl3.drone_connected:
+                        time.sleep(0.01) # wait here for "notify_drone_connected"
+                    break
+                time.sleep(0.33)
+            else:
+                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
         # 3.    
-            # check user hat pressed start button, tell auvares
-            start_button = True # DEBUG, should be polled from Website
-            while not start_button:
-                time.sleep(0.01)
+            # wait for USER has pressed drone start button
+            while True:
+                data = lvl3.json_read()
+                if data["button_start"] == "True":
+                    break
+                time.sleep(0.5)
 
+            # try to notify AuVAReS
             for i in range(5):
                 if lvl3.connection_status == True:
                     data = "notify_start_permission"
-                    data.encode('utf-8')
-                    with lvl3.port_lock :
-                        lvl3.connection_type_object.sendall( data ) # sending keyword for foul
-                        time.sleep(0.1)
+                    lvl3.server_send( data )
                     break
                 time.sleep(0.33)
             else:
                 print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
         # 4.
-            # wait for "notify_gamestart"
-            while not lvl3.drone_wants_gamestart:
-                time.sleep(0.01)
+            for i in range(5): # try 5 times
+                if lvl3.connection_status == True: # check connection
+                    while not lvl3.drone_wants_gamestart:
+                        time.sleep(0.01) # wait here for "notify_gamestart"
+                    break
+                time.sleep(0.33)
+            else:
+                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
+            # setting game id (=timestamp)
+            lvl3.gameID = str( time.time()//1 )
+            print("Game ID is", lvl3.gameID)
+            data = lvl3.json_read()
+            data["game_id"] = lvl3.gameID
+            lvl3.json_write(data)
 
+            lvl3.goals_player1 = 0; lvl3.goals_player2 = 0
+            lvl3.database_write( lvl3.gameID, lvl3.player1_name, 0)
+            lvl3.database_write( lvl3.gameID, lvl3.player1_name, 0)
             lvl3.set_status("ingame")
             lvl3.react_drone_connected(False)
             lvl3.react_drone_wants_gamestart(False)
-        else:
+        
+        else: # while "ingame" or "wait_ingame"
             time.sleep(0.01)
-            
