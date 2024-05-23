@@ -245,10 +245,10 @@ def database_write( gameid, playername, goalcount ):
 
 
 def json_read():
-    with open('data.json', 'r') as file:
+    with open('/var/www/html/game_data.json', 'r') as file:
         return json.load(file)
 
 
 def json_write(input):
-    with open("data.json", "r") as file:
+    with open('/var/www/html/game_data.json', "r") as file:
         json.dump(input, file, indent=4)

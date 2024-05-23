@@ -99,6 +99,8 @@ def pregame():
             lvl3.json_write(data)
 
             lvl3.goals_player1 = 0; lvl3.goals_player2 = 0
+            lvl3.database_write( lvl3.gameID, lvl3.player1_name, 0)
+            lvl3.database_write( lvl3.gameID, lvl3.player1_name, 0)
             lvl3.set_status("ingame")
             lvl3.react_drone_connected(False)
             lvl3.react_drone_wants_gamestart(False)
