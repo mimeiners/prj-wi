@@ -7,7 +7,7 @@ interface for sending keywords/receiving ACKs
 
 __author__ = "Marvin Otten"
 __version__ = "1.0.7"
-__status__ = "good"
+__status__ = "WIP"
 
 #import globally needed libraries
 import time
@@ -234,12 +234,11 @@ def _ping():
             with lvl3.port_lock:
                 lvl3.connection_type_object.sendall( ping )
                 lvl3.ping_ack_flag = False
-                time.sleep(10**-2)
-            time.sleep(0.99)
+                time.sleep(10**-3)
+            time.sleep(0.999)
+        except:pass
+        finally:
             if lvl3.ping_ack_flag == False : lvl3.set_connection_status(False)
-        except:
-            time.sleep(1)
-            continue
 
     
 #%%
