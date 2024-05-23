@@ -3,20 +3,15 @@
 LEVEL 2
 Pregame stuff
 
-> drone_on_button and start_button need to be polled from website seperately
-> sending messages for changing infos on website are still missing
-> Step 1 and 3 website GET methods should be replaced with flask
-
 """
 
 __author__ = "Lukas Haberkorn", "Martin Schwarz", "Torge Plate"
-__version__ = "1.3.0"
+__version__ = "1.4.0"
 __status__ = "WIP"
 
 
 import LVL3_classes as lvl3
 import time
-
 
 # PREGAME Function  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -33,13 +28,20 @@ def pregame():
 
         # 1.    
             # get USER names from website
-            player_names = lvl3.load_player_names()
-            lvl3.player1_name = player_names.get('name1')
-            lvl3.player2_name = player_names.get('name2')
+            while True:
+                data = lvl3.json_read()
+                if data["player_1"]["name"] != "":
+                    break
+                time.sleep(0.5)
+            lvl3.player1_name = data["player_1"]["name"]
+            lvl3.player2_name = data["player_2"]["name"]
 
-            # # # # # # # # # # # # # # # # # # # # # # # # # #
-            # wait for USER button press, drone is turned on  #
-            # # # # # # # # # # # # # # # # # # # # # # # # # #
+            # wait for USER button press, drone is turned on
+            while True:
+                data = lvl3.json_read()
+                if data["button_power"] == "True":
+                    break
+                time.sleep(0.5)
             
             # try to notify AuVAReS
             for i in range(5):
@@ -62,11 +64,14 @@ def pregame():
                 print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
         # 3.    
+            # wait for USER has pressed drone start button
+            while True:
+                data = lvl3.json_read()
+                if data["button_start"] == "True":
+                    break
+                time.sleep(0.5)
 
-            # # # # # # # # # # # # # # # # # # # # # # # # #
-            # wait for USER has pressed drone start button  #
-            # # # # # # # # # # # # # # # # # # # # # # # # #
-
+            # try to notify AuVAReS
             for i in range(5):
                 if lvl3.connection_status == True:
                     data = "notify_start_permission"
@@ -86,8 +91,13 @@ def pregame():
             else:
                 print("tja es ist kein auvares da oder was") #?? was machen wir dann?
 
+            # setting game id (=timestamp)
             lvl3.gameID = str( time.time()//1 )
             print("Game ID is", lvl3.gameID)
+            data = lvl3.json_read()
+            data["game_id"] = lvl3.gameID
+            lvl3.json_write(data)
+
             lvl3.goals_player1 = 0; lvl3.goals_player2 = 0
             lvl3.set_status("ingame")
             lvl3.react_drone_connected(False)

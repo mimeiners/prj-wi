@@ -10,17 +10,16 @@ This file includes system wide used functions and variables
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
-__version__ = "2.3.0"
+__version__ = "2.3.1"
 __status__ = "WIP"
 
 
 import time
 import threading
 import socket
+import json
 
 #imports for database
-import subprocess
-import json
 import influxdb_client
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
@@ -67,8 +66,10 @@ def init():
     global write_api; write_api = client.write_api(write_options=SYNCHRONOUS)
     global query_api; query_api = client.query_api()
 
-    # Gunicorn starten (Synchronisation Website-Database)
-    subprocess.Popen(["/usr/bin/python3","-m","gunicorn","app:app","-b","127.0.0.1:8000"])
+    # Clear player names in json
+    data = json_read()
+    data["name1"] = ""; data["name2"] = ""
+    json_write(data)
 
 
 
@@ -243,7 +244,11 @@ def database_write( gameid, playername, goalcount ):
     write_api.write(bucket=bucket, org="Hochschule Bremen", record=point)
 
 
-# Funktion zum Laden der Spielerinformationen aus der JSON-Datei
-def load_player_names():
-    with open('player_names.json', 'r') as file:
+def json_read():
+    with open('data.json', 'r') as file:
         return json.load(file)
+
+
+def json_write(input):
+    with open("data.json", "r") as file:
+        json.dump(input, file, indent=4)
