@@ -218,7 +218,8 @@ print ('connecting to %s port %s' % server_address)
 #connect to address
 while True:
     try:
-        client.connect(server_address)
+        client.connect(('10.0.0.1', 10000))
+        print('connected')
         break
     except: continue
 
