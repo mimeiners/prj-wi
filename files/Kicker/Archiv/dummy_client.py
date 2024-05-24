@@ -14,7 +14,6 @@ import threading
 
 def _recv():
     
-    end = 0
     while True:
     # {start of loop
         try :
@@ -23,11 +22,9 @@ def _recv():
             print('data received: ', data)
             _data_interpret( data )
         except: 
-            if end > 10:break
-            else:
-                end +=1 
-                time.sleep(0.33)
-                continue
+            time.sleep(0.33)
+            continue
+    # end of loop}
         
 
 #%%
@@ -221,7 +218,10 @@ while True:
         client.connect(('10.0.0.1', 10000))
         print('connected')
         break
-    except: continue
+    except:
+        print('no connection found')
+        time.sleep(0.5)
+        continue
 
 
 global port_lock ; port_lock = threading.Lock()
