@@ -48,13 +48,13 @@ def _data_interpret( data ):
             ack = ack_dic[keyword]
             ack = ack.encode('utf-8')
             client_send(ack)
-
+            print('received keyword: ', keyword)
             _keyword_react( data )
             return
             
         # check if data was acknowledgment
         elif data == ack_dic[keyword]:
-
+            print('received ack : ', data)
             _ack_react(data)
             return
             
@@ -125,6 +125,7 @@ def _ack_react( ack ):
     import LVL3_classes as lvl3
 
     if ack == 'hi':
+        print('ping gamin')
         pass
         
     elif ack == 'connecting_drone':
@@ -215,6 +216,7 @@ print ('connecting to %s port %s' % server_address)
 #connect to address
 while True:
     try:
+        print('cook connection')
         client.connect(('10.0.0.1', 10000))
         print('connected')
         break
