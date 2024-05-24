@@ -1,11 +1,12 @@
 """
 
 LEVEL 1 (formerly 0 and 1)
-Initializing the first and second threading level
+Initializing the first and second threading level. 
+Has to be run as sudo for GPIO to work
 
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.1.3"
+__version__ = "1.1.4"
 __status__ = "good"
 
 
@@ -23,6 +24,7 @@ def sensors():
     This function is called alongside the three main threads and creates two more threads inside its own thread
     '''
     gode.init()
+    fode.init()
     main_threadlist = [ threading.Thread( target = gode.goal,
                                           args = [],
                                           kwargs = {}),
@@ -66,4 +68,3 @@ for thread in main_threadlist:
 #wait for threads to join once programm is finished | thread internal check
 for thread in main_threadlist:
     thread.join()
-    

@@ -6,8 +6,8 @@ Pregame stuff
 """
 
 __author__ = "Lukas Haberkorn", "Martin Schwarz", "Torge Plate"
-__version__ = "1.4.0"
-__status__ = "WIP"
+__version__ = "1.4.1"
+__status__ = "good"
 
 
 import LVL3_classes as lvl3
@@ -28,6 +28,8 @@ def pregame():
 
         # 1.    
             # get USER names from website
+            
+            print("Waiting for playernames...")
             while True:
                 data = lvl3.json_read()
                 if data["player_1"]["name"] != "":
@@ -35,14 +37,16 @@ def pregame():
                 time.sleep(0.5)
             lvl3.player1_name = data["player_1"]["name"]
             lvl3.player2_name = data["player_2"]["name"]
-
+            print("Received playernames!")
+            
             # wait for USER button press, drone is turned on
             while True:
                 data = lvl3.json_read()
-                if data["button_power"] == "True":
+                if data["button_power"] is True:
                     break
                 time.sleep(0.5)
-            
+            print("USER Button 1 pressed!")
+
             # try to notify AuVAReS
             for i in range(5):
                 if lvl3.connection_status == True:
@@ -51,7 +55,7 @@ def pregame():
                     break
                 time.sleep(0.33)
             else:
-                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
+                print("ERROR: AuVAReS not found!")
         
         # 2.   
             for i in range(5): # try 5 times
@@ -61,15 +65,16 @@ def pregame():
                     break
                 time.sleep(0.33)
             else:
-                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
-
+                print("ERROR: AuVAReS not found!")
+            
         # 3.    
             # wait for USER has pressed drone start button
             while True:
                 data = lvl3.json_read()
-                if data["button_start"] == "True":
+                if data["button_start"] is True:
                     break
                 time.sleep(0.5)
+            print("USER Button 2 pressed!")
 
             # try to notify AuVAReS
             for i in range(5):
@@ -79,7 +84,7 @@ def pregame():
                     break
                 time.sleep(0.33)
             else:
-                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
+                print("ERROR: AuVAReS not found!")
 
         # 4.
             for i in range(5): # try 5 times
@@ -89,7 +94,7 @@ def pregame():
                     break
                 time.sleep(0.33)
             else:
-                print("tja es ist kein auvares da oder was") #?? was machen wir dann?
+                print("ERROR: AuVAReS not found!")
 
             # setting game id (=timestamp)
             lvl3.gameID = str( time.time()//1 )
@@ -100,7 +105,7 @@ def pregame():
 
             lvl3.goals_player1 = 0; lvl3.goals_player2 = 0
             lvl3.database_write( lvl3.gameID, lvl3.player1_name, 0)
-            lvl3.database_write( lvl3.gameID, lvl3.player1_name, 0)
+            lvl3.database_write( lvl3.gameID, lvl3.player2_name, 0)
             lvl3.set_status("ingame")
             lvl3.react_drone_connected(False)
             lvl3.react_drone_wants_gamestart(False)

@@ -6,11 +6,10 @@ interface for sending keywords/receiving ACKs
 """
 
 __author__ = "Marvin Otten"
-__version__ = "1.0.6"
-__status__ = "WIP"
+__version__ = "1.0.7"
+__status__ = "good"
 
 #import globally needed libraries
-import socket
 import time
 import threading
 import LVL3_classes as lvl3
@@ -42,7 +41,7 @@ def _recv():
 
         data = lvl3.connection_type_object.recv(1024)
         data = data.decode('utf-8')
-        
+#         print("DATA:", data)
         _data_interpret( data )
     
 
@@ -84,7 +83,7 @@ def _data_interpret( data ):
 
             ##print('here is keyword : ', data)
             # call react to keyword
-            _keyword_react( data )
+            _keyword_react( str(data) )
             return
             
         # check if data was acknowledgment
@@ -119,38 +118,38 @@ keyword : str type object. Provided by _recv() if keyword is detected.
 def _keyword_react( keyword ):
     
     if keyword == 'ping':
-        pass
+        return
 
     elif keyword == "notify_drone_powered":
-        pass
+        return
 
     elif keyword == 'notify_drone_connected':
-        lvl3.react_drone_connected()
-        pass
+        lvl3.react_drone_connected(True)
+        return
     
     elif keyword == 'notify_start_permission':
-        pass
+        return
     
     elif keyword == 'notify_gamestart':
-        lvl3.react_drone_wants_gamestart()
-        pass
+        lvl3.react_drone_wants_gamestart(True)
+        return
     
     elif keyword == 'notify_newgoal':
-        pass
+        return
     
     elif keyword == 'notify_foul':
-        pass
+        return
     
     elif keyword == 'notify_gameover':
-        pass
+        return
     
     elif keyword == 'please_wait':
         lvl3.react_drone_pleasewait()
-        pass
+        return
     
     elif keyword == 'please_resume':
         lvl3.react_drone_pleaseresume()
-        pass
+        return
 
 
 '''
@@ -170,39 +169,37 @@ keyword : str type object. Provided by _recv() if acknowledgement is detected.
 
 def _ack_react( ack ):
 
-    import LVL3_classes as lvl3
-
     if ack == 'hi':
-        lvl3.ping_ack_flag(True)
+        lvl3.ping_ack_flag = True
         lvl3.set_connection_status(True)
-        pass
+        return
         
     elif ack == 'connecting_drone':
-        pass
+        return
     
     elif ack == 'waiting_for_startbutton':
-        pass
+        return
     
     elif ack == 'positioning_drone':
-        pass
+        return
     
     elif ack == 'game_started':
-        pass
+        return
     
     elif ack == 'received_newgoal':
-        pass
+        return
     
     elif ack == 'received_foul':
-        pass
+        return
     
     elif ack == 'received_gamover':
-        pass
+        return
     
     elif ack == 'waiting':
-        pass
+        return
     
     elif ack == 'gaming':
-        pass
+        return
 
     return
 
@@ -233,12 +230,16 @@ def _ping():
     ping = ping.encode('utf-8')
     
     while True:
-        with lvl3.port_lock:
-            lvl3.connection_type_object.sendall( ping )
-            lvl3.ping_ack_flag = False
-            time.sleep(10**-3)
-        time.sleep(0.999)
-        if lvl3.ping_ack_flag == False : lvl3.set_connection_status(False)
+        try:
+            with lvl3.port_lock:
+                lvl3.connection_type_object.sendall( ping )
+                lvl3.ping_ack_flag = False
+                time.sleep(10**-2)
+            time.sleep(0.99)
+            if lvl3.ping_ack_flag == False : lvl3.set_connection_status(False)
+        except:
+            time.sleep(1)
+            continue
 
     
 #%%
@@ -251,8 +252,6 @@ desc
 
 def interface():
 
-    import LVL3_classes as lvl3
-
     # wait for connection
     while lvl3.connection_type_object == None:
         time.sleep(0.1)
@@ -262,8 +261,9 @@ def interface():
     # Create acknowledgment dictionary which pairs up keywords with acknowledgment
     global ack_dic
     ack_dic = {'ping' : 'hi',
-            'notify_drone_connect' : 'connection_established',
-            'notify_start_permission' : 'drone_in_position',
+               'notify_drone_powered' : 'connection_drone',
+            'notify_drone_connected' : 'waiting_for_startbutton',
+            'notify_start_permission' : 'positioning_drone',
             'notify_gamestart' : 'game_started',
             'notify_newgoal' : 'received_newgoal',
             'notify_foul' : 'received_foul',
@@ -289,4 +289,3 @@ def interface():
     for thread in if_threadlist:
         thread.join()
     return
-

@@ -3,11 +3,9 @@
 LEVEL 2
 Foul detection via GPIO
 
-> TBD: do we care who caused a foul? do we need to differantiate between the two sides?
-
 """
 __author__ = "Lukas Haberkorn"
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __status__ = "untested"
 
 import RPi.GPIO as GPIO
@@ -16,17 +14,17 @@ import time
 
 
 def init():
-    GPIO.setmode(GPIO.BOARD) # does this cause problems? There are two Threads doing this!! (&goaldetection)
-    GPIO.setup(38, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(38, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(40, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 def foul():
     while True:
         if lvl3.sys_status == "ingame":
-            if GPIO.input(38) == GPIO.LOW:
-                lvl3.react_foul( lvl3.connection_type_object )
-            if GPIO.input(40) == GPIO.LOW:
-                lvl3.react_foul( lvl3.connection_type_object )
+            if GPIO.input(38) == GPIO.HIGH:
+                lvl3.react_foul(1)
+            if GPIO.input(40) == GPIO.HIGH:
+                lvl3.react_foul(2)
         else:
             time.sleep(0.01)

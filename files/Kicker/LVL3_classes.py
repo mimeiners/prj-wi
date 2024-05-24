@@ -3,15 +3,13 @@
 LEVEL 3
 This file includes system wide used functions and variables
 
-> currently we do not differentiate who made a foul
-> initialize Server connection in init() has to be adapted for no connection / timeouts
-> we never check DB connection with client.health(), this is stupid!
+> we never check DB connection with client.health()
 
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
-__version__ = "2.3.1"
-__status__ = "WIP"
+__version__ = "2.3.2"
+__status__ = "good"
 
 
 import time
@@ -49,18 +47,16 @@ def init():
     ## initialize Server connection
     global ping_ack_flag ; ping_ack_flag = False
     global connection_type_object ; connection_type_object = None
-    find_thread = threading.Thread( target = _find_connection(), args = [], kwargs = {})
+    find_thread = threading.Thread( target = _find_connection, args = [], kwargs = {})
     find_thread.daemon = True
     find_thread.start()
 
 
     # init database connection
-    host = '192.168.26.98' # TO BE CHANGED
-    port = 8086
     token = 'Xady8ZXGEKBuRbEHaBMicR5Qcqmsdw7o9G8mu8q6gx4vsrvWiR9mV1-LLWoo26s8FaMfyZ0BVV1Hr8INrSPBCA=='
     global bucket; bucket = 'kicker'
     org = 'Hochschule Bremen'
-    url = "http://192.168.26.98:8086"
+    url = "http://10.0.0.1:8086"
 
     client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
     global write_api; write_api = client.write_api(write_options=SYNCHRONOUS)
@@ -68,7 +64,7 @@ def init():
 
     # Clear player names in json
     data = json_read()
-    data["name1"] = ""; data["name2"] = ""
+    data["player_1"]["name"] = ""; data["player_1"]["name"] = ""
     json_write(data)
 
 
@@ -76,20 +72,27 @@ def init():
 # connection functions - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def _find_connection():
-    server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_interface_obj.bind(('localhost' , 10000))
+    while True:
+        try:
+            server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server_interface_obj.bind(('10.0.0.1' , 10000))
 
-    # look for connection
-    server_interface_obj.listen(0)
-    
-    # create conncetion object
-    global connection_type_object
-    connection_type_object , client_address = server_interface_obj.accept()
+            # look for connection
+            server_interface_obj.listen(0)
+            
+            # create conncetion object
+            global connection_type_object
+            connection_type_object , client_address = server_interface_obj.accept()
+            
+            print("verbunden")
+            set_connection_status( True )
+            return
+        except:
+            time.sleep(1)
+            continue
 
-    set_connection_status( True )
-    return
 
-def server_send( keyword , delay = 10**-3 ):
+def server_send( keyword , delay = 10**-2 ):
     '''
     global function for sending data with the interface.
 
@@ -102,8 +105,9 @@ def server_send( keyword , delay = 10**-3 ):
     if connection_status == True:
         data = keyword.encode('utf-8')
         with port_lock :
-            connection_type_object.sendall(keyword)
+            connection_type_object.sendall(data)
             time.sleep(delay)
+
 
 def set_connection_status( set_status ):
     '''
@@ -130,16 +134,14 @@ def set_status( arg_ , delay = 0):
 
 # reaction functions, what to do when specific game events occur - - - - - - - - - - - - - - - - - - 
 
-def react_goal( player , connection_obj ): # reaction to event in goal_detection thread
+def react_goal( player ): # reaction to event in goal_detection thread
     '''
     called by the exception in the goal sensor thread
     '''
     global goals_player1; global goals_player2
-    global connection_status
-    global port_lock
-    global player1_name
-    global player2_name
+    global player1_name; global player2_name
     global gameID
+    global connection_status
     
     set_status("wait_ingame")
 
@@ -156,45 +158,38 @@ def react_goal( player , connection_obj ): # reaction to event in goal_detection
     if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
         
         if connection_status == True:
-            data = "notify_gameover"
-            data.encode('utf-8')
-            with port_lock :
-                connection_obj.sendall( data ) # sending keyword for foul
-                time.sleep(0.1)
+            server_send( "notify_gameover" )
         else:
-            time.sleep(10)
+            time.sleep(1)
         print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
-        time.sleep(5)
+        # Clear player names in json
+        data = json_read()
+        data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
+        json_write(data)
+        time.sleep(0.5)
         set_status("wait_pre")
         
 
     else: # no win condition was met
 
         if connection_status == True:
-            data = "notify_newgoal"
-            data.encode('utf-8')
-            with port_lock :
-                connection_obj.sendall( data ) # sending keyword for foul
-                time.sleep(0.1)
+            server_send( "notify_newgoal" ) # sending keyword for new goal
         else:
-            time.sleep(10)
-        time.sleep(2)
+            time.sleep(3)
+        time.sleep(1)
         set_status("ingame")
         print("we continue with ", goals_player1,":", goals_player2)
 
 
-def react_foul( connection_obj ): # reaction to event in foul_detection thread
+def react_foul( player ): # reaction to event in foul_detection thread
     '''
     called by the exception in the foul sensor thread
     '''
     global connection_status
-    global port_lock
 
     set_status("wait_ingame")
     if connection_status == True:
-        data = "notify_foul"
-        data.encode('utf-8')
-        with port_lock : connection_obj.sendall( data ) # sending keyword for foul
+        server_send("notify_foul")
     else:
         time.sleep(5)
     set_status("ingame")
@@ -250,5 +245,5 @@ def json_read():
 
 
 def json_write(input):
-    with open('/var/www/html/game_data.json', "r") as file:
+    with open('/var/www/html/game_data.json', "w") as file:
         json.dump(input, file, indent=4)
