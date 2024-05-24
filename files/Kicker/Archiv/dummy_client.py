@@ -19,10 +19,9 @@ def _recv():
         try :
             data = client.recv(1024)
             data = data.decode('utf-8')
-            print('data received: ', data)
+            print('data received in _recv: ', data)
             _data_interpret( data )
         except: 
-            time.sleep(0.33)
             continue
     # end of loop}
         
@@ -46,15 +45,14 @@ def _data_interpret( data ):
         #send acknowledgement
         if data == keyword:
             ack = ack_dic[keyword]
-            ack = ack.encode('utf-8')
             client_send(ack)
-            print('received keyword: ', keyword)
+            print('sended ack : ', ack)
             _keyword_react( data )
             return
             
         # check if data was acknowledgment
         elif data == ack_dic[keyword]:
-            print('received ack : ', data)
+
             _ack_react(data)
             return
             
@@ -73,8 +71,8 @@ def _keyword_react( keyword ):
         pass
 
     elif keyword == "notify_drone_powered":
-        print('RECEIVED : notify_drone_powered -> 5s')
-        time.sleep(5)
+        print('RECEIVED : notify_drone_powered')
+        time.sleep(0)
         client_send('notify_drone_connected')
         print('SEND : notify_drone_connected')
         pass
@@ -83,8 +81,8 @@ def _keyword_react( keyword ):
         pass
     
     elif keyword == 'notify_start_permission':
-        print('RECEIVED : notify_start_permission -> 3s')
-        time.sleep(3)
+        print('RECEIVED : notify_start_permission')
+        time.sleep(0)
         client_send('notify_gamestart')
         print('SEND : notify_gamestart')
         pass
@@ -93,15 +91,15 @@ def _keyword_react( keyword ):
         pass
     
     elif keyword == 'notify_newgoal':
-        print('RECEIVED : notify_newgoal (LETS GO)')
-        client_send('please_wait')
-        print('SEND : please_wait (kicker goal)')
+        #print('RECEIVED : notify_newgoal (LETS GO)')
+        #client_send('please_wait')
+        #print('SEND : please_wait (kicker goal)')
         pass
     
     elif keyword == 'notify_foul':
-        print('RECEIVED : notify_foul (MAAAAAANNNN)')
-        client_send('please_wait')
-        print('SEND : please_wait (kicker foul)')
+        #print('RECEIVED : notify_foul (MAAAAAANNNN)')
+        #client_send('please_wait')
+        #print('SEND : please_wait (kicker foul)')
         pass
     
     elif keyword == 'notify_gameover':
@@ -138,10 +136,6 @@ def _ack_react( ack ):
         pass
     
     elif ack == 'game_started':
-        print('RECEIVED : game_started')
-        time.sleep(10)
-        client_send('pleased_wait')
-        print('SEND : please_wait (drone triggered)')
         pass
     
     elif ack == 'received_newgoal':
@@ -154,8 +148,8 @@ def _ack_react( ack ):
         pass
     
     elif ack == 'waiting':
-        print('RECEIVED : waiting -> 5s')
-        time.sleep(5)
+        print('RECEIVED : waiting')
+        time.sleep(0)
         client_send('please_resume')
         print('SEND : please_resume')
         pass
@@ -200,8 +194,9 @@ def filler():
 client = st.socket(st.AF_INET, st.SOCK_STREAM)
 
 ack_dic = {'ping' : 'hi',
-           'notify_drone_connect' : 'connection_established',
-           'notify_start_permission' : 'drone_in_position',
+           'notify_drone_powered' : 'connection_drone',
+           'notify_drone_connected' : 'waiting_for_startbutton',
+           'notify_start_permission':'positioning_drone',
            'notify_gamestart' : 'game_started',
            'notify_newgoal' : 'received_newgoal',
            'notify_foul' : 'received_foul',
@@ -247,7 +242,7 @@ for thread in if_threadlist:
 
 
 
-client.close()
+#client.close()
 
 
 
