@@ -3,9 +3,9 @@ This is meant to be used as an imported modules file for the main file
 and is basically listing the auxilary functions (literally) the AuVAReS posesses.
 """
 __author__ = "Julian Höpe"
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 __status__ = " WIP"
-__date__ = "2024-05-17"
+__date__ = "2024-05-25"
 
 '''
 NOTE:
@@ -18,12 +18,17 @@ network_function:
 
 '''
 TODO: fill all  notify_... functions with routines
-TODO: gameover_routines
-TODO: implement file remove in VideoHandler.__init__
+TODO: fill function main_task (AI)
+TODO: gameover_routines - Drone landing
 '''
 
 '''
 Changes:
+
+1.0.5: (2024-05-25) / JH
+    - added method clearFile to class VideoHandler
+    - implemented showing messages on screens, when drone is too hot or battery too low when initializing (function: notify_drone_powered)
+    - updated function notify_gameover
 
 1.0.4: (2024-05-17) / JH
     - renamed function notify_drone_connect to notify_drone_powered
@@ -355,12 +360,11 @@ class VideoHandler():
 
     def __init__(self, filename : str, centerx : int = 700, centery : int = 400):
 
-        # TODO check if file exists and if it exists, delete the file (needed for gameover-routine)
-
         self.CountFrames = False                # FrameCounting disabled
         self.FrameNumber = 0                    # FrameNumber for Playback
         self.numberOfFrames = 300               # Playback 300 Frames := 10s @ 30 FPS
         self.filename = filename                # Filename .mp4-file, where tello stream will be recorded
+        self.clearFile()                        # Delete existing file with filename, if exists
         self.framecenterx = centerx     
         self.framecentery = centery
         self.fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -369,6 +373,23 @@ class VideoHandler():
 
     # def __del__(self):
     #     print("deleted")
+
+    def clearFile(self):
+
+        """
+        Check if the .mp4 file with the name stored in the `filename` attribute exists in the current working directory and delete it.
+        If the file does not exist, print a message indicating that the file does not exist.
+
+        Returns:
+            None
+        """
+
+        if os.path.isfile(self.filename):
+            os.remove(self.filename)        # remove VideoFile, if exists
+            print(f"Deleted {self.filename}")  
+        else:
+            print(f"{self.filename} does not exist and will be created")    # INFO-Output
+
 
     def videoPlayback(self, windowName : str, timedelay:int = 50):
 
@@ -506,6 +527,9 @@ def main_task(connection_established, s : socket, output : bool, videoManager : 
 
 def notify_drone_powered(s : socket, drone):
     global ssids
+    waitTime = 7    # Showing Battery Warning and Temperature Warning for 7 seconds
+    maxTmp = 70     # parameter for Temperature Warning of drone-init: Temp must lower than this value
+    minBat = 50     # parameter for Battery Warning of drone-init: Battery must be higher than value
 
     s.sendall(b'connecting_drone')  # send ACK to wi4.0
 
@@ -524,15 +548,27 @@ def notify_drone_powered(s : socket, drone):
         print(f'Temperature: {temperature}°C')
 
         # If Drone to hot or battery to low:
-        if (battery <= 50 or temperature >= 70):
+        if (battery <= minBat or temperature >= maxTmp):
             # s.sendall(b"Drone to Hot or Battery to Low")
             print('Drone to Hot or Battery to Low')
-            if temperature >= 70:   # Drone temp hits 70°C
-                #TODO AUSGABE AUF BILDSCHIRM, mit Hinweis auf Drohne ist warm
-                pass    # remove pass-statement
-            elif battery <= 50:     # Drone battery lower than 50%
-                #TODO AUSGABE AUF BILDSCHIRM - HINWEIS Dronen-Akku tauschen
-                pass    # remove pass-statement 
+            if temperature >= maxTmp:   # Drone temp hits 70°C (default of maxTmp)
+
+                temp_img = cv2.imread("files/Drohne/img/warning_temp.png")  # read img in
+                print(f"Drohne ist {temperature}°C warm - zu heiß!")
+                cv2.imshow("WARNING:TEMPERATURE", temp_img )                # display img
+
+                time.sleep(waitTime)       # sleep for 7 seconds (default)
+                cv2.destroyWindow("WARNING:TEMPERATURE")    # close window
+
+
+            elif battery <= minBat:     # Drone battery lower than 50% (default of minBat)
+
+                batt_img = cv2.imread("files/Drohne/img/warning_battery.png")   # read img in
+                print(f"Drohne ist zu {battery}% geladen - Spielzeit eingeschränkt!") 
+                cv2.imshow("WARNING:BATTERY", batt_img)                         # display img
+
+                time.sleep(waitTime)        # sleep for 7 seconds (default)
+                cv2.destroyWindow("WARNING:BATTERY")    # close window
 
             # return None #TODO determine return
             return drone
@@ -664,13 +700,16 @@ def notify_gameover(s: socket, drone, videoManager : object):
     s.sendall(b"received_gameover")
 
     # GAME OVER ROUTINE
-    # TODO routine
-        # TODO init landung
-        # TODO check for landing success
+    
+    # Landing drone
+    # TODO init landung
+    # TODO check for landing success
 
-    # re-init Videomanager
+    # Re-init videoManager-object
     filename = getattr(videoManager, "filename")    # Read current filename in
-    videoManager.__init__(filename=filename)
+    videoManager.out.release()                      # Release capture object
+    cv2.destroyAllWindows()                         # destroy all cv2 windows opened
+    videoManager.__init__(filename=filename)        # reset all variables and clear video-file by deleting      
 
     # delete drone-object
     del drone
