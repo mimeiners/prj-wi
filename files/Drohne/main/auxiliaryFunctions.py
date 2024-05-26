@@ -594,8 +594,16 @@ def notify_drone_connected(s : socket) -> None:
 
 def notify_start_permission(s : socket, drone):
     s.sendall(b'positioning_drone')
-    # TODO get drone in position
+    # TODO get drone in position (without fully hardcoded takeoff)
     # TODO: If-Anweisung vorsehen, und senden, wenn Drohne in Position
+    
+    drone.takeoff()
+    time.sleep(3)
+    drone.set_speed(20)         # Set Speed to 20 cm / s
+    drone.move_up(100)         # Clear takeoff and ascend to safe height
+    time.sleep(3)
+    drone.move_forward(50)      # Take position over kicker
+    drone.rotate_clockwise(90)  # Rotate for horizontal alignment of
     
     print("Drohne in Position")     # Debug Output
     return True
@@ -714,3 +722,140 @@ def notify_gameover(s: socket, drone, videoManager : object):
     # delete drone-object
     del drone
 
+def tracking_inflight(Trackingmode, Object, filename):  # May be removed later
+    # For creating the tracking routine
+    '''
+    Trackingmode: 0 = No tracking, 1 = Tracking
+    Object: Wished object that should be tracked (kicker, red_ball or landingpad)
+    filename: Source of Video
+    '''
+    ############### Remove and Copy to main (if not already implemented)
+    import supervision as sv ## needed bc used here to draw lines and tracking center of object
+    
+    image_width = 1080      # From video_stream
+    image_height = 720
+    
+    # Set points of bars in video
+    h1_start = sv.Point(image_width / 3, 0)  # First horizontal line
+    h1_end = sv.Point(image_width / 3, image_height)
+
+    h2_start = sv.Point(image_width * 2 / 3, 0)  # Second horizontal line
+    h2_end = sv.Point(image_width * 2 / 3, image_height)
+
+    v1_start = sv.Point(0, image_height / 3)  # First vertical line
+    v1_end = sv.Point(image_width, image_height / 3)
+
+    v2_start = sv.Point(0, image_height * 2 / 3)  # Second vertical line
+    v2_end = sv.Point(image_width, image_height * 2 / 3)    
+    #-----
+    
+    
+    model = YOLO("path/to/model") # adjust later!!
+    
+    # Render lines in video
+    line_zone_h1 = sv.LineZone(start=h1_start, end=h1_end)
+    line_zone_h2 = sv.LineZone(start=h2_start, end=h2_end)
+    line_zone_v1 = sv.LineZone(start=v1_start, end=v1_end)
+    line_zone_v2 = sv.LineZone(start=v2_start, end=v2_end)
+    
+    # Box annotator configuration
+    box_annotator = sv.BoxAnnotator(
+        thickness=2,
+        text_thickness=1,
+        text_scale=0.5
+        )
+    
+    for result in model.track("videostream", tracker="custom_tracker.yaml", show=True, stream=True):
+        
+        frame = result.orig_img
+        detections = sv.Detections.from_yolov8(result)
+        
+        if result.boxes.id is not None:
+            detections.tracker_id = result.boxes.id.cpu().numpy.astype(int)
+        
+        detections = detections[detections.class_id != 0]      # to ignore unwanted detections
+        
+        labels = [
+            f"#{tracker_id}{model.model.names[class_id]}{confidence:0.2f}"
+            for _, confidence, class_id, _
+            in detections
+        
+        
+        # filter for wished object
+        desired_detections = [d for d in detections if model.names[d.class_id] == Object]
+        
+        if desired_detections:
+            detection = desired_detections[0]  # First detection
+            zone, instruction, center_x, center_y = evaluate_object_position(detection, image_width, image_height)
+            print(instruction)  # Debugging
+            
+            tracked_object = detection  # refresh tracked object
+            
+            # Show zone in video
+            cv2.putText(frame, zone, (int(center_x), int(center_y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        
+        ]
+        
+        frame= box_annotator.annotate(
+            scene=frame,
+            detections=detections,
+            label=labels
+            )
+        
+        # line_zone.trigger(detections)
+        
+    # Draw the dividing lines on the frame
+    cv2.line(frame, (int(h1_start.x), int(h1_start.y)), (int(h1_end.x), int(h1_end.y)), (0, 255, 0), 2)
+    cv2.line(frame, (int(h2_start.x), int(h2_start.y)), (int(h2_end.x), int(h2_end.y)), (0, 255, 0), 2)
+    cv2.line(frame, (int(v1_start.x), int(v1_start.y)), (int(v1_end.x), int(v1_end.y)), (0, 255, 0), 2)
+    cv2.line(frame, (int(v2_start.x), int(v2_start.y)), (int(v2_end.x), int(v2_end.y)), (0, 255, 0), 2)
+
+    cv2.imshow("yolov8", frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+    cv2.destroyAllWindows() # when landed, move later!
+
+
+
+def get_zone(center_x, center_y):
+    
+    global image_width
+    global image_height
+    
+    if center_x < image_width / 3:
+        if center_y < image_height / 3:
+            return "Oben Links"
+        elif center_y < 2 * image_height / 3:
+            return "Mitte Links"
+        else:
+            return "Unten Links"
+    elif center_x < 2 * image_width / 3:
+        if center_y < image_height / 3:
+            return "Mitte Oben"
+        elif center_y < 2 * image_height / 3:
+            return "Mitte Mitte"
+        else:
+            return "Mitte Unten"
+    else:
+        if center_y < image_height / 3:
+            return "Oben Rechts"
+        elif center_y < 2 * image_height / 3:
+            return "Mitte Rechts"
+        else:
+            return "Unten Rechts"
+
+def get_instruction(zone): # Instructions for Drone
+    # To Be filled with real instructions
+    instructions = {
+        "Oben Links": "Go Backwards and Right",
+        "Mitte Links": "Go Right",
+        "Unten Links": "Go Forward and Right",
+        "Mitte Oben": "Go Backwards",
+        "Mitte Mitte": "Stay",
+        "Mitte Unten": "Go Forward",
+        "Oben Rechts": "Go Backwards and Left",
+        "Mitte Rechts": "Go Left",
+        "Unten Rechts": "Go Forward and Left"
+    }
+    return instructions.get(zone, "Unknown zone")
