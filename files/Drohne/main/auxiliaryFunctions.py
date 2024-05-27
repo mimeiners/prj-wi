@@ -3,9 +3,9 @@ This is meant to be used as an imported modules file for the main file
 and is basically listing the auxilary functions (literally) the AuVAReS posesses.
 """
 __author__ = "Julian Höpe"
-__version__ = "1.0.5"
+__version__ = "1.0.6"
 __status__ = " WIP"
-__date__ = "2024-05-25"
+__date__ = "2024-05-27"
 
 '''
 NOTE:
@@ -24,6 +24,11 @@ TODO: gameover_routines - Drone landing
 
 '''
 Changes:
+
+1.0.6: (2024-05-27) / Samland
+    - added defs for object detections
+    - added YOLO import and the loop for object detections in main_task/ while connection_established.is_set()
+
 
 1.0.5: (2024-05-25) / JH
     - added method clearFile to class VideoHandler
@@ -83,6 +88,8 @@ import cv2
 import socket
 import threading
 from djitellopy import Tello            # Drone Package
+from ultralytics import YOLO            # YoloAI Package
+import torch                            # check for device (main_task)
 
 
 def connect_wifi_osx(ssid : str):
@@ -475,15 +482,66 @@ def main_task(connection_established, s : socket, output : bool, videoManager : 
 
     # main task function - planned content: AI video processign
     # function called in threat
-
     # Logic to be implemented
     #global s    # network connection
     # When connection established (optional):
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(f"Using device: {device}")
+    # YOLO-Modell laden
+    model = YOLO('best.pt')  # Pfad zum YOLOv8 Modell
+    model.to(device)  # Modell auf gpu setzen
+    
+    # Funktion zum Zeichnen des 3x3 Rasters
+    def draw_grid(img):
+        grid_color = (0, 255, 0)  # Farbe des Rasters
+        rows = 3
+        cols = 3
+        # Vertikale Linien zeichnen
+        for i in range(1, cols):
+            cv2.line(img, (i * img.shape[1] // cols, 0), (i * img.shape[1] // cols, img.shape[0]), grid_color, 1)
+        # Horizontale Linien zeichnen
+        for i in range(1, rows):
+            cv2.line(img, (0, i * img.shape[0] // rows), (img.shape[1], i * img.shape[0] // rows), grid_color, 1)
+
+    # Funktion zum Überprüfen, ob das Objekt das mittlere Raster verlässt
+    def check_middle_grid(x1, y1, x2, y2, img_width, img_height):
+        middle_grid_width = img_width // 3
+        middle_grid_height = img_height // 3
+        middle_grid_x1 = middle_grid_width
+        middle_grid_y1 = middle_grid_height
+        middle_grid_x2 = 2 * middle_grid_width
+        middle_grid_y2 = 2 * middle_grid_height
+        return not (x1 > middle_grid_x1 and y1 > middle_grid_y1 and x2 < middle_grid_x2 and y2 < middle_grid_y2)
 
     while connection_established.is_set():
         img  = videoManager.get_img()   # get Frame from Drone
         # INIT AI
+        img = cv2.resize(img, (640, 480))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Konvertiere BGR zu RGB
+        img = cv2.flip(img, 0)  # Vertikale Spiegelung
+        imgContour = img.copy()
 
+        # YOLO-Objekterkennung
+        results = model(img, imgsz=640)
+        object_detected = False # für die flugsteuerung
+        for result in results:
+            boxes = result.boxes
+            for box in boxes:
+                x1, y1, x2, y2 = box.xyxy[0]
+                conf = box.conf[0]
+                cls = box.cls[0]
+                if conf > 0.5:  # Mindestkonfidenz
+                    label = f"{model.names[int(cls)]} {conf:.2f}"
+                    # Überprüfen, ob das erkannte Objekt das zu überwachende Objekt ist
+                    if model.names[int(cls)] == target_object: # target_object ist je nach flughandlung zu beschreiben
+                        object_detected = True # für die flugsteuerung
+                        if check_middle_grid(x1, y1, x2, y2, img.shape[1], img.shape[0]):
+                            cv2.rectangle(imgContour, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)  # Rote Farbe, wenn Objekt das mittlere Raster verlässt
+                        else:
+                            cv2.rectangle(imgContour, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)  # Blaue Farbe, wenn Objekt im mittleren Raster
+                    else:
+                        cv2.rectangle(imgContour, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 255), 2)  # Gelbe Farbe für andere Objekte
+                    cv2.putText(imgContour, label, (int(x1), int(y1 - 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
         ### Video Ref is not active
         if not output:
             pass
