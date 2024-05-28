@@ -240,11 +240,8 @@ def _ping():
             print('ping not sended because %s \nconnection status is : %s' % ( e , lvl3.connection_status))
             lvl3.set_connection_status(False)
             lvl3.connection_type_object.close()
-            find_thread = threading.Thread( target = lvl3._find_connection, args = [], kwargs = {})
-            find_thread.daemon = True
-            find_thread.start()
-            while lvl3.connection_status == False:
-                time.sleep(0.1)
+            lvl3._find_connection()
+
 
     
 #%%

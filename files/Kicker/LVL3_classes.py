@@ -113,11 +113,7 @@ def server_send( keyword , delay = 10**-2 ):
         print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
         set_connection_status(False)
         connection_type_object.close()
-        find_thread = threading.Thread( target = _find_connection, args = [], kwargs = {})
-        find_thread.daemon = True
-        find_thread.start()
-        while connection_status == False:
-            time.sleep(0.1)
+        _find_connection()
 
 def set_connection_status( set_status ):
     '''
