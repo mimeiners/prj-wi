@@ -64,7 +64,7 @@ def init():
 
     # Clear player names in json
     data = json_read()
-    data["player_1"]["name"] = ""; data["player_1"]["name"] = ""
+    data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
     json_write(data)
 
 
