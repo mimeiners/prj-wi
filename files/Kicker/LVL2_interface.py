@@ -81,14 +81,12 @@ def _data_interpret( data ):
             #send acknowledgement
             lvl3.server_send( ack )
 
-            ##print('here is keyword : ', data)
             # call react to keyword
             _keyword_react( str(data) )
             return
             
         # check if data was acknowledgment
         elif data == ack_dic[ keyword ]:
-            ##print('here is ack: ', data)
             # call react to acknowledgement
             _ack_react( data )
             return
