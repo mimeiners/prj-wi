@@ -232,6 +232,7 @@ def _ping():
                 lvl3.ping_ack_flag = False
                 time.sleep(10**-3)
             time.sleep(0.999)
+            if lvl3.ping_ack_flag == False: lvl3.set_connection_status(False)
         except:pass
 
     
