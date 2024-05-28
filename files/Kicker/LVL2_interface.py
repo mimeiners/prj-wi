@@ -90,9 +90,7 @@ def _data_interpret( data ):
             # call react to acknowledgement
             _ack_react( data )
             return
-        
-    # data has not been recognised as a keyword or acknowledgement | No reaction given as of v.1.0.4
-    ##print('Undetermined message:', data)          
+                
     # end of loop}
     
     return
@@ -235,8 +233,6 @@ def _ping():
                 time.sleep(10**-3)
             time.sleep(0.999)
         except:pass
-        finally:
-            if lvl3.ping_ack_flag == False : lvl3.set_connection_status(False)
 
     
 #%%
