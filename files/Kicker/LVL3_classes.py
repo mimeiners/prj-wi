@@ -104,11 +104,11 @@ def server_send( keyword , delay = 10**-2 ):
     global connection_type_object
 
     tries = 0
-
+    data = keyword.encode('utf-8')
+    
     while tries < 4:
         try:
             if connection_status == True:
-                data = keyword.encode('utf-8')
                 with port_lock :
                     connection_type_object.sendall(data)
                     time.sleep(delay)
@@ -121,6 +121,8 @@ def server_send( keyword , delay = 10**-2 ):
             connection_type_object.close()
             _find_connection()
         tries += 1
+
+
 def set_connection_status( set_status ):
     '''
     boolean set_status
