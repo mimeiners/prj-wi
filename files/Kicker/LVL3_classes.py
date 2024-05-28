@@ -90,32 +90,9 @@ def _find_connection():
             set_connection_status( True )
             return
         except:
-            time.sleep(1)
+            time.sleep(.1)
             continue
 
-'''
-def _reconnection():
-    #try to reconnect
-    while True:
-        try:
-            global connection_type_object            
-            connection_type_object.close()
-            server_interface_obj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            server_interface_obj.bind(('10.0.0.1' , 10000))
-
-            # look for connection
-            server_interface_obj.listen(0)
-            
-            # create conncetion object
-            connection_type_object , client_address = server_interface_obj.accept()
-            
-            print("wieder verbunden")
-            set_connection_status( True )
-            return
-        except:
-            time.sleep(1)
-            continue
-'''  
 def server_send( keyword , delay = 10**-2 ):
     '''
     global function for sending data with the interface.

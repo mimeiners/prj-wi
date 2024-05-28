@@ -232,8 +232,19 @@ def _ping():
                 lvl3.ping_ack_flag = False
                 time.sleep(10**-3)
             time.sleep(0.999)
+            #if ack not received, set connection_status to False
             if lvl3.ping_ack_flag == False: lvl3.set_connection_status(False)
-        except:pass
+
+        #if ping could not be sended, close connection, find new connection
+        except Exception as e:
+            print('ping not sended because %s \nconnection status is : %s' % ( e , lvl3.connection_status))
+            lvl3.set_connection_status(False)
+            lvl3.connection_type_object.close()
+            find_thread = threading.Thread( target = lvl3._find_connection, args = [], kwargs = {})
+            find_thread.daemon = True
+            find_thread.start()
+            while lvl3.connection_status == False:
+                time.sleep(0.1)
 
     
 #%%
