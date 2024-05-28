@@ -38,11 +38,11 @@ def _recv():
 
     while True:
     # {start of loop
-
-        data = lvl3.connection_type_object.recv(1024)
-        data = data.decode('utf-8')
-#         print("DATA:", data)
-        _data_interpret( data )
+        try:
+            data = lvl3.connection_type_object.recv(1024)
+            data = data.decode('utf-8')
+            _data_interpret( data )
+        except:pass
     
 
 
