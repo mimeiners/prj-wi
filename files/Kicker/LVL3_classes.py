@@ -102,19 +102,25 @@ def server_send( keyword , delay = 10**-2 ):
 
     global port_lock
     global connection_type_object
-    
-    try:
-        if connection_status == True:
-            data = keyword.encode('utf-8')
-            with port_lock :
-                connection_type_object.sendall(data)
-                time.sleep(delay)
-    except Exception as e:
-        print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
-        set_connection_status(False)
-        connection_type_object.close()
-        _find_connection()
 
+    tries = 0
+
+    while tries < 4:
+        try:
+            if connection_status == True:
+                data = keyword.encode('utf-8')
+                with port_lock :
+                    connection_type_object.sendall(data)
+                    time.sleep(delay)
+                    tries = 5
+                    return
+                
+        except Exception as e:
+            print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
+            set_connection_status(False)
+            connection_type_object.close()
+            _find_connection()
+        tries += 1
 def set_connection_status( set_status ):
     '''
     boolean set_status
