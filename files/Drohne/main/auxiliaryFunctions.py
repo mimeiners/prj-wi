@@ -3,9 +3,9 @@ This is meant to be used as an imported modules file for the main file
 and is basically listing the auxilary functions (literally) the AuVAReS posesses.
 """
 __author__ = "Julian Höpe"
-__version__ = "1.0.4"
+__version__ = "1.0.6"
 __status__ = " WIP"
-__date__ = "2024-05-17"
+__date__ = "2024-05-27"
 
 '''
 NOTE:
@@ -18,12 +18,22 @@ network_function:
 
 '''
 TODO: fill all  notify_... functions with routines
-TODO: gameover_routines
-TODO: implement file remove in VideoHandler.__init__
+TODO: fill function main_task (AI)
+TODO: gameover_routines - Drone landing
 '''
 
 '''
 Changes:
+
+1.0.6: (2024-05-27) / Samland
+    - added defs for object detections
+    - added YOLO import and the loop for object detections in main_task/ while connection_established.is_set()
+
+
+1.0.5: (2024-05-25) / JH
+    - added method clearFile to class VideoHandler
+    - implemented showing messages on screens, when drone is too hot or battery too low when initializing (function: notify_drone_powered)
+    - updated function notify_gameover
 
 1.0.4: (2024-05-17) / JH
     - renamed function notify_drone_connect to notify_drone_powered
@@ -78,6 +88,8 @@ import cv2
 import socket
 import threading
 from djitellopy import Tello            # Drone Package
+from ultralytics import YOLO            # YoloAI Package
+import torch                            # check for device (main_task)
 
 
 def connect_wifi_osx(ssid : str):
@@ -355,12 +367,11 @@ class VideoHandler():
 
     def __init__(self, filename : str, centerx : int = 700, centery : int = 400):
 
-        # TODO check if file exists and if it exists, delete the file (needed for gameover-routine)
-
         self.CountFrames = False                # FrameCounting disabled
         self.FrameNumber = 0                    # FrameNumber for Playback
         self.numberOfFrames = 300               # Playback 300 Frames := 10s @ 30 FPS
         self.filename = filename                # Filename .mp4-file, where tello stream will be recorded
+        self.clearFile()                        # Delete existing file with filename, if exists
         self.framecenterx = centerx     
         self.framecentery = centery
         self.fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -369,6 +380,23 @@ class VideoHandler():
 
     # def __del__(self):
     #     print("deleted")
+
+    def clearFile(self):
+
+        """
+        Check if the .mp4 file with the name stored in the `filename` attribute exists in the current working directory and delete it.
+        If the file does not exist, print a message indicating that the file does not exist.
+
+        Returns:
+            None
+        """
+
+        if os.path.isfile(self.filename):
+            os.remove(self.filename)        # remove VideoFile, if exists
+            print(f"Deleted {self.filename}")  
+        else:
+            print(f"{self.filename} does not exist and will be created")    # INFO-Output
+
 
     def videoPlayback(self, windowName : str, timedelay:int = 50):
 
@@ -454,15 +482,66 @@ def main_task(connection_established, s : socket, output : bool, videoManager : 
 
     # main task function - planned content: AI video processign
     # function called in threat
-
     # Logic to be implemented
     #global s    # network connection
     # When connection established (optional):
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(f"Using device: {device}")
+    # YOLO-Modell laden
+    model = YOLO('best.pt')  # Pfad zum YOLOv8 Modell
+    model.to(device)  # Modell auf gpu setzen
+    
+    # Funktion zum Zeichnen des 3x3 Rasters
+    def draw_grid(img):
+        grid_color = (0, 255, 0)  # Farbe des Rasters
+        rows = 3
+        cols = 3
+        # Vertikale Linien zeichnen
+        for i in range(1, cols):
+            cv2.line(img, (i * img.shape[1] // cols, 0), (i * img.shape[1] // cols, img.shape[0]), grid_color, 1)
+        # Horizontale Linien zeichnen
+        for i in range(1, rows):
+            cv2.line(img, (0, i * img.shape[0] // rows), (img.shape[1], i * img.shape[0] // rows), grid_color, 1)
+
+    # Funktion zum Überprüfen, ob das Objekt das mittlere Raster verlässt
+    def check_middle_grid(x1, y1, x2, y2, img_width, img_height):
+        middle_grid_width = img_width // 3
+        middle_grid_height = img_height // 3
+        middle_grid_x1 = middle_grid_width
+        middle_grid_y1 = middle_grid_height
+        middle_grid_x2 = 2 * middle_grid_width
+        middle_grid_y2 = 2 * middle_grid_height
+        return not (x1 > middle_grid_x1 and y1 > middle_grid_y1 and x2 < middle_grid_x2 and y2 < middle_grid_y2)
 
     while connection_established.is_set():
         img  = videoManager.get_img()   # get Frame from Drone
         # INIT AI
+        img = cv2.resize(img, (640, 480))
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Konvertiere BGR zu RGB
+        img = cv2.flip(img, 0)  # Vertikale Spiegelung
+        imgContour = img.copy()
 
+        # YOLO-Objekterkennung
+        results = model(img, imgsz=640)
+        object_detected = False # für die flugsteuerung
+        for result in results:
+            boxes = result.boxes
+            for box in boxes:
+                x1, y1, x2, y2 = box.xyxy[0]
+                conf = box.conf[0]
+                cls = box.cls[0]
+                if conf > 0.5:  # Mindestkonfidenz
+                    label = f"{model.names[int(cls)]} {conf:.2f}"
+                    # Überprüfen, ob das erkannte Objekt das zu überwachende Objekt ist
+                    if model.names[int(cls)] == target_object: # target_object ist je nach flughandlung zu beschreiben
+                        object_detected = True # für die flugsteuerung
+                        if check_middle_grid(x1, y1, x2, y2, img.shape[1], img.shape[0]):
+                            cv2.rectangle(imgContour, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)  # Rote Farbe, wenn Objekt das mittlere Raster verlässt
+                        else:
+                            cv2.rectangle(imgContour, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)  # Blaue Farbe, wenn Objekt im mittleren Raster
+                    else:
+                        cv2.rectangle(imgContour, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 255), 2)  # Gelbe Farbe für andere Objekte
+                    cv2.putText(imgContour, label, (int(x1), int(y1 - 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
         ### Video Ref is not active
         if not output:
             pass
@@ -506,6 +585,9 @@ def main_task(connection_established, s : socket, output : bool, videoManager : 
 
 def notify_drone_powered(s : socket, drone):
     global ssids
+    waitTime = 7    # Showing Battery Warning and Temperature Warning for 7 seconds
+    maxTmp = 70     # parameter for Temperature Warning of drone-init: Temp must lower than this value
+    minBat = 50     # parameter for Battery Warning of drone-init: Battery must be higher than value
 
     s.sendall(b'connecting_drone')  # send ACK to wi4.0
 
@@ -524,15 +606,27 @@ def notify_drone_powered(s : socket, drone):
         print(f'Temperature: {temperature}°C')
 
         # If Drone to hot or battery to low:
-        if (battery <= 50 or temperature >= 70):
+        if (battery <= minBat or temperature >= maxTmp):
             # s.sendall(b"Drone to Hot or Battery to Low")
             print('Drone to Hot or Battery to Low')
-            if temperature >= 70:   # Drone temp hits 70°C
-                #TODO AUSGABE AUF BILDSCHIRM, mit Hinweis auf Drohne ist warm
-                pass    # remove pass-statement
-            elif battery <= 50:     # Drone battery lower than 50%
-                #TODO AUSGABE AUF BILDSCHIRM - HINWEIS Dronen-Akku tauschen
-                pass    # remove pass-statement 
+            if temperature >= maxTmp:   # Drone temp hits 70°C (default of maxTmp)
+
+                temp_img = cv2.imread("files/Drohne/img/warning_temp.png")  # read img in
+                print(f"Drohne ist {temperature}°C warm - zu heiß!")
+                cv2.imshow("WARNING:TEMPERATURE", temp_img )                # display img
+
+                time.sleep(waitTime)       # sleep for 7 seconds (default)
+                cv2.destroyWindow("WARNING:TEMPERATURE")    # close window
+
+
+            elif battery <= minBat:     # Drone battery lower than 50% (default of minBat)
+
+                batt_img = cv2.imread("files/Drohne/img/warning_battery.png")   # read img in
+                print(f"Drohne ist zu {battery}% geladen - Spielzeit eingeschränkt!") 
+                cv2.imshow("WARNING:BATTERY", batt_img)                         # display img
+
+                time.sleep(waitTime)        # sleep for 7 seconds (default)
+                cv2.destroyWindow("WARNING:BATTERY")    # close window
 
             # return None #TODO determine return
             return drone
@@ -558,8 +652,16 @@ def notify_drone_connected(s : socket) -> None:
 
 def notify_start_permission(s : socket, drone):
     s.sendall(b'positioning_drone')
-    # TODO get drone in position
+    # TODO get drone in position (without fully hardcoded takeoff)
     # TODO: If-Anweisung vorsehen, und senden, wenn Drohne in Position
+    
+    drone.takeoff()
+    time.sleep(3)
+    drone.set_speed(20)         # Set Speed to 20 cm / s
+    drone.move_up(100)         # Clear takeoff and ascend to safe height
+    time.sleep(3)
+    drone.move_forward(50)      # Take position over kicker
+    drone.rotate_clockwise(90)  # Rotate for horizontal alignment of
     
     print("Drohne in Position")     # Debug Output
     return True
@@ -664,14 +766,154 @@ def notify_gameover(s: socket, drone, videoManager : object):
     s.sendall(b"received_gameover")
 
     # GAME OVER ROUTINE
-    # TODO routine
-        # TODO init landung
-        # TODO check for landing success
+    
+    # Landing drone
+    # TODO init landung
+    # TODO check for landing success
 
-    # re-init Videomanager
+    # Re-init videoManager-object
     filename = getattr(videoManager, "filename")    # Read current filename in
-    videoManager.__init__(filename=filename)
+    videoManager.out.release()                      # Release capture object
+    cv2.destroyAllWindows()                         # destroy all cv2 windows opened
+    videoManager.__init__(filename=filename)        # reset all variables and clear video-file by deleting      
 
     # delete drone-object
     del drone
 
+def tracking_inflight(Trackingmode, Object, filename):  # May be removed later
+    # For creating the tracking routine
+    '''
+    Trackingmode: 0 = No tracking, 1 = Tracking
+    Object: Wished object that should be tracked (kicker, red_ball or landingpad)
+    filename: Source of Video
+    '''
+    ############### Remove and Copy to main (if not already implemented)
+    import supervision as sv ## needed bc used here to draw lines and tracking center of object
+    
+    image_width = 1080      # From video_stream
+    image_height = 720
+    
+    # Set points of bars in video
+    h1_start = sv.Point(image_width / 3, 0)  # First horizontal line
+    h1_end = sv.Point(image_width / 3, image_height)
+
+    h2_start = sv.Point(image_width * 2 / 3, 0)  # Second horizontal line
+    h2_end = sv.Point(image_width * 2 / 3, image_height)
+
+    v1_start = sv.Point(0, image_height / 3)  # First vertical line
+    v1_end = sv.Point(image_width, image_height / 3)
+
+    v2_start = sv.Point(0, image_height * 2 / 3)  # Second vertical line
+    v2_end = sv.Point(image_width, image_height * 2 / 3)    
+    #-----
+    
+    
+    model = YOLO("path/to/model") # adjust later!!
+    
+    # Render lines in video
+    line_zone_h1 = sv.LineZone(start=h1_start, end=h1_end)
+    line_zone_h2 = sv.LineZone(start=h2_start, end=h2_end)
+    line_zone_v1 = sv.LineZone(start=v1_start, end=v1_end)
+    line_zone_v2 = sv.LineZone(start=v2_start, end=v2_end)
+    
+    # Box annotator configuration
+    box_annotator = sv.BoxAnnotator(
+        thickness=2,
+        text_thickness=1,
+        text_scale=0.5
+        )
+    
+    for result in model.track("videostream", tracker="custom_tracker.yaml", show=True, stream=True):
+        
+        frame = result.orig_img
+        detections = sv.Detections.from_yolov8(result)
+        
+        if result.boxes.id is not None:
+            detections.tracker_id = result.boxes.id.cpu().numpy.astype(int)
+        
+        detections = detections[detections.class_id != 0]      # to ignore unwanted detections
+        
+        labels = [
+            f"#{tracker_id}{model.model.names[class_id]}{confidence:0.2f}"
+            for _, confidence, class_id, _
+            in detections
+        
+        
+        # filter for wished object
+        desired_detections = [d for d in detections if model.names[d.class_id] == Object]
+        
+        if desired_detections:
+            detection = desired_detections[0]  # First detection
+            zone, instruction, center_x, center_y = evaluate_object_position(detection, image_width, image_height)
+            print(instruction)  # Debugging
+            
+            tracked_object = detection  # refresh tracked object
+            
+            # Show zone in video
+            cv2.putText(frame, zone, (int(center_x), int(center_y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        
+        ]
+        
+        frame= box_annotator.annotate(
+            scene=frame,
+            detections=detections,
+            label=labels
+            )
+        
+        # line_zone.trigger(detections)
+        
+    # Draw the dividing lines on the frame
+    cv2.line(frame, (int(h1_start.x), int(h1_start.y)), (int(h1_end.x), int(h1_end.y)), (0, 255, 0), 2)
+    cv2.line(frame, (int(h2_start.x), int(h2_start.y)), (int(h2_end.x), int(h2_end.y)), (0, 255, 0), 2)
+    cv2.line(frame, (int(v1_start.x), int(v1_start.y)), (int(v1_end.x), int(v1_end.y)), (0, 255, 0), 2)
+    cv2.line(frame, (int(v2_start.x), int(v2_start.y)), (int(v2_end.x), int(v2_end.y)), (0, 255, 0), 2)
+
+    cv2.imshow("yolov8", frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+    cv2.destroyAllWindows() # when landed, move later!
+
+
+
+def get_zone(center_x, center_y):
+    
+    global image_width
+    global image_height
+    
+    if center_x < image_width / 3:
+        if center_y < image_height / 3:
+            return "Oben Links"
+        elif center_y < 2 * image_height / 3:
+            return "Mitte Links"
+        else:
+            return "Unten Links"
+    elif center_x < 2 * image_width / 3:
+        if center_y < image_height / 3:
+            return "Mitte Oben"
+        elif center_y < 2 * image_height / 3:
+            return "Mitte Mitte"
+        else:
+            return "Mitte Unten"
+    else:
+        if center_y < image_height / 3:
+            return "Oben Rechts"
+        elif center_y < 2 * image_height / 3:
+            return "Mitte Rechts"
+        else:
+            return "Unten Rechts"
+
+def get_instruction(zone): # Instructions for Drone
+    # To Be filled with real instructions
+    instructions = {
+        "Oben Links": "Go Backwards and Right",
+        "Mitte Links": "Go Right",
+        "Unten Links": "Go Forward and Right",
+        "Mitte Oben": "Go Backwards",
+        "Mitte Mitte": "Stay",
+        "Mitte Unten": "Go Forward",
+        "Oben Rechts": "Go Backwards and Left",
+        "Mitte Rechts": "Go Left",
+        "Unten Rechts": "Go Forward and Left"
+    }
+    return instructions.get(zone, "Unknown zone")

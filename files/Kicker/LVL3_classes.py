@@ -4,11 +4,12 @@ LEVEL 3
 This file includes system wide used functions and variables
 
 > we never check DB connection with client.health()
+> time.sleep()'s impacting gameflow could be adjusted a bit more
 
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
-__version__ = "2.3.2"
+__version__ = "2.3.3"
 __status__ = "good"
 
 
@@ -102,11 +103,14 @@ def server_send( keyword , delay = 10**-2 ):
     global port_lock
     global connection_type_object
     
-    if connection_status == True:
-        data = keyword.encode('utf-8')
-        with port_lock :
-            connection_type_object.sendall(data)
-            time.sleep(delay)
+    try:
+        if connection_status == True:
+            data = keyword.encode('utf-8')
+            with port_lock :
+                connection_type_object.sendall(data)
+                time.sleep(delay)
+    except Exception as e:
+        print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
 
 
 def set_connection_status( set_status ):
@@ -165,8 +169,9 @@ def react_goal( player ): # reaction to event in goal_detection thread
         # Clear player names in json
         data = json_read()
         data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
+        data["last_completed_game"] = gameID
         json_write(data)
-        time.sleep(0.5)
+        time.sleep(1)
         set_status("wait_pre")
         
 
@@ -175,7 +180,7 @@ def react_goal( player ): # reaction to event in goal_detection thread
         if connection_status == True:
             server_send( "notify_newgoal" ) # sending keyword for new goal
         else:
-            time.sleep(3)
+            time.sleep(1)
         time.sleep(1)
         set_status("ingame")
         print("we continue with ", goals_player1,":", goals_player2)
@@ -191,7 +196,7 @@ def react_foul( player ): # reaction to event in foul_detection thread
     if connection_status == True:
         server_send("notify_foul")
     else:
-        time.sleep(5)
+        time.sleep(1)
     set_status("ingame")
 
 
