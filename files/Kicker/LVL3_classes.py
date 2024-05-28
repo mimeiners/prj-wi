@@ -92,9 +92,10 @@ def _find_connection():
         except:
             time.sleep(1)
             continue
-        
+
+'''
 def _reconnection():
-    #try to reconnect if server_send failed
+    #try to reconnect
     while True:
         try:
             global connection_type_object            
@@ -114,7 +115,7 @@ def _reconnection():
         except:
             time.sleep(1)
             continue
-
+'''  
 def server_send( keyword , delay = 10**-2 ):
     '''
     global function for sending data with the interface.
@@ -134,9 +135,12 @@ def server_send( keyword , delay = 10**-2 ):
     except Exception as e:
         print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
         set_connection_status(False)
-        find_thread = threading.Thread( target = _reconnection, args = [], kwargs = {})
+        connection_type_object.close()
+        find_thread = threading.Thread( target = _find_connection, args = [], kwargs = {})
         find_thread.daemon = True
         find_thread.start()
+        while connection_status == False:
+            time.sleep(0.1)
 
 def set_connection_status( set_status ):
     '''
