@@ -140,30 +140,3 @@ class VideoHandler():
 
 ######################################################################################################
 
-VideoManager = VideoHandler("test1.mp4", fps=60, replayTime=10)
-
-def run(VideoManager):
-    # VideoManager.CountFrames = True
-    print("sleep 10 sek")
-    time.sleep(10)
-    print("videoRecord")
-    VideoManager.videoRecord()
-    print("run_record")
-    VideoManager.runRecord()
-    print("sleep 15 sek")
-    time.sleep(15)
-    print("replayVideo")
-    VideoManager.videoPlayback("Playback 1")
-    print("sleep 5 sek")
-    time.sleep(5)
-    print("replayVideo")
-    VideoManager.videoPlayback("Playback 2")
-    print("stopRecord")
-    VideoManager.stopRecord()
-
-
-main_thread = threading.Thread(target=run, args=(VideoManager, ))
-main_thread.start()
-main_thread.join()
-
-
