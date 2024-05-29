@@ -225,10 +225,6 @@ def _ping():
     ping = "ping"
     ping = ping.encode('utf-8')
 
-    #wait for first connection
-    while lvl3.connection_status == False:
-        time.sleep(0.001)
-
     while True:
         try:
             with lvl3.port_lock:
