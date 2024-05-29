@@ -1,10 +1,10 @@
 """
 This is the main file for the project.
 """
-__author__ = "Julian Höpe"
-__version__ = "1.0.2"
+__author__ = ("Julian Höpe", "Finn Katenkamp")
+__version__ = "1.0.3"
 __status__ = " WIP"
-__date__ = "2024-05-04"
+__date__ = "2024-05-29"
 
 '''
 NOTE:
@@ -16,6 +16,8 @@ This is the first approach of the main code
 
 '''
 Changes:
+1.0.3: (2024-05-29) / jHöpe, fKatenkamp
+    - updated objecthandling of VideoHandler object
 
 1.0.2: (2024-05-04) / JH
     - added imports
@@ -35,6 +37,7 @@ import cv2                              # Video Stream / Record
 import socket                           # Socket connection WohnInvest4.0
 import threading                        # Parallel Tasks
 from djitellopy import Tello            # Drone Package
+import VideoHandler as VH
 
 ##### Variables #####
 ssids = ["TELLO-303446", "TELLO-E9BB29", "TELLO-E9C3AE"]    # SSIDs of the drones
@@ -57,7 +60,7 @@ filename = 'file.mp4'                                       # Filename, where to
 '''
 
 ### INIT for recording
-videoManager = aux.VideoHandler(filename=filename)
+videoManager = VH.VideoHandler(filename=filename)
 
 
 ### Create a socket object
@@ -66,6 +69,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ### INIT the network connection and main task in separate threads
 connection_established = threading.Event()
 main_task_thread = aux.MainTaskThread(connection_established, s)
+
 network_connection_thread = threading.Thread(target=aux.network_connection, args=(s, main_task_thread, connection_established, videoManager, ))
 
 

@@ -25,6 +25,10 @@ TODO: gameover_routines - Drone landing
 '''
 Changes:
 
+1.0.7_ (2024-05-29) / jHöpe, fKatenkamp
+    - removed class VideoHandler
+    - updated objecthandling of VideoHandler object
+
 1.0.6: (2024-05-27) / Samland
     - added defs for object detections
     - added YOLO import and the loop for object detections in main_task/ while connection_established.is_set()
@@ -251,6 +255,10 @@ def network_connection(s : socket, main_task_thread, connection_established, vid
                     else: 
                         videoManager.set_drone(drone)       # init drone in videoManager-Object
                         print(f"Drone connected and initialized")
+                        
+                        videoManager.startRecord()          # start video recording
+                        print("Video recording started")
+                        
                         notify_drone_connected(s=s)         # Send Keyword to kicker, wait for start_permission
                      
 
@@ -267,7 +275,6 @@ def network_connection(s : socket, main_task_thread, connection_established, vid
                         notify_gamestart(s=s)  
                         main_task_thread.do_run = True      # Main_AI_Loop active
                         main_task_thread.output = True      # AI_results enabled
-                        videoManager.CountFrames = True     # Enable FrameCounting
                     else:
                         pass
                     
@@ -281,7 +288,6 @@ def network_connection(s : socket, main_task_thread, connection_established, vid
                     # Set Attributes for MainTask and VideoManager
                     main_task_thread.do_run = True      # Main_AI_Loop active
                     main_task_thread.output = False     # AI_results disabled
-                    videoManager.CountFrames = False    # Stop Counting Frames
 
                     # Routine 
                     notify_newgoal(s=s, videoManager=videoManager)
@@ -301,14 +307,12 @@ def network_connection(s : socket, main_task_thread, connection_established, vid
                     # Set Attributes for MainTask and VideoManager
                     main_task_thread.do_run = True      # Main_AI_Loop active
                     main_task_thread.output = False     # AI_results disabled
-                    videoManager.CountFrames = False    # Stop Counting Frames
 
                     notify_foul(s=s, videoManager=videoManager)
 
                     # Set Attributes for MainTask and VideoManager
                     main_task_thread.do_run = True      # Main_AI_Loop active
                     main_task_thread.output = True      # AI_results enabled
-                    videoManager.CountFrames = True     # Resume Counting Frames
 
 
                 ### END OF GAME ###
@@ -319,7 +323,6 @@ def network_connection(s : socket, main_task_thread, connection_established, vid
                     # Set Attributes for MainTask and VideoManager
                     main_task_thread.do_run = False      # Main_AI_Loop active
                     main_task_thread.output = False     # AI_results disabled
-                    videoManager.CountFrames = False    # Stop Counting Frames
                     notify_gameover(s=s, drone=drone, videoManager=videoManager)
 
 
@@ -361,124 +364,7 @@ class MainTaskThread(threading.Thread):
         """
         while self.do_run:
             main_task(self.connection_established, self.s, self.output)
-
-class VideoHandler():
-
-    def __init__(self, filename : str, centerx : int = 700, centery : int = 400):
-
-        self.CountFrames = False                # FrameCounting disabled
-        self.FrameNumber = 0                    # FrameNumber for Playback
-        self.numberOfFrames = 300               # Playback 300 Frames := 10s @ 30 FPS
-        self.filename = filename                # Filename .mp4-file, where tello stream will be recorded
-        # self.clearFile()                        # Delete existing file with filename, if exists
-        self.framecenterx = centerx     
-        self.framecentery = centery
-        self.fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        self.out = cv2.VideoWriter(filename = f"{self.filename}_out",
-                                   fourcc = self.fourcc,
-                                   fps = 10.0,
-                                   frameSize = (2*self.framecenterx, 2*self.framecentery))
-        self.drone = None                       # Drone object
-
-    # def __del__(self):
-    #     print("deleted")
-
-    def clearFile(self):
-
-        """
-        Check if the .mp4 file with the name stored in the `filename` attribute exists in the current working directory and delete it.
-        If the file does not exist, print a message indicating that the file does not exist.
-
-        Returns:
-            None
-        """
-
-        if os.path.isfile(self.filename):
-            os.remove(self.filename)        # remove VideoFile, if exists
-            print(f"Deleted {self.filename}")  
-        else:
-            print(f"{self.filename} does not exist and will be created")    # INFO-Output
-
-
-    def videoPlayback(self, windowName : str, timedelay:int = 50):
-
-        """
-        This function plays a specified portion of a video file and displays it on the screen.
-
-        Args:
-            windowName (str): The name of the window to display the video in.
-            timedelay (int, optional): A parameter that controls the playback speed. A higher value will result in slower playback.
-
-        Returns:
-            None
-        """    
-
-        # Create a VideoCapture object to read the video file
-        cap = cv2.VideoCapture(self.filename)
-
-        # Get the video properties
-        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        fps = cap.get(cv2.CAP_PROP_FPS)
-        print(fps, width,height)
-
-        startframe = self.FrameNumber - self.numberOfFrames     # Number of startframe, current Frame Number - frames to playback
-
-        # Set the position of the video file to the starting frame
-        cap.set(cv2.CAP_PROP_POS_FRAMES, startframe)
-
-        # Create a window and specify the HDMI output
-        cv2.namedWindow(windowName, cv2.WINDOW_NORMAL)
-        #cv2.setWindowProperty(windowName, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN) # Fullscreen
-        #cv2.setWindowProperty('windowName, cv2.WND_PROP_TOPMOST, 1)  # Keep the window on top
-        cv2.moveWindow(windowName, 0, 0)  # Move the window to the primary display
-
-        # Read and display frames until the desired number of frames is reached
-        for i in range(self.numberOfFrames):
-            # Read the next frame
-            ret, frame = cap.read()
-
-            # Check if the frame was successfully read
-            if not ret:
-                break
-
-            # Write the frame to the output video file
-            #out.write(frame)
-
-            # Display the frame in the window
-            cv2.imshow(windowName, frame)
-
-            # Break the loop if the 'q' key is pressed
-            if cv2.waitKey(timedelay) & 0xFF == ord('q'):
-                break
-
-        # Release the video file and destroy the window
-        cap.release()
-        cv2.destroyAllWindows()
-        return
-
-    def videoRecord(self):
-        while self.CountFrames:
-            img = self.get_img()
-            self.out.write(img)     # save frame to video
-            self.inc_FrameNumber()  # Increment Frame +1
-        return
-
-    def set_drone(self, drone):
-        self.drone = drone
-        return
-    
-    def get_img(self, drone):
-        self.img = drone.get_frame_read().frame
-        self.img = cv2.resize(self.img, (2*self.framecenterx, 2*self.framecentery))
-        self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
-        return self.img
-    
-    def inc_FrameNumber(self):
-        self.FrameNumber +=1
-        return
-    
-
+            
 
 def main_task(connection_established, s : socket, output : bool, videoManager : object):
 
@@ -558,7 +444,7 @@ def main_task(connection_established, s : socket, output : bool, videoManager : 
             if second_ball:
                 
                 # interrupt game
-                please_wait(s=s, videoManager=videoManager)
+                please_wait(s=s)
 
                 #TODO ROUTINE when second Ball detected
 
@@ -569,23 +455,23 @@ def main_task(connection_established, s : socket, output : bool, videoManager : 
             elif forbidden_intervention:
 
                 # interrupt game
-                please_wait(s=s, videoManager=videoManager)
+                please_wait(s=s)
 
                 #TODO ROUTINE when detected arm in playfield
 
                 # resume game
-                please_resume(s=s, videoManager=videoManager)
+                please_resume(s=s)
 
             # Other intervention
             elif other_intervention:
                                 
                 # interrupt game                
-                please_wait(s=s, videoManager=videoManager)
+                please_wait(s=s)
 
                 #TODO ROUTINE when other interverntion
 
                 # resume game
-                please_resume(s=s, videoManager=videoManager)
+                please_resume(s=s)
 
 def notify_drone_powered(s : socket):
     global ssids
@@ -688,7 +574,7 @@ def notify_gamestart(s : socket) -> None:
             time.sleep(0.5)     # wait 0.5s
             s.sendall(b'notify_gamestart')
 
-def please_resume(s : socket, videoManager : object) -> None:
+def please_resume(s : socket) -> None:
 
     """
     Notifies the server that AuVAReS is ready to continue the game and waits for ACK.
@@ -696,7 +582,6 @@ def please_resume(s : socket, videoManager : object) -> None:
 
     Args:
         s (socket): A socket object representing the network connection.
-        videoManager (object): An object representing the video manager.
 
     Returns:
         None
@@ -708,13 +593,12 @@ def please_resume(s : socket, videoManager : object) -> None:
         msg = s.recv(1024).decode().strip()
         if msg == "gaming":
             print("Continue Game")
-            videoManager.CountFrames = True     # reenable FrameCount
             return
         else:
             time.sleep(0.5) # wait 0.5s
             s.sendall(b'please_resume')
 
-def please_wait(s : socket, videoManager : object) -> None:
+def please_wait(s : socket) -> None:
 
     """
     Notifies the server to pause the game and waits for ACK.
@@ -722,7 +606,6 @@ def please_wait(s : socket, videoManager : object) -> None:
 
     Args:
         s (socket): A socket object representing the network connection.
-        videoManager (object): An object representing the video manager.
 
     Returns:
         None
@@ -734,7 +617,6 @@ def please_wait(s : socket, videoManager : object) -> None:
         msg = s.recv(1024).decode().strip()
         if msg == "waiting":
             print("Game paused")
-            videoManager.CountFrames = False     # disable FrameCounter
             break
         else:
             time.sleep(0.5) # wait 0.5s
@@ -771,10 +653,10 @@ def notify_gameover(s: socket, drone, videoManager : object):
     # TODO check for landing success
 
     # Re-init videoManager-object
-    filename = getattr(videoManager, "filename")    # Read current filename in
-    videoManager.out.release()                      # Release capture object
+    videoManager.stopRecord()                       # Stop recording
     cv2.destroyAllWindows()                         # destroy all cv2 windows opened
-    videoManager.__init__(filename=filename)        # reset all variables and clear video-file by deleting      
+    filename = getattr(videoManager, "filename")    # Read current filename in
+    videoManager.__init__(filename=filename)        # reset all variables     
 
     # delete drone-object
     del drone
