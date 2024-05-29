@@ -87,6 +87,8 @@ import cv2
 import socket
 import threading
 from djitellopy import Tello            # Drone Package
+from ultralytics import YOLO            # YoloAI Package
+import torch                            # check for device (main_task)
 
 
 def connect_wifi_osx(ssid : str):
