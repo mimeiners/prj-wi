@@ -158,12 +158,23 @@ def connect_wifi(ssids):
 
     # Get the interface name
     interface_name = "wlan0"
+    wifi_on = False     # wifi is not enabled
+    
+    while not wifi_on:
+        # Turn on Wi-Fi
+        os.system(f"nmcli radio wifi on")
 
-    # Turn on Wi-Fi
-    os.system(f"nmcli radio wifi on")
+        # Wait for Wi-Fi to be ready
+        time.sleep(5)
+        check_wifi = subprocess.check_output(["nmcli", "dev", "status"], universal_newlines=True)
+    
+        if interface_name in check_wifi and "disconnected" in check_wifi:
+            wifi_on = True
+            print("STATUS-WIFI: enabled")
+        else: 
+            print("STATUS-WIFI: not enabled")
+        
 
-    # Wait for Wi-Fi to be ready
-    time.sleep(5)
 
     # Scan for Wi-Fi networks
     try:
@@ -173,34 +184,38 @@ def connect_wifi(ssids):
         return False
 
     # Check if any of the specified Wi-Fi networks are available
-    for ssid in ssids:
-        if ssid in networks:
-            # Join the Wi-Fi network
-            try:
-                subprocess.check_call(["nmcli", "dev", "wifi", "connect", ssid])
-            except subprocess.CalledProcessError as e:
-                print(f"Error connecting to Wi-Fi network: {e}")
-                continue
+    connected = False           # connection not established
+    while not connected:
+        print("STATUS-DRONE-CONNECT: trying to connect")
+        for ssid in ssids:
+            if ssid in networks:
+                # Join the Wi-Fi network
+                try:
+                    subprocess.check_call(["nmcli", "dev", "wifi", "connect", ssid])
+                except subprocess.CalledProcessError as e:
+                    print(f"Error connecting to Wi-Fi network: {e}")
 
-            # Wait for Wi-Fi to connect
-            time.sleep(5)
+                # Wait for Wi-Fi to connect
+                time.sleep(5)
 
-            # Check if the Wi-Fi is connected
-            connected = False
-            while not connected:
+                # Check if the Wi-Fi is connected
+                #connected = False
+                #while not connected:
                 try:
                     output = subprocess.check_output(["nmcli", "dev", "status"], universal_newlines=True)
                     if interface_name in output and "connected" in output:
                         connected = True
+                    else:
+                        print("STATUS-DRONE-CONNECT: re-trying connection")
                 except subprocess.CalledProcessError as e:
                     print(f"Error checking Wi-Fi connection status: {e}")
-                    return False
+                    #return False
                 time.sleep(1)
 
-            return connected
+            #return connected
 
     # If none of the specified networks are available, return False
-    return False
+    return connected
 
 def network_connection(s : socket, main_task_thread, connection_established, videoManager : object):
 
