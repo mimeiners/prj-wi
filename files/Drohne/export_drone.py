@@ -23,7 +23,7 @@ def bounding_box_center(x1,x2,y1,y2): # Centerpoint der Boundingbox
     
     return center_x, center_y
 
-def process_angle(center_x, center_y): ## Muss noch angepasst werden
+def process_angle(center_x, center_y): 
     image_width = 640
     image_height = 480
 
@@ -37,15 +37,15 @@ def process_angle(center_x, center_y): ## Muss noch angepasst werden
     # Umrechnung des Winkels in Grad
     angle_degrees = math.degrees(angle_radians)
 
-    # Anpassen des Winkels, sodass 0° rechts unten ist
-    angle_degrees = (angle_degrees - 135) % 360
+    # Anpassen des Winkels, sodass 0° mittig rechts ist
+    angle_degrees = (angle_degrees -37) % 360
     if angle_degrees > 180:
         angle_degrees -= 360
 
     # Winkel auf ganze Zahl runden
-    angle_degrees = round(angle_degrees)
- 
-    return angle_degrees             
+    angle_degrees = -round(angle_degrees)
+
+    return angle_degrees            
 
 
 def draw_grid(img, h1, h2, v1, v2): # Funktion zum Zeichnen des Rasters
