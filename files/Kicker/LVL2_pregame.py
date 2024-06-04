@@ -8,7 +8,7 @@ Pregame stuff
 """
 
 __author__ = "Lukas Haberkorn", "Martin Schwarz", "Torge Plate"
-__version__ = "1.5.0"
+__version__ = "1.5.1"
 __status__ = "good"
 
 
@@ -126,8 +126,8 @@ def pregame():
                 
                 # Clear player names in json
                 data = lvl3.json_read()
-                data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
-                # data["last_completed_game"] = lvl3.gameID
+                data["player_1"]["name"] = ""; data["player_2"]["name"] = ""; data["button_stop"] = False
+                data["last_completed_game"] = lvl3.gameID
                 lvl3.json_write(data)
 
                 time.sleep(1)
