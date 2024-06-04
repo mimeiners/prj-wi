@@ -8,8 +8,11 @@
         "name": "",
         "score": 0
     },
-    "button_start": true,
-    "button_power": true,
+
+    "button_start": false,
+    "button_power": false,
+    "button_stop": false,
+ 
     "final_player_1": {
         "name": "",
         "score": 0

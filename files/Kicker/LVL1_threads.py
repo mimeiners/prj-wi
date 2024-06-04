@@ -1,15 +1,17 @@
 """
 
 LEVEL 1 (formerly 0 and 1)
-Initializing the first and second threading level. 
+Initializing the first and second threading level. Also includes emergency stop
 Has to be run as sudo for GPIO to work
 
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.1.4"
+__version__ = "1.2.0"
 __status__ = "good"
 
 
+
+import RPi.GPIO as GPIO
 import threading
 import LVL2_interface as infa
 import LVL2_goal_detection as gode
@@ -17,6 +19,24 @@ import LVL2_pregame as pre
 import LVL2_foul_detection as fode
 import LVL3_classes as lvl3
 
+
+def stop(channel):
+    '''
+    Interrup routine, emergency stop
+    argument is bodge
+    '''
+    lvl3.server_send("STOP")
+
+
+def emergency_stop():
+    '''
+    Thread for emergency stop button
+    '''
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(32, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(32, GPIO.FALLING, callback=stop, bouncetime=200)
+    while True:
+        pass
 
 
 def sensors():
@@ -30,6 +50,9 @@ def sensors():
                                           kwargs = {}),
                         
                         threading.Thread( target = fode.foul,
+                                          args = [],
+                                          kwargs = {}),
+                        threading.Thread( target = emergency_stop,
                                           args = [],
                                           kwargs = {})
                         ]
