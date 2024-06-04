@@ -172,10 +172,8 @@ def react_goal( player ): # reaction to event in goal_detection thread
 
     if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
         
-        if connection_status == True:
-            server_send( "notify_gameover" )
-        else:
-            time.sleep(1)
+        server_send( "notify_gameover" )
+
         print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
         # Clear player names in json
         data = json_read()
@@ -188,10 +186,8 @@ def react_goal( player ): # reaction to event in goal_detection thread
 
     else: # no win condition was met
 
-        if connection_status == True:
-            server_send( "notify_newgoal" ) # sending keyword for new goal
-        else:
-            time.sleep(1)
+        server_send( "notify_newgoal" ) # sending keyword for new goal
+
         time.sleep(1)
         set_status("ingame")
         print("we continue with ", goals_player1,":", goals_player2)
@@ -204,10 +200,8 @@ def react_foul( player ): # reaction to event in foul_detection thread
     global connection_status
 
     set_status("wait_ingame")
-    if connection_status == True:
-        server_send("notify_foul")
-    else:
-        time.sleep(1)
+    server_send("notify_foul")
+
     set_status("ingame")
 
 

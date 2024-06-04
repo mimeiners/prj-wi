@@ -50,15 +50,8 @@ def pregame():
             print("USER Button 1 pressed!")
 
             # try to notify AuVAReS
-            for i in range(5):
-                if lvl3.connection_status == True:
-                    data = "notify_drone_powered"
-                    lvl3.server_send( data )
-                    break
-                time.sleep(0.33)
-            else:
-                print("ERROR: AuVAReS not found!")
-        
+            lvl3.server_send( data )
+
         # 2.   
             for i in range(5): # try 5 times
                 if lvl3.connection_status == True: # check connection
@@ -79,14 +72,7 @@ def pregame():
             print("USER Button 2 pressed!")
 
             # try to notify AuVAReS
-            for i in range(5):
-                if lvl3.connection_status == True:
-                    data = "notify_start_permission"
-                    lvl3.server_send( data )
-                    break
-                time.sleep(0.33)
-            else:
-                print("ERROR: AuVAReS not found!")
+            lvl3.server_send( data )
 
         # 4.
             for i in range(5): # try 5 times
