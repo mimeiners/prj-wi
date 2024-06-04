@@ -93,6 +93,7 @@ def _find_connection():
             time.sleep(.1)
             continue
 
+
 def server_send( keyword , delay = 10**-2 ):
     '''
     global function for sending data with the interface.
@@ -103,24 +104,24 @@ def server_send( keyword , delay = 10**-2 ):
     global port_lock
     global connection_type_object
 
-    tries = 0
     data = keyword.encode('utf-8')
     
-    while tries < 4:
+    for i in range(6):
         try:
             if connection_status == True:
                 with port_lock :
                     connection_type_object.sendall(data)
                     time.sleep(delay)
-                    tries = 5
-                    return
-                
+                break
+            else: raise Exception('connection False')
+
         except Exception as e:
-            print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
-            set_connection_status(False)
-            connection_type_object.close()
-            _find_connection()
-        tries += 1
+            #print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
+            time.sleep(0.33)
+
+    else: 
+        #print('Sending %s failed; Timeout' % (keyword))
+        pass
 
 
 def set_connection_status( set_status ):
