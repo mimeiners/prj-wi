@@ -230,18 +230,17 @@ def _ping():
             with lvl3.port_lock:
                 lvl3.connection_type_object.sendall( ping )
                 lvl3.ping_ack_flag = False
-                time.sleep(10**-3)
-            time.sleep(0.999)
+                time.sleep(10**-2)
+            time.sleep(0.99)
             #if ack not received, set connection_status to False
-            if lvl3.ping_ack_flag == False: lvl3.set_connection_status(False)
+            if lvl3.ping_ack_flag == False: raise Exception('Ping NACK')
 
         #if ping could not be sended, close connection, find new connection
         except Exception as e:
-            print('ping not sended because %s \nconnection status is : %s' % ( e , lvl3.connection_status))
+            #print('ping not sended because %s \nconnection status is : %s' % ( e , lvl3.connection_status))
             lvl3.set_connection_status(False)
             lvl3.connection_type_object.close()
             lvl3._find_connection()
-
 
     
 #%%
