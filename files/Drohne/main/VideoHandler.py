@@ -104,7 +104,7 @@ class VideoHandler():
     
     def get_img(self):
         self.img = self.drone.get_frame_read().frame
-        print("type of self.img:",type(self.img))
+        # print("type of self.img:",type(self.img))
         if not (isinstance(self.img, ndarray)):
             print("no Frame recieved from ")
             self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
@@ -129,10 +129,12 @@ class VideoHandler():
     def videoRecord(self):
         while self.record:
             img = self.get_img()
-            if not (img == None):
-                self.video_buffer.append(img)
-                self.out.write(img)             # save frame to video
-                time.sleep(1/self.fps)
+            cv2.imshow("DroneVid", img);
+            self.video_buffer.append(img)
+            self.out.write(img)             # save frame to video
+            time.sleep(1.0 / self.fps)
+            #time.sleep(0.5);
+            
 
     def startRecord(self):
         self.record = True
@@ -146,3 +148,38 @@ class VideoHandler():
 
 ######################################################################################################
 
+from djitellopy import tello
+
+drone = tello.Tello()
+drone.connect()
+print("Battery: ", drone.get_battery())
+print("Temp.: ", drone.get_temperature())
+drone.streamon()
+
+
+VideoManager = VideoHandler("test2.mp4", fps=30, replay_time=10)
+VideoManager.set_drone(drone)
+
+
+def run(VideoManager):
+    print("sleep 10 sek")
+    time.sleep(10)
+    print("videoRecord")
+    VideoManager.videoRecord()
+    print("run_record")
+    VideoManager.startRecord()
+    print("sleep 15 sek")
+    time.sleep(15)
+    print("replayVideo")
+    # VideoManager.videoPlayback("Playback 1")
+    print("sleep 5 sek")
+    time.sleep(5)
+    print("replayVideo")
+    # VideoManager.videoPlayback("Playback 2")
+    print("stopRecord")
+    VideoManager.stopRecord()
+
+
+main_thread = threading.Thread(target=run, args=(VideoManager, ))
+main_thread.start()
+main_thread.join()
