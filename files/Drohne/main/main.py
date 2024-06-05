@@ -2,9 +2,9 @@
 This is the main file for the project.
 """
 __author__ = ("Julian Höpe", "Finn Katenkamp")
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 __status__ = " WIP"
-__date__ = "2024-05-29"
+__date__ = "2024-06-05"
 
 '''
 NOTE:
@@ -16,6 +16,9 @@ This is the first approach of the main code
 
 '''
 Changes:
+1.0.4: (2024-06-05) / JH
+    - added new thread for displaying kicker website
+
 1.0.3: (2024-05-29) / jHöpe, fKatenkamp
     - updated objecthandling of VideoHandler object
 
@@ -37,8 +40,9 @@ import cv2                              # Video Stream / Record
 import socket                           # Socket connection WohnInvest4.0
 import threading                        # Parallel Tasks
 # from Tello_M import Tello            # Drone Package
-import VideoHandler as VH
-import Flugsteuerung as FS
+import VideoHandler as VH               # VideoHandling AuVAReS
+import Flugsteuerung as FS              # Flight Controller and AI AuVAReS
+import Website_start_fullscreen as wsf  # Display Kicker Game Information
 
 ##### Variables #####
 ssids = ["TELLO-303446", "TELLO-E9BB29", "TELLO-E9C3AE"]    # SSIDs of the drones
@@ -49,6 +53,7 @@ kickerPORT = "1234"                                         # Port of the WohnIn
 
 filename = 'file.mp4'                                       # Filename, where to store the Video
 
+gameURL = "www.google.de"                                   # Website of Kicker displaying game information and instructions
 
 ##### Main #####
 
@@ -72,7 +77,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 connection_established = threading.Event()
 main_task_thread = aux.MainTaskThread(connection_established, s)
 network_connection_thread = threading.Thread(target=aux.network_connection, args=(s, main_task_thread, connection_established, videoManager, Flugcontroller, ))
-
+website_thread = threading.Thread(target=wsf.display_website_fullscreen(), args=(gameURL, ))
 
 # Get local machine name
 host = aux.socket.gethostname()
@@ -89,10 +94,12 @@ connection_established.set()
 ### Start the threads
 network_connection_thread.start()
 main_task_thread.start()
+# website_thread.start()
 
 # Wait for the threads to finish
 network_connection_thread.join()
 main_task_thread.join()
+# website_thread.join()
 
 # Clean up the connection
 s.close()

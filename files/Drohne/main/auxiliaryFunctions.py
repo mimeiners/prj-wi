@@ -3,9 +3,9 @@ This is meant to be used as an imported modules file for the main file
 and is basically listing the auxilary functions (literally) the AuVAReS posesses.
 """
 __author__ = "Julian Höpe"
-__version__ = "1.0.7"
+__version__ = "1.0.8"
 __status__ = " WIP"
-__date__ = "2024-05-29"
+__date__ = "2024-06-05"
 
 '''
 NOTE:
@@ -24,6 +24,10 @@ TODO: gameover_routines - Drone landing
 
 '''
 Changes:
+
+1.0.8.: (2024-06-05) / sSamland, jHöpe, fKatenkamp
+    - changed structure in terms of flight control
+    - adjusted functions to new class Flugsteuerung
 
 1.0.7_ (2024-05-29) / jHöpe, fKatenkamp
     - removed class VideoHandler
@@ -321,7 +325,7 @@ def network_connection(s : socket, connection_established, videoManager : object
 
                     print(f"RECV:{decdata} ")
                     # Set Attributes for MainTask and VideoManager
-                    notify_gameover(s=s, drone=drone, videoManager=videoManager, Flugcontroller)
+                    notify_gameover(s=s, drone=drone, videoManager=videoManager, Flugcontroller=Flugcontroller)
 
         except KeyboardInterrupt:
             s.close()
@@ -436,20 +440,18 @@ def notify_drone_powered(s : socket):
 
                 temp_img = cv2.imread("files/Drohne/img/warning_temp.png")  # read img in
                 print(f"Drohne ist {temperature}°C warm - zu heiß!")
-                # cv2.imshow("WARNING:TEMPERATURE", temp_img )                # display img
-
-                # time.sleep(waitTime)       # sleep for 7 seconds (default)
-                # cv2.destroyWindow("WARNING:TEMPERATURE")    # close window
+                cv2.imshow("WARNING:TEMPERATURE", temp_img )                # display img
+                cv2.waitKey(waitTime * 1000)                                # wait for 7 seconds
+                cv2.destroyWindow("WARNING:TEMPERATURE")    # close window
 
 
             elif battery <= minBat:     # Drone battery lower than 50% (default of minBat)
 
                 batt_img = cv2.imread("files/Drohne/img/warning_battery.png")   # read img in
                 print(f"Drohne ist zu {battery}% geladen - Spielzeit eingeschränkt!") 
-                # cv2.imshow("WARNING:BATTERY", batt_img)                         # display img
-
-                # time.sleep(waitTime)        # sleep for 7 seconds (default)
-                # cv2.destroyWindow("WARNING:BATTERY")    # close window
+                cv2.imshow("WARNING:BATTERY", batt_img)                         # display img
+                cv2.waitKey(waitTime * 1000)                                # wait for 7 seconds
+                cv2.destroyWindow("WARNING:BATTERY")    # close window
 
             # return None #TODO determine return
             return drone
