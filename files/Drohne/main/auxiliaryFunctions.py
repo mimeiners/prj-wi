@@ -94,7 +94,7 @@ import time
 import cv2
 import socket
 import threading
-from Tello_M import Tello               # Drone Package
+from files.Drohne.main.TelloPy_modified.Tello_M import Tello               # Drone Package
 from ultralytics import YOLO            # YoloAI Package
 import torch                            # check for device (main_task)
 
