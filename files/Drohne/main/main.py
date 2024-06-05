@@ -38,6 +38,7 @@ import socket                           # Socket connection WohnInvest4.0
 import threading                        # Parallel Tasks
 from djitellopy import Tello            # Drone Package
 import VideoHandler as VH
+import Flugsteuerung as FS
 
 ##### Variables #####
 ssids = ["TELLO-303446", "TELLO-E9BB29", "TELLO-E9C3AE"]    # SSIDs of the drones
@@ -61,6 +62,7 @@ filename = 'file.mp4'                                       # Filename, where to
 
 ### INIT for recording
 videoManager = VH.VideoHandler(filename=filename)
+Flugcontroller = FS.Flugsteuerung(videoManager)
 
 
 ### Create a socket object
@@ -69,7 +71,6 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ### INIT the network connection and main task in separate threads
 connection_established = threading.Event()
 main_task_thread = aux.MainTaskThread(connection_established, s)
-
 network_connection_thread = threading.Thread(target=aux.network_connection, args=(s, main_task_thread, connection_established, videoManager, ))
 
 

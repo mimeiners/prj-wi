@@ -219,7 +219,7 @@ def connect_wifi(ssids):
     # If none of the specified networks are available, return False
     return connected
 
-def network_connection(s : socket, main_task_thread, connection_established, videoManager : object):
+def network_connection(s : socket, main_task_thread, connection_established, videoManager : object, Flugcontroller : object):
 
     """
     Establishes a network connection and handles incoming messages.
@@ -273,6 +273,8 @@ def network_connection(s : socket, main_task_thread, connection_established, vid
                         videoManager.set_drone(drone)       # init drone in videoManager-Object
                         print(f"Drone connected and initialized")
                         
+                        Flugcontroller.set_drone(drone)
+
                         videoManager.startRecord()          # start video recording
                         print("Video recording started")
                         
@@ -325,7 +327,7 @@ def network_connection(s : socket, main_task_thread, connection_established, vid
                     main_task_thread.do_run = True      # Main_AI_Loop active
                     main_task_thread.output = False     # AI_results disabled
 
-                    notify_foul(s=s, videoManager=videoManager)
+                    notify_foul(s, videoManager, Flugcontroller)
 
                     # Set Attributes for MainTask and VideoManager
                     main_task_thread.do_run = True      # Main_AI_Loop active
@@ -1049,12 +1051,13 @@ def notify_newgoal(s: socket, videoManager : object) -> None:
 
     return
 
-def notify_foul(s: socket, videoManager : object) -> None:
+def notify_foul(s: socket, videoManager : object, Flugconteoller : object) -> None:
     # Send ACK "received_foul"
     s.sendall(b"received_foul")
 
     # FOUL ROUTINE
     # Playback of previous 10 sec. (300 Frames)
+    Flugconteoller.emergency_land = True
     videoManager.videoPlayback(windowName = 'Replay Foul')
 
     return

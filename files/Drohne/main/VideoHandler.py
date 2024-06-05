@@ -78,14 +78,14 @@ class VideoHandler():
         Stops the video recording and releases the video writer.
     """
     
-    def __init__(self, filename : str, centerx : int = 700, centery : int = 400, fps:int = 30, replay_time:int = 10):
+    def __init__(self, filename : str, width_x : int = 640, width_y : int = 480, fps:int = 30, replay_time:int = 10):
 
         self.drone = None                                                                   # Drone object
 
         self.filename = filename                                                            # Filename .mp4-file, where tello stream will be recorded
 
-        self.framecenterx = centerx                                                         # 
-        self.framecentery = centery
+        self.frame_width_x = width_x                                                         # 
+        self.frame_width_y = width_y
         self.record = False                                                                 # bool for record control
         self.fps = fps                                                                      # in frames per second
         self.replay_time = replay_time                                                      # length of replay in seconds
@@ -96,7 +96,7 @@ class VideoHandler():
         self.out = cv2.VideoWriter(filename = self.filename,
                                    fourcc = self.fourcc,
                                    fps = self.fps,
-                                   frameSize = (2*self.framecenterx, 2*self.framecentery))
+                                   frameSize = (2*self.frame_width_x, 2*self.frame_width_y))
 
     def set_drone(self, drone):
         self.drone = drone
@@ -109,8 +109,9 @@ class VideoHandler():
             print("no Frame recieved from ")
             self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
 
-        self.img = cv2.resize(self.img, (2*self.framecenterx, 2*self.framecentery))
+        self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
         self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
+        self.img = cv2.flip(self.img, 0)
         return self.img
 
     def videoPlayback(self, windowName:str="Playback"):
@@ -129,12 +130,10 @@ class VideoHandler():
     def videoRecord(self):
         while self.record:
             img = self.get_img()
-            cv2.imshow("DroneVid", img);
-            self.video_buffer.append(img)
-            self.out.write(img)             # save frame to video
-            time.sleep(1.0 / self.fps)
-            #time.sleep(0.5);
-            
+            if not (img == None):
+                self.video_buffer.append(img)
+                self.out.write(img)             # save frame to video
+                time.sleep(1/self.fps)
 
     def startRecord(self):
         self.record = True
@@ -148,38 +147,3 @@ class VideoHandler():
 
 ######################################################################################################
 
-from djitellopy import tello
-
-drone = tello.Tello()
-drone.connect()
-print("Battery: ", drone.get_battery())
-print("Temp.: ", drone.get_temperature())
-drone.streamon()
-
-
-VideoManager = VideoHandler("test2.mp4", fps=30, replay_time=10)
-VideoManager.set_drone(drone)
-
-
-def run(VideoManager):
-    print("sleep 10 sek")
-    time.sleep(10)
-    print("videoRecord")
-    VideoManager.videoRecord()
-    print("run_record")
-    VideoManager.startRecord()
-    print("sleep 15 sek")
-    time.sleep(15)
-    print("replayVideo")
-    # VideoManager.videoPlayback("Playback 1")
-    print("sleep 5 sek")
-    time.sleep(5)
-    print("replayVideo")
-    # VideoManager.videoPlayback("Playback 2")
-    print("stopRecord")
-    VideoManager.stopRecord()
-
-
-main_thread = threading.Thread(target=run, args=(VideoManager, ))
-main_thread.start()
-main_thread.join()
