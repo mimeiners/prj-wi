@@ -3,9 +3,9 @@ This is meant to be used as an imported modules file for the main file
 and is basically listing the auxilary functions (literally) the AuVAReS posesses.
 """
 __author__ = ("Finn Katenkamp", "Julian Höpe")
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __status__ = " WIP"
-__date__ = "2024-05-29"
+__date__ = "2024-06-05"
 
 '''
 NOTE: NONE
@@ -16,6 +16,10 @@ TODO: NONE
 '''
 
 '''
+Changes:
+1.1.2: (2024-06-05) / fkatenkamp
+    - read imf from drone via UDP
+    
 Changes:
 1.1.1: (2024-05-29) / fkatenkamp,jhöpe
     - complete remake with threading
@@ -97,13 +101,15 @@ class VideoHandler():
                                    fourcc = self.fourcc,
                                    fps = self.fps,
                                    frameSize = (2*self.frame_width_x, 2*self.frame_width_y))
-
+        self.cap = None
+        
     def set_drone(self, drone):
         self.drone = drone
+        self.cap = cv2.VideoCapture(self.drone.get_udp_video_address())
         return
     
     def get_img(self):
-        self.img = self.drone.get_frame_read().frame
+        self.img = self.cap.read()
         # print("type of self.img:",type(self.img))
         if not (isinstance(self.img, ndarray)):
             print("no Frame recieved from ")
@@ -144,6 +150,4 @@ class VideoHandler():
         self.record = False
         self.t1.join()
         self.out.release()
-
-######################################################################################################
 

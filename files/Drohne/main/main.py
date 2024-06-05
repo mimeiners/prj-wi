@@ -36,7 +36,7 @@ import time                             # Timeloop
 import cv2                              # Video Stream / Record
 import socket                           # Socket connection WohnInvest4.0
 import threading                        # Parallel Tasks
-from djitellopy import Tello            # Drone Package
+# from Tello_M import Tello            # Drone Package
 import VideoHandler as VH
 import Flugsteuerung as FS
 
@@ -71,7 +71,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ### INIT the network connection and main task in separate threads
 connection_established = threading.Event()
 main_task_thread = aux.MainTaskThread(connection_established, s)
-network_connection_thread = threading.Thread(target=aux.network_connection, args=(s, main_task_thread, connection_established, videoManager, ))
+network_connection_thread = threading.Thread(target=aux.network_connection, args=(s, main_task_thread, connection_established, videoManager, Flugcontroller, ))
 
 
 # Get local machine name

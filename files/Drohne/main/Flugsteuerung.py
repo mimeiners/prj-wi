@@ -2,7 +2,6 @@
 import cv2
 import numpy as np
 from ultralytics import YOLO
-from djitellopy import Tello
 from datetime import datetime
 import torch
 import math
@@ -10,12 +9,13 @@ import threading
 
 
 class Flugsteuerung():
-    
+      
     def __init__(self, VideoManager) -> None:
         # Drone
         self.drone = None
         self.battery_level = None
         self.temprature = None
+        self.tackoff_xyz = {"up": 90, "forward":35, "right":20, "rotate":90} # initial flight input after start
         
         # run Variablen
         self.do_run = False
@@ -57,6 +57,11 @@ class Flugsteuerung():
         self.pos_v1 = self.image_height * self.v1
         self.pos_v2 = self.image_height * self.v2
 
+        # Kommunikation
+        self.com = {"foul": False,
+                    "second_ball": False,
+                    "human_intervention": False,
+                    "other": False}
 
     def set_drone(self, drone):
         self.drone = drone
@@ -292,13 +297,13 @@ class Flugsteuerung():
         return(left_right, -forward_backward, -up_down)
 
     def start(self):
-        # Fehlt noch im Jetson
         self.drone.takeoff()  # Drohne starten
         print("tello.takeoff ausgeführt")
         print("Starte Drohnenroutine zum Start")
-        self.drone.move_up(20)
-        self.drone.move_forward(20)
-        self.drone.rotate_clockwise(90)
+        self.drone.move_up(self.tackoff_xyz["up"])
+        self.drone.move_forward(self.tackoff_xyz["forward"])
+        self.drone.move_right(self.tackoff_xyz["right"])
+        self.drone.rotate_clockwise(self.tackoff_xyz["rotate"])
         self.drone.set_speed(10)
 
         self.do_run = True # Marker Betriebsmodus für Drohne
