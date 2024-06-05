@@ -1,30 +1,15 @@
 
-
-
-
-
-
-
-
-
 import logging
 import socket
 import time
-from collections import deque
-from threading import Thread, Lock
+from threading import Thread
 from typing import Optional, Union, Type, Dict
 
-from .enforce_types import enforce_types
-
-import av
-import numpy as np
-
+from enforce_types import enforce_types
 
 threads_initialized = False
 drones: Optional[dict] = {}
 client_socket: socket.socket
-
-
 
 class TelloException(Exception):
     pass
@@ -414,18 +399,6 @@ class Tello:
         address_schema = 'udp://@{ip}:{port}'  # + '?overrun_nonfatal=1&fifo_size=5000'
         address = address_schema.format(ip=self.VS_UDP_IP, port=self.vs_udp_port)
         return address
-
-    # def get_frame_read(self, with_queue = False, max_queue_len = 32) -> 'BackgroundFrameRead':
-    #     """Get the BackgroundFrameRead object from the camera drone. Then, you just need to call
-    #     backgroundFrameRead.frame to get the actual frame received by the drone.
-    #     Returns:
-    #         BackgroundFrameRead
-    #     """
-    #     if self.background_frame_read is None:
-    #         address = self.get_udp_video_address()
-    #         self.background_frame_read = BackgroundFrameRead(self, address, with_queue, max_queue_len)
-    #         self.background_frame_read.start()
-    #     return self.background_frame_read
 
     def send_command_with_return(self, command: str, timeout: int = RESPONSE_TIMEOUT) -> str:
         """Send command to Tello and wait for its response.
