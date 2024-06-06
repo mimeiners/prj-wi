@@ -9,7 +9,7 @@ This file includes system wide used functions and variables
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
-__version__ = "2.3.3"
+__version__ = "2.3.5"
 __status__ = "good"
 
 
@@ -54,19 +54,19 @@ def init():
 
 
     # init database connection
-    token = 'Xady8ZXGEKBuRbEHaBMicR5Qcqmsdw7o9G8mu8q6gx4vsrvWiR9mV1-LLWoo26s8FaMfyZ0BVV1Hr8INrSPBCA=='
+    token = 'TOKEN'
     global bucket; bucket = 'kicker'
     org = 'Hochschule Bremen'
-    url = "http://10.0.0.1:8086"
+    url = "http://127.0.0.1:8086"
 
     client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
     global write_api; write_api = client.write_api(write_options=SYNCHRONOUS)
     global query_api; query_api = client.query_api()
 
     # Clear player names in json
-    data = json_read()
-    data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
-    json_write(data)
+    # data = json_read()
+    # data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
+    # json_write(data)
 
 
 
@@ -93,7 +93,6 @@ def _find_connection():
             time.sleep(.1)
             continue
 
-
 def server_send( keyword , delay = 10**-2 ):
     '''
     global function for sending data with the interface.
@@ -104,24 +103,24 @@ def server_send( keyword , delay = 10**-2 ):
     global port_lock
     global connection_type_object
 
+    tries = 0
     data = keyword.encode('utf-8')
     
-    for i in range(6):
+    while tries < 4:
         try:
             if connection_status == True:
                 with port_lock :
                     connection_type_object.sendall(data)
                     time.sleep(delay)
-                break
-            else: raise Exception('connection False')
-
+                    tries = 5
+                    return
+                
         except Exception as e:
-            #print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
-            time.sleep(0.33)
-
-    else: 
-        #print('Sending %s failed; Timeout' % (keyword))
-        pass
+            print('%s not sended because %s \nconnection status is : %s' % (keyword , e , connection_status))
+            set_connection_status(False)
+            connection_type_object.close()
+            _find_connection()
+        tries += 1
 
 
 def set_connection_status( set_status ):
@@ -170,14 +169,17 @@ def react_goal( player ): # reaction to event in goal_detection thread
         print("player 2 scored")
         database_write( gameID, player2_name, goals_player2)
 
-    if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
+    if (goals_player1 == 2 or goals_player2 == 2) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
         
-        server_send( "notify_gameover" )
-
+        if connection_status == True:
+            server_send( "notify_gameover" )
+        else:
+            time.sleep(1)
         print("##########\n A GAME HAS BEEN FINISHED with", goals_player1,":", goals_player2,"\n##########\n")
         # Clear player names in json
         data = json_read()
         data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
+        data["final_player_1"]["name"] = player1_name; data["final_player_2"]["name"] = player2_name
         data["last_completed_game"] = gameID
         json_write(data)
         time.sleep(1)
@@ -186,8 +188,10 @@ def react_goal( player ): # reaction to event in goal_detection thread
 
     else: # no win condition was met
 
-        server_send( "notify_newgoal" ) # sending keyword for new goal
-
+        if connection_status == True:
+            server_send( "notify_newgoal" ) # sending keyword for new goal
+        else:
+            time.sleep(1)
         time.sleep(1)
         set_status("ingame")
         print("we continue with ", goals_player1,":", goals_player2)
@@ -200,8 +204,10 @@ def react_foul( player ): # reaction to event in foul_detection thread
     global connection_status
 
     set_status("wait_ingame")
-    server_send("notify_foul")
-
+    if connection_status == True:
+        server_send("notify_foul")
+    else:
+        time.sleep(1)
     set_status("ingame")
 
 
@@ -250,8 +256,12 @@ def database_write( gameid, playername, goalcount ):
 
 
 def json_read():
-    with open('/var/www/html/game_data.json', 'r') as file:
-        return json.load(file)
+    try:
+        with open('/var/www/html/game_data.json', 'r') as file:
+            return json.loads(file.read())
+    except:
+        print("dang json read error (R.I.P. Johnson)")
+        pass
 
 
 def json_write(input):
