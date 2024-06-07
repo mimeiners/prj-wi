@@ -1,5 +1,4 @@
 <?php
-// Funktion zum schreiben der Tore in die JSON Datei für die result Auswertung
 // Pfad zur JSON-Datei
 $jsonFilePath = 'game_data.json';
 
