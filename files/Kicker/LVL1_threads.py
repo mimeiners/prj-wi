@@ -2,7 +2,7 @@
 
 LEVEL 1 (formerly 0 and 1)
 Initializing the first and second threading level. Also includes emergency stop
-Has to be run as sudo for GPIO to work
+Has to be run as sudo for GPIO to work; "rpi-lgpio" library required!!
 
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"

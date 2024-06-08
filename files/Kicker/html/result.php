@@ -1,5 +1,6 @@
 <?php
-//Ergebnisausgabe nach dem Spiel
+session_start();
+$_SESSION["page"] = 4;
 // Pfad zur JSON-Datei
 $jsonFilePath = 'game_data.json';
 
@@ -25,10 +26,10 @@ if (file_exists($jsonFilePath)) {
 
         if ($finalScore1 > $finalScore2) {
             $winner = $finalPlayer1Name;
-            $resultMessage = "Der Gewinner ist $winner mit einem Spielstand von $finalScore1!";
+            $resultMessage = "Der Gewinner ist $winner mit einem Spielstand von $finalScore1 : $finalScore2!";
         } elseif ($finalScore2 > $finalScore1) {
             $winner = $finalPlayer2Name;
-            $resultMessage = "Der Gewinner ist $winner mit einem Spielstand von $finalScore2!";
+            $resultMessage = "Der Gewinner ist $winner mit einem Spielstand von $finalScore2 : $finalScore1!";
         } else {
             $resultMessage = "Das Spiel endet unentschieden mit einem Spielstand von $finalScore1 : $finalScore2!";
         }
@@ -69,7 +70,7 @@ if (file_exists($jsonFilePath)) {
         }
 
         .result-message {
-            font-size: 24px;
+            font-size: 30px;
             color: #333;
             margin: 20px 0;
         }
@@ -90,24 +91,57 @@ if (file_exists($jsonFilePath)) {
         button:hover {
             background-color: #0e547d;
         }
+
+        .game-status {
+            font-size: 18px;
+            padding: 10px 0;
+        }
+
+        .score {
+            font-size: 150px;
+            font-weight: bold;
+            color: #136b9a;
+        }
+
+        .player-name {
+            font-size: 50px;
+            font-weight: bold;
+            color: #136b9a;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Container-Inhalte hier -->
         <img src="Pictures/hsb-logo.png" width="300" height="139">
-        <h1>Spiel Ergebnis</h1>
+        <h1>Ergebnis:</h1>
+        
+        <div class="game-status">
+                    <span class="player-name"><?php echo "$finalPlayer1Name"; ?></span>
+                    <span class="player-name">&nbsp;:&nbsp;</span>
+                    <span class="player-name"><?php echo "$finalPlayer2Name"; ?></span>
+                    </div>
+                    <div class="game-status">
+                    
+                    <span class="score">    </span>
+                    <span class="score"><?php echo "$finalScore1"; ?></span>
+                    <span class="score">&nbsp;:&nbsp;</span>
+                    <span class="score"><?php echo "$finalScore2"; ?></span>
+                    <span class="score">    </span>
+                    
+        </div>
+
         <div class="result-message"><?php echo htmlspecialchars($resultMessage); ?></div>
         <div class="result-message">
             <?php
             if ($finalPlayer1Name !== $winner) {
-                echo "<p>$finalPlayer1Name Score: $finalScore1</p>";
+                #echo "<p>$finalPlayer1Name Tore: $finalScore1</p>";
             } elseif ($finalPlayer2Name !== $winner) {
-                echo "<p>$finalPlayer2Name Score: $finalScore2</p>";
+                #echo "<p>$finalPlayer2Name Tore: $finalScore2</p>";
             }
             ?>
         </div>
-        <form action="index.php" method="get">
+        <form action="normal_stop.php" method="get">
             <button type="submit">Zurück zur Startseite</button>
         </form>
     </div>
