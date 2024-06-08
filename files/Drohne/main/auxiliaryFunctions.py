@@ -225,6 +225,22 @@ def connect_wifi(ssids):
     # If none of the specified networks are available, return False
     return connected
 
+def ping_listener(s : socket):
+    """
+    This function will run in a dedicated thread. I an event of ping-request the ACK "hi" is sent towards WI4.0
+
+    Args:
+        s (socket): Socket object for network connection between AuVAReS and WI4.0
+    """
+
+    while True:
+        data = s.recv(1024)
+        msg = data.decode().strip()
+
+        if msg == "ping":
+            s.sendall(b'hi')
+            print("SENT-ACK for ping-request")
+
 def network_connection(s : socket, connection_established, videoManager : object, Flugcontroller : object):
 
     """
@@ -245,6 +261,10 @@ def network_connection(s : socket, connection_established, videoManager : object
         connection_established.set()
         s.sendall(b'HELLO SERVER FROM network_connection')
         print('Doing network connection')
+
+        # Starting ping thread to handle ping requests
+        ping_thread = threading.Thread(target=ping_listener, args=(s,), daemon=True) # daemon=True to stop this thread with the main thread
+        ping_thread.start()
 
     except Exception as e:
         print(f"Error connecting: {e}")
@@ -332,7 +352,9 @@ def network_connection(s : socket, connection_established, videoManager : object
                     notify_gameover(s=s, drone=drone, videoManager=videoManager, Flugcontroller=Flugcontroller)
 
         except KeyboardInterrupt:
+            ping_thread.join()
             s.close()
+
 
 class MainTaskThread(threading.Thread):
     """

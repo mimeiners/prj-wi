@@ -102,28 +102,28 @@ class VideoHandler():
                                    fps = self.fps,
                                    frameSize = (2*self.frame_width_x, 2*self.frame_width_y))
         self.cap = None
-        
+        self.ret = False
+        self.img = cv2.resize(cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png"), (2*self.frame_width_x, 2*self.frame_width_y))
+
     def set_drone(self, drone):
         self.drone = drone
         # self.cap = cv2.VideoCapture(self.drone.get_udp_video_address())
-        self.cap = cv2.VideoCapture(self.drone.get_udp_video_address()+"?overrun_nonfatal=1")
+        self.cap = cv2.VideoCapture(self.drone.get_udp_video_address()+"?overrun_nonfatal=1", cv2.CAP_FFMPEG)
         return
     
     def get_img(self):
-        # print("type of self.img:",type(self.img))
-        # if not (isinstance(self.img, ndarray)):
+        # try:
+        #     ret, self.img = self.cap.read()
+        #     self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
+        #     # self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
+        #     self.img = cv2.flip(self.img, 0)
+
+        # except:
         #     print("no Frame recieved from ")
-        #     self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
-        try:
-            ret, self.img = self.cap.read()
-            self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
-            # self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
-            self.img = cv2.flip(self.img, 0)
-        except:
-            print("no Frame recieved from ")
-            # self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
-            self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png")
-            self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
+        #     # self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
+        #     self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png")
+        #     self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
+
         return self.img
 
     def videoPlayback(self, windowName:str="Playback"):
@@ -140,20 +140,20 @@ class VideoHandler():
         cv2.destroyWindow(windowName)
 
     def videoRecord(self):
-        while self.record:
-            img = self.get_img()
-            # if not (img == None):
-            self.video_buffer.append(img)
-            self.out.write(img)             # save frame to video
-            time.sleep(1/self.fps)
+        while self.record and self.cap.isOpened():
+            self.ret, self.img = self.cap.read()
+            self.video_buffer.append(self.img)
+            self.out.write(self.img)             # save frame to video
 
     def startRecord(self):
         self.record = True
         self.t1 = threading.Thread(target=self.videoRecord)
         self.t1.start()
+        print("VideoHandler: startRecord")
 
     def stopRecord(self):
         self.record = False
         self.t1.join()
         self.out.release()
+        print("VideoHandler: stopRecord")
 

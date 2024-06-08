@@ -472,7 +472,7 @@ class Flugsteuerung():
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)[0]
             cv2.putText(self.img_copy, text, ((self.img.shape[1] - text_size[0] - 20), 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
             self.last_time_check = current_time_check # Für Generierung des Zeitunterschiedes von Frame zu Frame
-            self.draw_grid(self.img_copy)
+            self.draw_grid()
             cv2.imshow("Result", self.img_copy)
 
 
