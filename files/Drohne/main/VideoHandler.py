@@ -105,19 +105,25 @@ class VideoHandler():
         
     def set_drone(self, drone):
         self.drone = drone
-        self.cap = cv2.VideoCapture(self.drone.get_udp_video_address())
+        # self.cap = cv2.VideoCapture(self.drone.get_udp_video_address())
+        self.cap = cv2.VideoCapture(self.drone.get_udp_video_address()+"?overrun_nonfatal=1")
         return
     
     def get_img(self):
-        self.img = self.cap.read()
         # print("type of self.img:",type(self.img))
-        if not (isinstance(self.img, ndarray)):
+        # if not (isinstance(self.img, ndarray)):
+        #     print("no Frame recieved from ")
+        #     self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
+        try:
+            ret, self.img = self.cap.read()
+            self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
+            # self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
+            self.img = cv2.flip(self.img, 0)
+        except:
             print("no Frame recieved from ")
-            self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
-
-        self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
-        self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
-        self.img = cv2.flip(self.img, 0)
+            # self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
+            self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png")
+            self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
         return self.img
 
     def videoPlayback(self, windowName:str="Playback"):
@@ -136,10 +142,10 @@ class VideoHandler():
     def videoRecord(self):
         while self.record:
             img = self.get_img()
-            if not (img == None):
-                self.video_buffer.append(img)
-                self.out.write(img)             # save frame to video
-                time.sleep(1/self.fps)
+            # if not (img == None):
+            self.video_buffer.append(img)
+            self.out.write(img)             # save frame to video
+            time.sleep(1/self.fps)
 
     def startRecord(self):
         self.record = True

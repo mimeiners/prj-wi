@@ -39,10 +39,10 @@ class Flugsteuerung():
         
         # Video
         self.VideoManager = VideoManager
-        self.image_width = self.VideoManager.framecenterx # Bilddimensionen
-        self.image_height = self.VideoManager.framecentery
-        self.img = self.VideoManager.get_img()
-        self.img_copy = self.img.copy()
+        self.image_width = self.VideoManager.frame_width_x # Bilddimensionen
+        self.image_height = self.VideoManager.frame_width_y
+        self.img = None
+        self.img_copy = None
         self.delta_t_text = 0
         
         # Dynamische Begrenzungen Raster
@@ -69,7 +69,7 @@ class Flugsteuerung():
         self.temprature = self.drone.get_temperature()
         print(f"Flugcontroller initilized\nBattery:{self.battery_level} | Temperature:{self.temprature}")
 
-    def bounding_box_center(x1,x2,y1,y2) -> tuple: # Centerpoint der Boundingbox
+    def bounding_box_center(self,x1,x2,y1,y2) -> tuple: # Centerpoint der Boundingbox
         # Berechne die Mitte der Bounding Box
         center_x = (x1 + x2) / 2
         center_y = (y1 + y2) / 2
@@ -311,11 +311,16 @@ class Flugsteuerung():
         self.thread.start()
 
     def run(self):
+
+        left_right = 0  # default assign
+        forward_backward = 0
+        up_down = 0
+
         while self.do_run:
 
             # Frame von der Tello-Drohne abrufen    
             self.img = self.VideoManager.get_img()              ###### Vielleicht einrücken? -> Erproben
-            self.img_copy = self.img.copy()
+            self.img_copy = self.img#.copy()
             
             self.battery_level = self.drone.get_battery()# Akkustand abfragen
             self.temprature = self.drone.get_temperature()  # Temperatur abfragen
@@ -350,7 +355,7 @@ class Flugsteuerung():
                     if conf > 0.5:  # Mindestkonfidenz für zuverlässige Erkennung
                         label = f"{self.model.names[int(cls)]} {conf:.2f} Area: {(area):.1f}"
                         
-                        if self.model.names[int(cls)] == desired_object: # Für das getrackte Objekt: Kicker normal, z.B. landingpad bei Landung
+                        if self.model.names[int(cls)] == self.desired_object: # Für das getrackte Objekt: Kicker normal, z.B. landingpad bei Landung
                             area_desired = area
                             object_detected = True
                             cv2.rectangle(self.img_copy, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 2)  # Rote Farbe für desired_object
@@ -368,35 +373,35 @@ class Flugsteuerung():
             # Verarbeitung der Objekte und deren Positionen
 
             if object_detected and not self.landingrequest and self.do_run:
-                print(f"{desired_object} wurde mit einer Konfidenz von über 0.5 erkannt! Keine Landung erwünscht")
+                print(f"{self.desired_object} wurde mit einer Konfidenz von über 0.5 erkannt! Keine Landung erwünscht")
                 
                 # Verarbeitung
                 center_x, center_y = self.bounding_box_center(x1, x2, y1, y2)
-                detected_zone = self.get_zone(center_x, center_y, h1, h2, v1, v2)
+                self.detected_zone = self.get_zone(center_x, center_y)
                 self.last_objectdetection = datetime.now()     
-                left_right, forward_backward, up_down = self.get_instruction(detected_zone, area_desired)
+                left_right, forward_backward, up_down = self.get_instruction(self.detected_zone, area_desired)
                 # Debug
-                cv2.putText(self.img_copy, f"Center of Object ({desired_object}): ({int(np.round(center_x))}, {int(np.round(center_y))}), Area: {(area_desired):.1f} px", (20, self.img.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+                cv2.putText(self.img_copy, f"Center of Object ({self.desired_object}): ({int(np.round(center_x))}, {int(np.round(center_y))}), Area: {(area_desired):.1f} px", (20, self.img.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
                 cv2.circle(self.img_copy, (int(center_x), int(center_y)), 3, (0, 0, 255), -1)
-                cv2.putText(self.img_copy, f"Zone: {detected_zone}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+                cv2.putText(self.img_copy, f"Zone: {self.detected_zone}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
             elif object_detected and self.landingrequest and self.do_run:
-                print(f"{desired_object} wurde mit einer Konfidenz von über 0.5 erkannt! Landung erwünscht")
+                print(f"{self.desired_object} wurde mit einer Konfidenz von über 0.5 erkannt! Landung erwünscht")
                 
                 # Verarbeitung
                 center_x, center_y = self.bounding_box_center(x1, x2, y1, y2)
-                detected_zone = self.get_zone(center_x, center_y)
+                self.detected_zone = self.get_zone(center_x, center_y)
                 self.last_objectdetection = datetime.now()
-                left_right, forward_backward, up_down = self.get_landinginstruction(detected_zone, area_desired)
+                left_right, forward_backward, up_down = self.get_landinginstruction(self.detected_zone, area_desired)
                 # Debug
-                cv2.putText(self.img_copy, f"Zone: {detected_zone}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-                cv2.putText(self.img_copy, f"Center of Object ({desired_object}): ({int(np.round(center_x))}, {int(np.round(center_y))}), Area: {(area_desired):.1f} px", (20, self.img.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+                cv2.putText(self.img_copy, f"Zone: {self.detected_zone}", (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+                cv2.putText(self.img_copy, f"Center of Object ({self.desired_object}): ({int(np.round(center_x))}, {int(np.round(center_y))}), Area: {(area_desired):.1f} px", (20, self.img.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
                 cv2.circle(self.img_copy, (int(center_x), int(center_y)), 3, (0, 0, 255), -1)
                 
 
             elif not object_detected:
-                cv2.putText(self.img_copy, f"Center of Object ({desired_object}): Object not found!", (20, self.img.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
-                print(f"Objekt ({desired_object}) nicht im Bild oder die Konfidenz ist zu gering")
+                cv2.putText(self.img_copy, f"Center of Object ({self.desired_object}): Object not found!", (20, self.img.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+                print(f"Objekt ({self.desired_object}) nicht im Bild oder die Konfidenz ist zu gering")
 
                 if ((current_time_check - self.last_objectdetection).total_seconds() > 3) and not self.landingrequest:        # Drohne rotieren, wenn über 3 Sekunden kein Kicker erkannt wurde
                     if self.rotations <= 8:
@@ -415,7 +420,7 @@ class Flugsteuerung():
                     up_down = 0
 
             # Drehen der Drohne, wenn Drohne über Kicker
-            if not self.landingrequest and self.do_run and detected_zone == "Mitte Mitte" and (angle_landingpad > 15 or angle_landingpad < -15) and landpad_detected == True:
+            if not self.landingrequest and self.do_run and self.detected_zone == "Mitte Mitte" and (angle_landingpad > 15 or angle_landingpad < -15) and landpad_detected == True:
                 angle = int(angle_landingpad)   # Winkel zu Integer ändern
                 print("TESTAUSGABE: Drehung der Drohne:")
                 print("Angle:", angle)
@@ -436,11 +441,11 @@ class Flugsteuerung():
             
 
             # Auswertung für Landeanflug
-            if self.landingrequest and desired_object == "landingpad" and area_desired > 100000:
+            if self.landingrequest and self.desired_object == "landingpad" and area_desired > 100000:
                 print("Ich bin nah am Landepad, schalte um auf Pointer!")
                 near_landingpad = True
 
-            if self.landingrequest and desired_object == "pointer_kicker" and area_desired > 6000 and detected_zone == "Mitte Mitte":
+            if self.landingrequest and self.desired_object == "pointer_kicker" and area_desired > 6000 and self.detected_zone == "Mitte Mitte":
                 self.drone.rotate_counter_clockwise(90)
                 self.drone.land()
                 self.do_run = False
@@ -448,26 +453,26 @@ class Flugsteuerung():
 
             # Ändern des Grid zur Abfrage der Flugbefehle bei Landingrequest
             if self.landingrequest:
-                h1 = 2/9  
-                h2 = 3/9  # Rastermitte kleiner und nach oben
-                v1 = 4/9  # Nicht =< 1 wählen!
-                v2 = 5/9
+                self.h1 = 2/9  
+                self.h2 = 3/9  # Rastermitte kleiner und nach oben
+                self.v1 = 4/9  # Nicht =< 1 wählen!
+                self.v2 = 5/9
                 if near_landingpad:
                     print("Changed tracked object to pointer_kicker")
-                    desired_object = "pointer_kicker"
+                    self.desired_object = "pointer_kicker"
                 else:
-                    desired_object = "landingpad"
+                    self.desired_object = "landingpad"
 
 
             #Bildausgabe
-            text_leftcorner = f"Object being followed: {desired_object}; Landing-Request: {self.landingrequest}"
+            text_leftcorner = f"Object being followed: {self.desired_object}; Landing-Request: {self.landingrequest}"
             cv2.putText(self.img_copy, text_leftcorner, (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
             delta_t_text = (current_time_check - self.last_time_check).total_seconds()
             text = f"Frametime: {delta_t_text * 1000:.2f} ms"
             text_size = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)[0]
             cv2.putText(self.img_copy, text, ((self.img.shape[1] - text_size[0] - 20), 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
             self.last_time_check = current_time_check # Für Generierung des Zeitunterschiedes von Frame zu Frame
-            self.draw_grid(self.img_copy, h1, h2, v1, v2)
+            self.draw_grid(self.img_copy)
             cv2.imshow("Result", self.img_copy)
 
 

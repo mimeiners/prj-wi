@@ -94,7 +94,7 @@ import time
 import cv2
 import socket
 import threading
-from files.Drohne.main.TelloPy_modified.Tello_M import Tello               # Drone Package
+from Tello_M import Tello               # Drone Package
 from ultralytics import YOLO            # YoloAI Package
 import torch                            # check for device (main_task)
 
@@ -190,9 +190,13 @@ def connect_wifi(ssids):
     # Check if any of the specified Wi-Fi networks are available
     connected = False           # connection not established
     while not connected:
-        print("STATUS-DRONE-CONNECT: trying to connect")
+        networks = subprocess.check_output(["nmcli", "dev", "wifi"], universal_newlines=True)
+        # print("STATUS-DRONE-CONNECT: trying to connect")
         for ssid in ssids:
+            time.sleep(1)
+            print(f"trying to connect to {ssid}")
             if ssid in networks:
+                print("SSID LINE 198")
                 # Join the Wi-Fi network
                 try:
                     subprocess.check_call(["nmcli", "dev", "wifi", "connect", ssid])
@@ -438,7 +442,7 @@ def notify_drone_powered(s : socket):
             print('Drone to Hot or Battery to Low')
             if temperature >= maxTmp:   # Drone temp hits 70°C (default of maxTmp)
 
-                temp_img = cv2.imread("files/Drohne/img/warning_temp.png")  # read img in
+                temp_img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/hsb-logo.png")  # read img in
                 print(f"Drohne ist {temperature}°C warm - zu heiß!")
                 cv2.imshow("WARNING:TEMPERATURE", temp_img )                # display img
                 cv2.waitKey(waitTime * 1000)                                # wait for 7 seconds
@@ -447,7 +451,7 @@ def notify_drone_powered(s : socket):
 
             elif battery <= minBat:     # Drone battery lower than 50% (default of minBat)
 
-                batt_img = cv2.imread("files/Drohne/img/warning_battery.png")   # read img in
+                batt_img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png")   # read img in
                 print(f"Drohne ist zu {battery}% geladen - Spielzeit eingeschränkt!") 
                 cv2.imshow("WARNING:BATTERY", batt_img)                         # display img
                 cv2.waitKey(waitTime * 1000)                                # wait for 7 seconds
