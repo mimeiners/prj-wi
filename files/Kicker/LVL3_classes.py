@@ -9,7 +9,7 @@ This file includes system wide used functions and variables
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
-__version__ = "2.3.3"
+__version__ = "2.3.5"
 __status__ = "good"
 
 
@@ -54,19 +54,19 @@ def init():
 
 
     # init database connection
-    token = 'Xady8ZXGEKBuRbEHaBMicR5Qcqmsdw7o9G8mu8q6gx4vsrvWiR9mV1-LLWoo26s8FaMfyZ0BVV1Hr8INrSPBCA=='
+    token = 'TOKEN'
     global bucket; bucket = 'kicker'
     org = 'Hochschule Bremen'
-    url = "http://10.0.0.1:8086"
+    url = "http://127.0.0.1:8086"
 
     client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
     global write_api; write_api = client.write_api(write_options=SYNCHRONOUS)
     global query_api; query_api = client.query_api()
 
     # Clear player names in json
-    data = json_read()
-    data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
-    json_write(data)
+    # data = json_read()
+    # data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
+    # json_write(data)
 
 
 
@@ -169,7 +169,7 @@ def react_goal( player ): # reaction to event in goal_detection thread
         print("player 2 scored")
         database_write( gameID, player2_name, goals_player2)
 
-    if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
+    if (goals_player1 == 2 or goals_player2 == 2) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
         
         if connection_status == True:
             server_send( "notify_gameover" )
@@ -179,6 +179,7 @@ def react_goal( player ): # reaction to event in goal_detection thread
         # Clear player names in json
         data = json_read()
         data["player_1"]["name"] = ""; data["player_2"]["name"] = ""
+        data["final_player_1"]["name"] = player1_name; data["final_player_2"]["name"] = player2_name
         data["last_completed_game"] = gameID
         json_write(data)
         time.sleep(1)
@@ -255,8 +256,12 @@ def database_write( gameid, playername, goalcount ):
 
 
 def json_read():
-    with open('/var/www/html/game_data.json', 'r') as file:
-        return json.load(file)
+    try:
+        with open('/var/www/html/game_data.json', 'r') as file:
+            return json.loads(file.read())
+    except:
+        print("dang json read error (R.I.P. Johnson)")
+        pass
 
 
 def json_write(input):

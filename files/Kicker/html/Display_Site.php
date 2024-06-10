@@ -10,23 +10,18 @@ $_SESSION["page"] = 3;
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Game Running</title>
+    <title>Score Display</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background-color: #000000;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            max-width: 800px;
-            margin: 100px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            
         }
 
         table {
@@ -35,33 +30,32 @@ $_SESSION["page"] = 3;
 
         th {
             text-align: center;
-            color: #136b9a;
+            color: #ffffff;
             font-size: 24px;
-            padding-bottom: 20px;
+            
         }
 
         .game-status {
             font-size: 18px;
-            padding: 10px 0;
         }
 
         .score {
-            font-size: 150px;
+            font-size: 400px;
             font-weight: bold;
-            color: #136b9a;
+            color: #ffffff;
         }
 
 
         .game-data {
             font-size: 25px;
             font-weight: bold;
-            color: #136b9a;
+            color: #ffffff;
         }
 
         .player-name {
-            font-size: 50px;
+            font-size: 100px;
             font-weight: bold;
-            color: #136b9a;
+            color: #ffffff;
         }
 
         .player-data {
@@ -70,50 +64,15 @@ $_SESSION["page"] = 3;
             font-size: 18px;
         }
 
-        .button-container {
-        justify-content: center; /* Zentriert den Container horizontal */
-        display: flex;
-        gap: 10px; /* Abstand zwischen den Buttons */
-        }
-
-        button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #136b9a;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s;
-        }
-
-        .button2 {
-            background-color: red;
-        }
-
-        .button3 {
-            background-color: #136b9a;
-        }
-
-        button:hover {
-            background-color: #0e547d;
-        }
+       
     </style>
 </head>
 <body>
     <div class="container">
         <table>
             <tr>
-                <td colspan="2" align="center">
-                    <img src="Pictures/hsb-logo.png" width="300" height="139">
-                    <h1>Spiel läuft</h1>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    Unten geht es zurück auf die Startseite
+                <td colspan="2" align="left">
+                    <img src="Pictures/HSB_Logo_S_Weiss_sRGB.png" width="500">
                 </td>
             </tr>
             <tr>
@@ -137,19 +96,12 @@ $_SESSION["page"] = 3;
         </table>
         <div class="player-data">
         <span class="game-data" id="playerData">--</span>
-       
-        </div>
-        <div class="button-container">
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <button>Seite aktualisieren</button>
-        </form>
-        <form action="normal_stop.php" method="get">
-            <button class="button3" type="submit">Spiel abbrechen</button>
-        </form>
+        
         </div>
     </div>
 
     <script>
+
 
         // Fetch game data on page load
         window.onload = function() {
@@ -186,10 +138,7 @@ $_SESSION["page"] = 3;
 
 
         function updateGameStatus() {
-            if (gameId && lastCompletedGame && gameId === lastCompletedGame && player1 === "" && player2 === "") {
-
-                window.location.href = "result.php";
-            }else{
+        
 
             // AJAX request to get player 1's score
             var xhttpPlayer1 = new XMLHttpRequest();
@@ -197,9 +146,6 @@ $_SESSION["page"] = 3;
                 if (this.readyState == 4 && this.status == 200) {
                     var goalsPlayer1 = this.responseText;
                     
-                    if (player1 !== "") {
-                        writeGoalsToJSON(player1, goalsPlayer1);
-                    }
 
                     // Update player 1's score display
                     document.getElementById("goalsPlayer1").innerHTML = goalsPlayer1;
@@ -214,9 +160,6 @@ $_SESSION["page"] = 3;
                 if (this.readyState == 4 && this.status == 200) {
                     var goalsPlayer2 = this.responseText;
                     
-                    if (player2 !== "") {
-                    writeGoalsToJSON(player2, goalsPlayer2);
-                    }
                     
                     // Update player 2's score display
                     document.getElementById("goalsPlayer2").innerHTML = goalsPlayer2;
@@ -224,24 +167,22 @@ $_SESSION["page"] = 3;
             };
             xhttpPlayer2.open("GET", "get_game_status.php?player=" + player2 + "&game_id=" + gameId, true);
             xhttpPlayer2.send();
-        }
 
 
-        }
-
-        // Funktion zum Schreiben der Tore in die JSON-Datei
-        function writeGoalsToJSON(playerName, goals) {
-            var xhttpWriteGoals = new XMLHttpRequest();
-            xhttpWriteGoals.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // Überprüfe die Antwort der Serverseite, falls erforderlich
+            fetch('game_data.json')
+            .then(response => response.json())
+            .then(data => {
+                const player_1 = data.player_1;
+                if (player_1.name == "") {
+                    window.location.href = "QR.php";
                 }
-            };
-            xhttpWriteGoals.open("POST", "write_goals_to_json.php", true);
-            xhttpWriteGoals.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttpWriteGoals.send("player=" + playerName + "&goals=" + goals);
+            })
+            .catch(error => console.error('Error:', error));
+
         }
 
+
+        
 
     </script>
 </body>

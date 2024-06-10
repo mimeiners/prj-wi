@@ -3,9 +3,9 @@ This is meant to be used as an imported modules file for the main file
 and is basically listing the auxilary functions (literally) the AuVAReS posesses.
 """
 __author__ = ("Finn Katenkamp", "Julian Höpe")
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __status__ = " WIP"
-__date__ = "2024-05-29"
+__date__ = "2024-06-05"
 
 '''
 NOTE: NONE
@@ -16,6 +16,10 @@ TODO: NONE
 '''
 
 '''
+Changes:
+1.1.2: (2024-06-05) / fkatenkamp
+    - read imf from drone via UDP
+    
 Changes:
 1.1.1: (2024-05-29) / fkatenkamp,jhöpe
     - complete remake with threading
@@ -78,14 +82,14 @@ class VideoHandler():
         Stops the video recording and releases the video writer.
     """
     
-    def __init__(self, filename : str, centerx : int = 700, centery : int = 400, fps:int = 30, replay_time:int = 10):
+    def __init__(self, filename : str, width_x : int = 640, width_y : int = 480, fps:int = 30, replay_time:int = 10):
 
         self.drone = None                                                                   # Drone object
 
         self.filename = filename                                                            # Filename .mp4-file, where tello stream will be recorded
 
-        self.framecenterx = centerx                                                         # 
-        self.framecentery = centery
+        self.frame_width_x = width_x                                                         # 
+        self.frame_width_y = width_y
         self.record = False                                                                 # bool for record control
         self.fps = fps                                                                      # in frames per second
         self.replay_time = replay_time                                                      # length of replay in seconds
@@ -96,21 +100,30 @@ class VideoHandler():
         self.out = cv2.VideoWriter(filename = self.filename,
                                    fourcc = self.fourcc,
                                    fps = self.fps,
-                                   frameSize = (2*self.framecenterx, 2*self.framecentery))
+                                   frameSize = (2*self.frame_width_x, 2*self.frame_width_y))
+        self.cap = None
+        self.ret = False
+        self.img = cv2.resize(cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png"), (2*self.frame_width_x, 2*self.frame_width_y))
 
     def set_drone(self, drone):
         self.drone = drone
+        # self.cap = cv2.VideoCapture(self.drone.get_udp_video_address())
+        self.cap = cv2.VideoCapture(self.drone.get_udp_video_address()+"?overrun_nonfatal=1", cv2.CAP_FFMPEG)
         return
     
     def get_img(self):
-        self.img = self.drone.get_frame_read().frame
-        print("type of self.img:",type(self.img))
-        if not (isinstance(self.img, ndarray)):
-            print("no Frame recieved from ")
-            self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
+        # try:
+        #     ret, self.img = self.cap.read()
+        #     self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
+        #     # self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
+        #     self.img = cv2.flip(self.img, 0)
 
-        self.img = cv2.resize(self.img, (2*self.framecenterx, 2*self.framecentery))
-        self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
+        # except:
+        #     print("no Frame recieved from ")
+        #     # self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/main/hsb-logo.png")
+        #     self.img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png")
+        #     self.img = cv2.resize(self.img, (2*self.frame_width_x, 2*self.frame_width_y))
+
         return self.img
 
     def videoPlayback(self, windowName:str="Playback"):
@@ -127,22 +140,20 @@ class VideoHandler():
         cv2.destroyWindow(windowName)
 
     def videoRecord(self):
-        while self.record:
-            img = self.get_img()
-            if not (img == None):
-                self.video_buffer.append(img)
-                self.out.write(img)             # save frame to video
-                time.sleep(1/self.fps)
+        while self.record and self.cap.isOpened():
+            self.ret, self.img = self.cap.read()
+            self.video_buffer.append(self.img)
+            self.out.write(self.img)             # save frame to video
 
     def startRecord(self):
         self.record = True
         self.t1 = threading.Thread(target=self.videoRecord)
         self.t1.start()
+        print("VideoHandler: startRecord")
 
     def stopRecord(self):
         self.record = False
         self.t1.join()
         self.out.release()
-
-######################################################################################################
+        print("VideoHandler: stopRecord")
 

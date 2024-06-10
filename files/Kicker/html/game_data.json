@@ -1,25 +1,21 @@
 {
-    "game_id": "1716991852.0",
     "player_1": {
-        "name": "",
-        "score": 0
+        "name": "Martin"
     },
     "player_2": {
-        "name": "",
-        "score": 0
+        "name": "Amrvin"
     },
-
-    "button_start": false,
-    "button_power": false,
     "button_stop": false,
- 
+    "button_power": false,
+    "button_start": false,
+    "game_id": "1717768323.0",
     "final_player_1": {
-        "name": "",
-        "score": 0
+        "score": 0,
+        "name": "5"
     },
     "final_player_2": {
-        "name": "",
-        "score": 0
+        "score": 0,
+        "name": "qt3"
     },
-    "last_completed_game": "1716991852.0"
+    "last_completed_game": "1717766883.0"
 }
