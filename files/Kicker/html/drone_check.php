@@ -135,9 +135,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <table align="center">
-            <tr><td><img src="Pictures/hsb-logo.png" width="300" height="139"></td></tr>
+            <tr><td><img src="Pictures/hsb-logo.png" width="250"></td></tr>
             <br>
-            <tr><th><font size="8"><span style="color:#c84400"> <a>Hinweis: Akku einlegen und Drohne starten</a></span></th></tr>
+            <tr><th><font size="6"><span style="color:#c84400"> <a>Hinweis: Akku einlegen und Drohne starten</a></span></th></tr>
             <tr><td align="center">Durch das Drücken der Taste wird bestätigt, dass ein voller Akku in die Drohne eingesetzt und die Drohne gestartet wurde.<br></td></tr>
             <br>
         </table>
