@@ -56,8 +56,8 @@ if (file_exists($jsonFilePath)) {
         }
 
         .container {
-            max-width: 800px;
-            margin: 50px auto;
+            max-width: auto;
+            margin: auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -70,7 +70,7 @@ if (file_exists($jsonFilePath)) {
         }
 
         .result-message {
-            font-size: 30px;
+            font-size: 20px;
             color: #333;
             margin: 20px 0;
         }
@@ -98,13 +98,13 @@ if (file_exists($jsonFilePath)) {
         }
 
         .score {
-            font-size: 150px;
+            font-size: 100px;
             font-weight: bold;
             color: #136b9a;
         }
 
         .player-name {
-            font-size: 50px;
+            font-size: 30px;
             font-weight: bold;
             color: #136b9a;
         }
@@ -113,7 +113,7 @@ if (file_exists($jsonFilePath)) {
 <body>
     <div class="container">
         <!-- Container-Inhalte hier -->
-        <img src="Pictures/hsb-logo.png" width="300" height="139">
+        <img src="Pictures/hsb-logo.png" width="250">
         <h1>Ergebnis:</h1>
         
         <div class="game-status">

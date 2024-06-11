@@ -34,7 +34,7 @@ $link->close();
     <title>Login</title>
     <link rel="stylesheet" href="bootstrap.min.css">
     <style>
-        body { font: 16px sans-serif; }
+        body { font: 13px sans-serif; }
     </style>
 </head>
 <body>
@@ -43,7 +43,7 @@ $link->close();
             <div class="col-md-6">
                 <div class="card mt-5">
                     <div class="card-body">
-                        <h2 class="card-title">Bitte auf einen zweiten Spieler warten.</h2>
+                        <h2 class="card-title">Du bist auf der Seite "weiß". Eine zweite Person muss sich anmelden und wird Spieler der Seite "grün".</h2>
                         <div class="spinner-border text-primary" role="status"> </div>						
 						<?php
                         if (!empty($login_err)) {

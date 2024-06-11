@@ -1,21 +1,21 @@
 {
     "player_1": {
-        "name": "Martin"
+        "name": ""
     },
     "player_2": {
-        "name": "Amrvin"
+        "name": ""
     },
-    "button_stop": false,
-    "button_power": false,
-    "button_start": false,
-    "game_id": "1717768323.0",
+    "button_stop": true,
+    "button_power": true,
+    "button_start": true,
+    "game_id": "1718025220.0",
     "final_player_1": {
-        "score": 0,
-        "name": "5"
+        "score": 1,
+        "name": "Johnny_Cosinus"
     },
     "final_player_2": {
-        "score": 0,
-        "name": "qt3"
+        "score": 2,
+        "name": "Luzy"
     },
-    "last_completed_game": "1717766883.0"
+    "last_completed_game": "1718025220.0"
 }
