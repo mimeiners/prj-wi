@@ -9,7 +9,7 @@ This file includes system wide used functions and variables
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
-__version__ = "2.3.6"
+__version__ = "2.3.7"
 __status__ = "good"
 
 
@@ -169,7 +169,7 @@ def react_goal( player ): # reaction to event in goal_detection thread
         print("player 2 scored")
         database_write( gameID, player2_name, goals_player2)
 
-    if (goals_player1 == 2 or goals_player2 == 2) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
+    if (goals_player1 == 6 or goals_player2 == 6) or (goals_player1 == 5 and goals_player2 == 5): # check win condition
         
         if connection_status == True:
             server_send( "notify_gameover" )
@@ -210,7 +210,7 @@ def react_foul( player ): # reaction to event in foul_detection thread
     data = json_read()
     if player == 1:
         data["player_1"]["foul"] = True
-    if player == 1:
+    if player == 2:
         data["player_2"]["foul"] = True
     json_write(data)
     time.sleep(6)

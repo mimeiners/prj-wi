@@ -8,7 +8,7 @@ Pregame stuff
 """
 
 __author__ = "Lukas Haberkorn", "Martin Schwarz", "Torge Plate"
-__version__ = "1.5.2 "
+__version__ = "1.5.3"
 __status__ = "good"
 
 
@@ -103,18 +103,21 @@ def pregame():
         else: # while "ingame" or "wait_ingame"
             time.sleep(0.9)
             data = lvl3.json_read()
-            if data["button_stop"] is True:
-                lvl3.set_status("wait_ingame")
-                
-                if lvl3.connection_status == True:
-                    lvl3.server_send( "notify_gameover" )
-                print("##########\n A GAME HAS BEEN CANCELED with", lvl3.goals_player1,":", lvl3.goals_player2,"\n##########\n")
-                
-                # Clear player names in json
-                data = lvl3.json_read()
-                data["player_1"]["name"] = ""; data["player_2"]["name"] = ""; data["button_stop"] = False
-                data["last_completed_game"] = lvl3.gameID
-                lvl3.json_write(data)
+            try:
+                if data["button_stop"] is True:
+                    lvl3.set_status("wait_ingame")
+                    
+                    if lvl3.connection_status == True:
+                        lvl3.server_send( "notify_gameover" )
+                    print("##########\n A GAME HAS BEEN CANCELED with", lvl3.goals_player1,":", lvl3.goals_player2,"\n##########\n")
+                    
+                    # Clear player names in json
+                    data = lvl3.json_read()
+                    data["player_1"]["name"] = ""; data["player_2"]["name"] = ""; data["button_stop"] = False
+                    data["last_completed_game"] = lvl3.gameID
+                    lvl3.json_write(data)
 
-                time.sleep(1)
-                lvl3.set_status("wait_pre")
+                    time.sleep(1)
+                    lvl3.set_status("wait_pre")
+            except:
+                print("button_stop error")
