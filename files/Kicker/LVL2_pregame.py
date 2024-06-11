@@ -8,7 +8,7 @@ Pregame stuff
 """
 
 __author__ = "Lukas Haberkorn", "Martin Schwarz", "Torge Plate"
-__version__ = "1.5.1"
+__version__ = "1.5.2 "
 __status__ = "good"
 
 
@@ -50,7 +50,7 @@ def pregame():
             print("USER Button 1 pressed!")
 
             # try to notify AuVAReS
-            lvl3.server_send( data )
+            lvl3.server_send( "notify_drone_powered" )
 
         # 2.   
             for i in range(5): # try 5 times
@@ -72,7 +72,7 @@ def pregame():
             print("USER Button 2 pressed!")
 
             # try to notify AuVAReS
-            lvl3.server_send( data )
+            lvl3.server_send( "notify_start_permission" )
 
         # 4.
             for i in range(5): # try 5 times
