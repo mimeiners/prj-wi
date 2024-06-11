@@ -21,8 +21,8 @@ $_SESSION["page"] = 3;
         }
 
         .container {
-            max-width: 800px;
-            margin: 100px auto;
+            max-width: auto;
+            margin: auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -46,7 +46,7 @@ $_SESSION["page"] = 3;
         }
 
         .score {
-            font-size: 150px;
+            font-size: 100px;
             font-weight: bold;
             color: #136b9a;
         }
@@ -59,7 +59,7 @@ $_SESSION["page"] = 3;
         }
 
         .player-name {
-            font-size: 50px;
+            font-size: 30px;
             font-weight: bold;
             color: #136b9a;
         }
@@ -107,7 +107,7 @@ $_SESSION["page"] = 3;
         <table>
             <tr>
                 <td colspan="2" align="center">
-                    <img src="Pictures/hsb-logo.png" width="300" height="139">
+                    <img src="Pictures/hsb-logo.png" width="250">
                     <h1>Spiel läuft</h1>
                 </td>
             </tr>

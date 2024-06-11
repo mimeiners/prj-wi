@@ -3,13 +3,15 @@
 Created on Tue May 21 13:40:27 2024
 
 @author: Achraf Ben Mariem
+
+Mit Ctrl + Q das Vollbildfenster beenden
 """
 
 import subprocess
 
 def display_website_fullscreen():
     # URL der Webseite
-    url = "https://www.example.com"  # Ersetze dies durch die URL der Webseite, die du anzeigen möchtest
+    url = "localhost/QR.php"  # Ersetze dies durch die URL der Webseite, die du anzeigen möchtest
 
     # Öffnen der URL im Webbrowser im Vollbildmodus
     try:

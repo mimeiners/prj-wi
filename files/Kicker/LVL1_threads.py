@@ -6,7 +6,7 @@ Has to be run as sudo for GPIO to work; "rpi-lgpio" library required!!
 
 """
 __author__ = "Lukas Haberkorn", "Marvin Otten"
-__version__ = "1.2.0"
+__version__ = "1.2.2"
 __status__ = "good"
 
 
@@ -33,8 +33,8 @@ def emergency_stop():
     Thread for emergency stop button
     '''
     GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(32, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.add_event_detect(32, GPIO.FALLING, callback=stop, bouncetime=200)
+    GPIO.setup(36, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(36, GPIO.FALLING, callback=stop, bouncetime=200)
     while True:
         pass
 

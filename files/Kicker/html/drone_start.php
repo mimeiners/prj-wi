@@ -1,5 +1,6 @@
 <?php
 session_start();
+$buttonName = "hsfdofhis";
 $_SESSION["ingame"] = True;
 $_SESSION["page"] = 2;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -28,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Weiterleitung mit Spieler-Namen und Drohnenstatus
+        $buttonName = "geil";
         sleep(5);
         header("Location: back_home.php");
         exit(); // Beende das Skript, um eine doppelte Weiterleitung zu verhindern
@@ -50,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .container {
             max-width: 800px;
-            margin: 100px auto;
+            margin: auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
@@ -87,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         .player-data {
             text-align: center;
-            margin-top: 20px;
+            margin-top: auto;
             font-size: 18px;
         }
 
@@ -126,18 +128,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <table align="center">
-            <tr><td><img src="Pictures/hsb-logo.png" width="300" height="139"></td></tr>
+            <tr><td><img src="Pictures/hsb-logo.png" width="250" ></td></tr>
             <br>
-            <tr><th><font size="8"><span style="color:#c80000"> <a>Warung: Drohne starten </a></span></th></tr>
+            <tr><th><font size="6"><span style="color:#c80000"> <a>Warung: Drohne starten </a></span></th></tr>
             <tr><td align="center">Die Drohne startet nach Drücken von "Start". Der Nutzer stellt sicher, dass die Drohne korrekt platziert wurde und sich keine Personen im Gefahrenbereich befinden. Die HSB übernimmt keinerlei Verantwortung für Fahrlässiges Verhalten und Verletzungen.<br></td></tr>
             <br>
         </table>
         <br>
+
         <div class="button-container">
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <button type="submit">Start</button>
-        </form>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <button type="submit" id="myButton">Weiter</button>
+            </form>
         </div>
+
+        <script>
+            document.getElementById("myButton").addEventListener("click", function() {
+                this.textContent = "Spiel wird gestartet...";
+            });
+        </script>
+
         <div class="button-container">
         <form action="normal_stop.php" method="get">
             <button class="button3" type="submit">Spiel abbrechen</button>
