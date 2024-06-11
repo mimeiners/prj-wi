@@ -206,8 +206,18 @@ def react_foul( player ): # reaction to event in foul_detection thread
     set_status("wait_ingame")
     if connection_status == True:
         server_send("notify_foul")
-    else:
-        time.sleep(1)
+    
+    data = json_read()
+    if player == 1:
+        data["player_1"]["foul"] = True
+    if player == 1:
+        data["player_2"]["foul"] = True
+    json_write(data)
+    time.sleep(6)
+    
+    data = json_read()
+    data["player_1"]["foul"] = False; data["player_2"]["foul"] = False
+    json_write(data)
     set_status("ingame")
 
 
