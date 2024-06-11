@@ -9,7 +9,7 @@ This file includes system wide used functions and variables
 """
 
 __author__ = "Lukas Haberkorn", "Marvin Otten", "Torge Plate"
-__version__ = "2.3.5"
+__version__ = "2.3.6"
 __status__ = "good"
 
 
