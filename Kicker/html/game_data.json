@@ -1,0 +1,21 @@
+{
+    "player_1": {
+        "name": ""
+    },
+    "player_2": {
+        "name": ""
+    },
+    "button_stop": true,
+    "button_power": true,
+    "button_start": true,
+    "game_id": "1718025220.0",
+    "final_player_1": {
+        "score": 1,
+        "name": "Johnny_Cosinus"
+    },
+    "final_player_2": {
+        "score": 2,
+        "name": "Luzy"
+    },
+    "last_completed_game": "1718025220.0"
+}

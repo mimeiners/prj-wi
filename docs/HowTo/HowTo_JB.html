@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Kick-Off Meeting &#8212; PRJ2/PRJ3 Wohninvest 4.0</title>
+    <title>How-To Jupyter-Book (GitHub-Pages) erstellen &#8212; PRJ2/PRJ3 Wohninvest 4.0</title>
   
   
   
@@ -101,11 +101,12 @@ const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/Meetings/04-11_Protokoll';</script>
-    <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/Meetings/04-11_Protokoll.html" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/HowTo/HowTo_JB';</script>
+    <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/HowTo/HowTo_JB.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="AuVAReS System Anforderungen" href="../AuVAReS/01_Requirements.html" />
+    <link rel="next" title="Willkommen zur ewigen Liste!" href="../Kicker/01_Kicker.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../../about/unsyllabus.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -221,8 +222,8 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">HowTo</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../HowTo/HowTo_JB.html">How-To Jupyter-Book</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">How-To Jupyter-Book</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Kicker</span></p>
 <ul class="nav bd-sidenav">
@@ -233,8 +234,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../AuVAReS/01_Requirements.html">Anforderungen</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Meetings</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Kick-Off</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Meetings/04-11_Protokoll.html">Kick-Off</a></li>
 </ul>
 
     </div>
@@ -306,7 +307,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/mimeiners/prj-wi/edit/master/docs/Meetings/04-11_Protokoll.md" target="_blank"
+      <li><a href="https://github.com/mimeiners/prj-wi/edit/master/docs/HowTo/HowTo_JB.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -323,7 +324,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/mimeiners/prj-wi/issues/new?title=Issue%20on%20page%20%2Fdocs/Meetings/04-11_Protokoll.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/mimeiners/prj-wi/issues/new?title=Issue%20on%20page%20%2Fdocs/HowTo/HowTo_JB.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -353,7 +354,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/docs/Meetings/04-11_Protokoll.md" target="_blank"
+      <li><a href="../../_sources/docs/HowTo/HowTo_JB.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -424,7 +425,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -435,11 +438,20 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Kick-Off Meeting</h1>
+    <h1>How-To Jupyter-Book (GitHub-Pages) erstellen</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-der-tools-und-konfiguration">Installation der Tools und Konfiguration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jupyter-book-kompilieren-und-veroffentlichen">Jupyter-Book kompilieren und veröffentlichen</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -449,8 +461,41 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="kick-off-meeting">
-<h1>Kick-Off Meeting<a class="headerlink" href="#kick-off-meeting" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="how-to-jupyter-book-github-pages-erstellen">
+<h1>How-To Jupyter-Book (GitHub-Pages) erstellen<a class="headerlink" href="#how-to-jupyter-book-github-pages-erstellen" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://jupyterbook.org/intro.html">Offizielle JupyterBook Dokumentation</a></p>
+<section id="installation-der-tools-und-konfiguration">
+<h2>Installation der Tools und Konfiguration<a class="headerlink" href="#installation-der-tools-und-konfiguration" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">Book</span></code> installieren mit <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">jupyter-book</span></code></p></li>
+<li><p>Einstellungen sind in <code class="docutils literal notranslate"><span class="pre">_config.yml</span></code></p>
+<ul>
+<li><p><a class="reference external" href="https://jupyterbook.org/customize/config.html">Hinweise zu _config.yml von der offiziellen Webseite</a></p></li>
+</ul>
+</li>
+<li><p>Ordnen der Dokumente über das Inhaltsverzeichnis in <code class="docutils literal notranslate"><span class="pre">_toc.yml</span></code></p>
+<ul>
+<li><p><a class="reference external" href="https://jupyterbook.org/customize/toc.html">Hinweise zu _toc.yml von der offiziellen Webseite</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="jupyter-book-kompilieren-und-veroffentlichen">
+<h2>Jupyter-Book kompilieren und veröffentlichen<a class="headerlink" href="#jupyter-book-kompilieren-und-veroffentlichen" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Zum Erstellen des Jupyter-Books im Verzeichnis des geklonten Repositoriums: <code class="docutils literal notranslate"><span class="pre">jupyter-book</span> <span class="pre">build</span> <span class="pre">.</span></code> im Terminal ausführen</p>
+<ul>
+<li><p>unter <code class="docutils literal notranslate"><span class="pre">_build/html/index.html</span></code> kann das Jupyter-Book lokal betrachtet werden</p></li>
+</ul>
+</li>
+<li><p>ghp-import installieren mit <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">ghp-import</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ghp-import</span> <span class="pre">-n</span> <span class="pre">-p</span> <span class="pre">-f</span> <span class="pre">_build/html</span></code> im Verzeichnis des geklonten Repositoriums ausführen</p>
+<ul>
+<li><p>dadurch werden die Inhalte des Jupyter-Books automatisch in die Branch <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> des Git-repo ge-push-t</p></li>
+</ul>
+</li>
+</ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -466,7 +511,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./docs/Meetings"
+            path: "./docs/HowTo"
         },
         predefinedOutput: true
     }
@@ -484,13 +529,22 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../AuVAReS/01_Requirements.html"
+       href="../../about/unsyllabus.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">AuVAReS System Anforderungen</p>
+        <p class="prev-next-title">&lt;no title&gt;</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="../Kicker/01_Kicker.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Willkommen zur ewigen Liste!</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -499,7 +553,21 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-der-tools-und-konfiguration">Installation der Tools und Konfiguration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jupyter-book-kompilieren-und-veroffentlichen">Jupyter-Book kompilieren und veröffentlichen</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

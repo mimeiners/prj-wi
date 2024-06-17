@@ -119,7 +119,8 @@ battery = tello.get_battery()
 temperature = tello.get_temperature()
 path = os.path.dirname(__file__)
 
-img_nr = get_file_list(os.path.join(path, directory))[1]
+# img_nr = get_file_list(os.path.join(path, directory))[1]
+img_nr = 0000
 logging.info(f"next img number: {img_nr:04d}")
 
 while running:
