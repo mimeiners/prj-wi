@@ -1,16 +1,5 @@
 # Infrastructure Monitoring mit TIG-Stack
 
-___
-
-__description__ : Einführung in die Arbeit mit TIG-Stack zum infrastructure monitoring
-
-__date_created__ : 2024-04-20
-
-__date_version__ : 2024-04-20
-
-__version__ : 0.1
-___
-
 ## Sinnhaftigkeit der Veränderung des Datenbanksystems
 
 + Eine Zeitreihendatenbank ist für eine "ewige Tabelle" gut geeignet
@@ -25,50 +14,51 @@ ___
 Um die Adresse des RPi herauszufinden nutzen wir den Befehl `ip a`. Im Folgenden kann diese IP `localhost` ersetzten.
 Wir bringen APT auf den neusten Stand.
 ```bash
-admin@raspberrypi:~ $ sudo apt update
-admin@raspberrypi:~ $ sudo apt upgrade -y
+sudo apt update
+sudo apt upgrade -y
 ```
 Wir installieren die Services telegraf, influxDB und grafana. [^1], [^'2] 
 
 `influxDB` wird für die vorhandene OS Version heruntergeladen und installiert. Die Datenbank wird über `http://localhost:8086` erreicht.
 ```bash
-admin@raspberrypi:~ $ wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
-admin@raspberrypi:~ $ source /etc/os-release
-admin@raspberrypi:~ $ echo "deb https://repos.influxdata.com/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
-admin@raspberrypi:~ $ sudo apt update && sudo apt install -y influxdb
+wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+source /etc/os-release
+echo "deb https://repos.influxdata.com/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+sudo apt update && sudo apt install -y influxdb
 ```
 `influxdb` wird durch die folgenden Anweisungen als Service bei jedem boot gestartet.
 ```bash
-admin@raspberrypi:~ $ sudo systemctl unmask influxdb.service
-admin@raspberrypi:~ $ sudo systemctl start influxdb
-admin@raspberrypi:~ $ sudo systemctl enable influxdb.service
+sudo systemctl unmask influxdb.service
+sudo systemctl start influxdb
+sudo systemctl enable influxdb.service
 
-admin@raspberrypi:~ $ sudo apt install influxdb-client
+sudo apt install influxdb-client
 ```
 Das gleiche machen wir für `grafana`. Nach der Installation erreichen wir die Oberfläche von `grafana` über `http://localhost:3000`. 
 ```bash
-admin@raspberrypi:~ $ wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
-admin@raspberrypi:~ $ echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
-admin@raspberrypi:~ $ sudo apt update && sudo apt install -y grafana
-admin@raspberrypi:~ $ sudo systemctl unmask grafana-server.service
-admin@raspberrypi:~ $ sudo systemctl start grafana-server
-admin@raspberrypi:~ $ sudo systemctl enable grafana-server.service
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+sudo apt update && sudo apt install -y grafana
+sudo systemctl unmask grafana-server.service
+sudo systemctl start grafana-server
+sudo systemctl enable grafana-server.service
 ```
 Wir installieren `telegraf` mit
 ```bash
-admin@raspberrypi:~ $ sudo apt-get update
-admin@raspberrypi:~ $ sudo apt-get install telegraf
+sudo apt-get update
+sudo apt-get install telegraf
 ```
 Wir konfigurieren `telegraf.conf` mit der Ausgabe `outputs.influxdb` um die Messungen automatisch in eine Datenbank `telegraf` abzuspeichern.
 ```bash
-admin@raspberrypi:~ $ cd /etc/telegraf
-admin@raspberrypi:/etc/telegraf $ sudo nano telegraf.conf
-admin@raspberrypi:~ $ systemctl start telegraf
+cd /etc/telegraf
+sudo nano telegraf.conf
+systemctl start telegraf
 ```
 Um in grafana auf influxDB und telegraf zugreifen zu können legen wir in influxDB entsprechende Nutzer an.
 Wir können influxDB mit dem Befehl `influx` aufrufen und die Datenbanken und Messungen im Terminal ausgeben.
 ```bash
-admin@raspberrypi:~ $ influx
+influx
+
 Connected to http://localhost:8086 version 1.6.7~rc0
 InfluxDB shell version: 1.6.7~rc0
 > create database db01
