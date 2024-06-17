@@ -3,6 +3,10 @@
 format: jb-book
 root: about/unsyllabus
 parts:
+  - caption: HowTo
+    chapters:
+      - file: docs/HowTo/HowTo_JB
+        title: How-To Jupyter-Book
   - caption: Kicker
     chapters:
       - file: docs/Kicker/01_Kicker
