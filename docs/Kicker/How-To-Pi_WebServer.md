@@ -1,4 +1,4 @@
-# Das ist eine Kurzanleitung wie man ein Webserver auf dem Pi erstellt:
+# Das ist eine Kurzanleitung wie man ein Webserver auf dem Pi erstellt (outdated):
 Die originalen Infos stammen aus: https://u-labs.de/portal/dynmaische-webseiten-apache2-webserver-mit-php-und-mysql-mariadb-auf-dem-raspberry-pi-installieren-einfachster-weg-fuer-anfaenger-lamp/. <br>
 Da gibt es auch ein Video, falls jemand dem besser folgen kann.
 
