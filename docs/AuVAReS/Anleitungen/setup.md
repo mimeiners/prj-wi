@@ -26,5 +26,4 @@ Die Angabe `overrun_nonfatal` ist um Errors zu verhindern, da sonst der zugewies
 cap.read()
 ```
 
-In dem entgültigen Programm wird das Video in einem seperaten Thread von der VideoGrabber Klasse abgegriffen und bereitgestellt.
-[export_drone.py](../../../files/Drohne/main/export_drone.py)
+In dem entgültigen Programm wird das Video in einem seperaten Thread verarbeitet. In der [export_drone.py](../../../files/Drohne/main/export_drone.py) wird eine vereinfachte Klasse namens VideoGrabber für den Abgegriff und Bereitgestellung des Videos genutzt.
