@@ -42,25 +42,45 @@ Die einzige Funktion ``pregame()`` läuft endlos als Thread. Sie ist lang aber l
 Über die Website kann das Spiel jederzeit abgebrochen werden. Da `pregame()` während der aktiven Spielphase eigentlich idle ist, kann die Überprüfung des Buttons hier übernommen werden. Es passieren ähnliche Schritte wie bei der normalen Beendigung eines Spiels, wie etwa auch das Löschen der Spielernamen aus der JSON. Hier taucht besonders häufig ein Fehler auf, bei dem "button_stop" nicht erfolgreich aus der JSON gelesen werden konnte, vermutlich aufgrund zeitgleicher Zugriffe durch die Website oder eines Fehlers im Code der Website, der den Wert aus der JSON löscht.
 
 ### Variablen und Routinen (LVL3_classes.py)
-Der Name der Datei stammt aus den Anfängen, als viele Funktionen als Klassen zusammengefasst waren. Hier sind globale Variablen vorhanden, auf die mehrere LVL2-Programme zugreifen; sowie Übersicht über die Routinen und Reaktionen auf Events in Level 2. So soll innerhalb einer Datei die Gesamtheit an Reaktionen auf Spielereignisse erkenntlich sein. In Level 2 werden Ereignisse detektiert oder ausgelöst und die Reaktion darauf findet sich in Level 3. 🅾
+Der Name der Datei stammt aus den Anfängen, als viele Funktionen als Klassen zusammengefasst waren. Hier sind globale Variablen vorhanden, auf die mehrere LVL2-Programme zugreifen; sowie Übersicht über die Routinen und Reaktionen auf Events in Level 2. So soll innerhalb einer Datei die Gesamtheit an Reaktionen auf Spielereignisse erkenntlich sein. In Level 2 werden Ereignisse detektiert oder ausgelöst und die Reaktion darauf findet sich in Level 3.
 
 ##### init()
+Hier werden ganz viele globale Variablen initialisiert, wie Spielernamen, GameID, Spielstatus uvm. Des Weiteren werden die Socket connection und Verbindung zur Datenbank gestartet.
 
-#### connection
+#### connection 🅾
 ##### _find_connection()
 ##### server_send()
 ##### set_connection_status()
 
 #### Spielphase
+Das Spiel ist intern in vier Phasen unterteilt. Durch sie wird bestimmt, welcher Thread wann aktiv ist. Die Begriffe Spielphase, Spielstatus, Systemstatus meinen alle das gleiche.
+
+1. "init": Nur direkt nach Starten des Codes. Nur [Pregame](#spielkonfiguration-lvl2_pregamepy) reagiert auf diese Phase.
+2. "wait_pre": Die Vorbereitungsphase eines Spiels, kein anders Skript außer Pregame soll eingreifen
+3. "ingame": Das Spiel läuft und die Sensorik wird verwendet
+4. "wait_ingame": Das Spiel wurde von einem Event unterbrochen. Das Spiel wird nach Abfertigung des Events fortgesetzt (oder bei einem Sieg beendet, also zu "wait_pre" gewechselt).
 ##### set_status()
+Mit dieser Funktion wird der Spielstatus geändert. Dadurch, dass die Variable nicht direkt geändert wird, sondern über ein Funktion, könnten noch zusätzliche Befehle mitangehängt werden, wie hier das Printen einer Nachricht. Zudem können in der Beschreibung der Funktion die gültigen Zustände der Variable gelistet werden.
 
 #### event reactions
+Der Grundgedanke war, die alle Reaktionen auf Spielevents beieinander zu haben, um schnell in einer Datei logische Abläufe und Timings anzupassen.
 ##### react_goal()
+Die Unterscheidung, um welchen Spieler es sich handelt, wird als Argument `1` oder `2` eingegeben. Der interne Torzähler des Spielers wird erhöht, das Tor wird in die Datenbank geschrieben und die Siegesbedingung geprüft. Führt ein Spieler mit 6 Toren oder gibt es ein Unentschieden bei 5:5, ist das Spiel abgeschlossen. Das Spiel wird mit `set_status("wait_pre")` beendet und die GameID wird als beendetes Spiel in der JSON festgehalten.
+Andernfalls wird das Spiel nach wenigen Sekunden fortgeführt.
+Da diese Funktion sofort den Spielstatus auf "wait_ingame" setzt, kann erstmal kein weiteres Tor geschossen werden und der Ball nicht redundant detektiert werden.
 ##### react_foul()
+Die Reaktion auf ein Foul entstand ganz am Ende des Projekts. Ein Pop-Up auf der Website soll informieren, dass ein Regelverstoß aufgetreten ist (gekurbelt). Dafür wird dem Spieler in der JSON das Foul-Attribut auf True gesetzt und ein paar Sekunden später wieder gelöscht. Auch hier wird das Spiel unterbrochen. 
+Fun fact: da der Torsensor weit hinten in der Ballrückgabe ist, wird ein Tor erst kurz nach dem tatsächlichen Überschreiten der Torlinie detektiert (eigentlich erst beim Ankommen des Balls im Ausgabefach, hörbar). In dieser Zeit kann der kassierende Spieler absichtlich ein Foul auslösen, um die Erkennung dieses Tores zu blockieren, und das ohne wirkliche Folgen, da ein Foul nicht weiter geahndet wird. Gefähliches Wissen, aber it's not a bug, it's a feature.
 ##### react_drone_connected() & react_drone_wants_gamestart
+Die enthaltenen Variablen werden in [Pregame](#spielkonfiguration-lvl2_pregamepy) geprüft. Sie werden durch Antwort von AuVAReS (ein bestimmtes Keyword) durch die Funktionen auf True gesetzt. Als Funktion, um print-Ausgabe zu ermöglichen.
 ##### react_drone_pleasewait & react_drone_pleaseresume
+Eine Reaktion auf das Keyword "please_wait", falls AuVAReS das Spiel unterbrechen möchte. Die Unterscheidung, ob dies aufgrund eines game events oder Fehlers passiert, wurde erstmal weggelassen. Mit der zweiten Funktion gibt AuVAReS das Spiel wieder frei.
 
 #### Database & Website
+Der Dateipfad ist festgeschrieben auf game_data.json.
 ##### database_write()
+Diese Fuktion ordnet eine Torzahl einem bestimmten Spieler in einem bestimtten Spiel zu.
 ##### json_read()
+Es kann ab und zu mal zu einem JSON-Auslesefehler kommen, bei dem die Datei vermutlich leer erscheint. Auswirkungen aufs Spiel sind unberechenbar und abhängig davon, in welchem Skript der Fehler auftritt.
 ##### json_write()
+Bevor in die JSON überschrieben wird, sollte zunächst immer der alte Inhalt der Datei geladen werden und gezielt verändert werden.
