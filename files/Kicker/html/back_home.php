@@ -149,7 +149,7 @@ $_SESSION["page"] = 3;
         </div>
     </div>
 
-    <script>
+    <script language="javascript" type="text/javascript">
 
         // Fetch game data on page load
         window.onload = function() {
