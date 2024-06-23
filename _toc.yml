@@ -3,18 +3,64 @@
 format: jb-book
 root: about/unsyllabus
 parts:
+# Introduction
   - caption: HowTo
     chapters:
       - file: docs/HowTo/HowTo_JB
         title: How-To Jupyter-Book
+
+# Definition Gesamtsystem
+  - caption: Gesamtsystem
+    chapters:
+      - file: docs/Gesamtsystem/Projektbeschreibung
+        title: Projektbeschreibung
+        sections:
+          - file: docs/Kicker/temp_prj_wohlinvest_requierements
+            title: Anforderungen Kicker
+          - file: docs/AuVAReS/01_Requirements
+            title: Anforderungen AuVAReS
+      - file: docs/Gesamtsystem/interface_management
+        title: Schnittstelle Kicker - AuVAReS
+        sections:
+        - file: docs/Gesamtsystem/network-communication-keywords
+      
+
+# Hardware Setup
+  - caption: Hardware-Setup
+    chapters:
+      - file: docs/Kicker/Pi_Einrichtung
+        title: Kicker Raspberry Pi Setup
+      - file: docs/AuVAReS/Anleitungen/setup
+        title: AuVAReS Nvidia Jetson Setup
+
+# Technische Details Kicker
   - caption: Kicker
     chapters:
+    # Muss noch bearbeitet werden - Struktur wird von Kickergruppe gegeben
       - file: docs/Kicker/01_Kicker
         title: Einleitung und Übersicht
+
+
+# Technische Details AuVAReS
   - caption: AuVAReS
     chapters:
-      - file: docs/AuVAReS/01_Requirements
-        title: Anforderungen
+      - file: docs/AuVAReS/Anleitungen/Programm - AuVAReS
+        title: Programmablauf
+      - file: docs/AuVAReS/Anleitungen/Objekterkennung
+        title: Objekterkennung
+      - file: docs/AuVAReS/Anleitungen/Known_Issues
+        title: Bekannte Probleme
+      
+
+# TBD
+  # - caption: Kicker_tbd
+  #   chapters:
+  #     - file: docs/Kicker/01_Kicker
+  #       title: Einleitung und Übersicht
+  # - caption: AuVAReS_tbd
+  #   chapters:
+  #     - file: docs/AuVAReS/01_Requirements
+  #       title: Anforderungen
   - caption: Meetings
     chapters:
       - file: docs/Meetings/04-11_Protokoll
