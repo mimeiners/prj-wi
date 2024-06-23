@@ -1,15 +1,15 @@
-# Schreiben von Spielergebnissen in eine JSON-Datei mit PHP
+# Lesen und Ausgeben von JSON-Daten mit PHP
 
-Diese Anleitung erklärt, wie man mithilfe von PHP Spielergebnisse in einer JSON-Datei speichert und aktualisiert.
+Diese Anleitung zeigt, wie man JSON-Daten aus einer Datei liest und die Daten in einem bestimmten Format ausgibt.
 
 ## Voraussetzungen
 
 - PHP installiert
-- Eine JSON-Datei (`game_data.json`) zum Speichern der Daten
+- Eine JSON-Datei (`game_data.json`) mit den relevanten Spieldaten
 
-## PHP Skript zum Schreiben von Daten in eine JSON-Datei
+## PHP Skript zum Lesen und Ausgeben von JSON-Daten
 
-Das folgende PHP-Skript zeigt, wie man Spielergebnisse in einer JSON-Datei speichert und aktualisiert.
+Das folgende PHP-Skript liest die JSON-Daten aus einer Datei und gibt sie als JSON-Antwort zurück.
 
 ### Pfad zur JSON-Datei
 
@@ -22,111 +22,84 @@ $jsonFilePath = 'game_data.json';
 ?>
 ```
 
-### Funktion zum Lesen der aktuellen Daten
+### Lesen und Überprüfen der JSON-Daten
 
-Erstellen Sie eine Funktion, um die aktuellen Daten aus der JSON-Datei zu lesen:
+Lesen Sie die Daten aus der JSON-Datei und überprüfen Sie, ob sie korrekt dekodiert wurden:
 
 ```php
 <?php
-// Funktion zum Lesen der aktuellen Daten aus der JSON-Datei
-function readCurrentData() {
-    global $jsonFilePath;
-    if (file_exists($jsonFilePath)) {
-        $jsonData = file_get_contents($jsonFilePath);
-        return json_decode($jsonData, true);
-    } else {
-        return null;
-    }
-}
+// Überprüfe, ob die JSON-Datei existiert und lese die Daten
+if (file_exists($jsonFilePath)) {
+    $jsonData = file_get_contents($jsonFilePath);
+    $data = json_decode($jsonData, true);
 ?>
 ```
 
-### Funktion zum Schreiben der Tore in die JSON-Datei
+### Extrahieren und Ausgeben der Daten
 
-Erstellen Sie eine Funktion, um die Tore eines Spielers in die JSON-Datei zu schreiben:
+Extrahieren Sie die relevanten Daten und geben Sie sie im JSON-Format aus:
 
 ```php
 <?php
-// Funktion zum Schreiben der Tore in die JSON-Datei
-function writeGoalsToJson($playerName, $goals) {
-    global $jsonFilePath;
-    $currentData = readCurrentData();
+    // Überprüfe, ob die JSON-Daten korrekt dekodiert wurden
+    if ($data !== null) {
+        $player1 = $data['player_1']['name'] ?? '';
+        $player2 = $data['player_2']['name'] ?? '';
+        $gameId = $data['game_id'] ?? '';
+        $lastCompletedGame = $data['last_completed_game'] ?? '';
 
-    if ($currentData !== null) {
-        // Debugging-Ausgabe
-        echo "Aktuelle Daten aus JSON-Datei: <pre>";
-        print_r($currentData);
-        echo "</pre>";
-
-        // Aktualisiere die Tore des Spielers in den finalen Werten
-        if ($playerName == $currentData['player_1']['name']) {
-            $currentData['final_player_1']['score'] = intval($goals);
-        } elseif ($playerName == $currentData['player_2']['name']) {
-            $currentData['final_player_2']['score'] = intval($goals);
-        }
-
-        // Debugging-Ausgabe
-        echo "Zu aktualisierende Daten: <pre>";
-        print_r($currentData);
-        echo "</pre>";
-
-        // Schreibe die aktualisierten finalen Werte in die JSON-Datei
-        $jsonData = json_encode($currentData, JSON_PRETTY_PRINT);
-        if (file_put_contents($jsonFilePath, $jsonData)) {
-            echo "Tore erfolgreich in die JSON-Datei geschrieben.";
-        } else {
-            echo "Fehler beim Schreiben in die JSON-Datei.";
-        }
+        echo json_encode([
+            'player_1' => $player1,
+            'player_2' => $player2,
+            'game_id' => $gameId,
+            'last_completed_game' => $lastCompletedGame
+        ]);
     } else {
-        echo "Fehler beim Lesen der JSON-Datei.";
+        echo json_encode([
+            'player_1' => '',
+            'player_2' => '',
+            'game_id' => '',
+            'last_completed_game' => ''
+        ]);
     }
-}
-?>
-```
-
-### Überprüfung der POST-Daten und Aufruf der Schreibfunktion
-
-Überprüfen Sie, ob die erforderlichen POST-Daten vorhanden sind, und rufen Sie die Schreibfunktion auf:
-
-```php
-<?php
-// Überprüfe, ob die erforderlichen POST-Daten vorhanden sind
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['player']) && isset($_POST['goals'])) {
-    $playerName = $_POST['player'];
-    $goals = $_POST['goals'];
-
-    // Debugging-Ausgabe
-    echo "Spieler: $playerName, Tore: $goals";
-
-    // Schreibe die Tore in die JSON-Datei
-    writeGoalsToJson($playerName, $goals);
 } else {
-    echo "Ungültige Anfrage.";
+    echo json_encode([
+        'player_1' => '',
+        'player_2' => '',
+        'game_id' => '',
+        'last_completed_game' => ''
+    ]);
 }
 ?>
 ```
 
 ### Nutzung des Skripts
 
-Speichern Sie das Skript als `update_score.php` und verwenden Sie eine POST-Anfrage, um Spielername und Tore zu senden. Beispiel für eine POST-Anfrage:
+Speichern Sie das Skript als `get_game_data.php` und rufen Sie es im Browser oder über eine API-Anfrage auf. Das Skript gibt die JSON-Daten zurück, entweder mit den tatsächlichen Werten aus der Datei oder mit leeren Werten, wenn die Datei nicht existiert oder die Daten nicht korrekt dekodiert wurden.
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Update Score</title>
-</head>
-<body>
-    <form method="POST" action="update_score.php">
-        <label for="player">Spielername:</label>
-        <input type="text" id="player" name="player">
-        <label for="goals">Tore:</label>
-        <input type="number" id="goals" name="goals">
-        <input type="submit" value="Update Score">
-    </form>
-</body>
-</html>
+Beispielaufruf:
+
+```
+http://localhost/get_game_data.php
 ```
 
-Dieses Formular sendet eine POST-Anfrage an das `update_score.php` Skript, das die Spielergebnisse in der JSON-Datei aktualisiert.
+### Beispiel für die JSON-Datei
 
+Die `game_data.json` Datei könnte wie folgt aussehen:
+
+```json
+{
+    "player_1": {
+        "name": "John Doe",
+        "score": 5
+    },
+    "player_2": {
+        "name": "Jane Smith",
+        "score": 3
+    },
+    "game_id": "12345",
+    "last_completed_game": "2024-06-22"
+}
+```
+
+Dieses Skript überprüft, ob die Datei existiert und die Daten korrekt dekodiert wurden. Wenn ja, extrahiert es die relevanten Informationen und gibt sie als JSON-Antwort zurück. Wenn nicht, gibt es leere Werte zurück.
