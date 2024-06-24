@@ -1,6 +1,6 @@
 # Interface Management
 
-##### Function
+### Function
 
 The interface allows the Kicker to communicate with another device. By design, this other device will be the control unit of the the AuVAReS drone. The interface searches for a connection and controlls the connection's status once it is esstablished. Through the interface, the partner device can send keywords which interact with the current status of the host and the other way around.
 
@@ -12,11 +12,23 @@ The interface is defined in the file "LVL2_interface.py" and also has functions 
 
 As a Level 2 function "LVL2_interface.py" is started in "LVL1_threads.py" as a thread upon system start.
 
-##### Structure
+#### Structure
+
+##### LvL2_interface.py
 
 The main interface is defined in "LVL2_interface.py". It's main structure is defined in the function "interface()", which is started as a thread in "LVL1_threads". Inside "Interface()" there two sections.
 
- The first section initialises the used keyword dictionary for the interface. This section also includes a while loop which stops interface activity until the first connection, after a system start, has been found. The second section contains the main functionality of the interface, defined by two threads which both serve one function each. The first function is "_ping()", which sends a ping keyword to the connected client and governs the current connection status. The second the 
+ The first section initialises the used keyword dictionary for the interface. This section also includes a while loop which stops interface activity until the first connection, after a system start, has been found. The second section contains the main functionality of the interface, defined by two threads which both serve one function each. The first function is "_ping()", which sends a ping keyword to the connected client and governs the current connection status. The second the thread calls the function "_recv()" which constantly supervises the connection port. Once it receives a message from another device, it checks if this message is a keyword or a ACK. If a keyword or ACK has been detected, a reaction function is called. If the message is either, no reation follows. The reaction funtion stops the "_recv" function detecting any more messages until the reaction resolved.
+
+##### LVL3_classes.py
+
+ Another part of the interface can be found in "LVL3_classes.py". This part includes three integral parts of the interface functionality. The function "_find_connection()", the variable "connection_status" and the function "server_send()".
+
+ The function "_find_connection()" searches for a new connection. It is assumed that during the time of the function call, no connection with any other device exists.
+
+ The variable "connection_status" reflects the current necessary status of a connection. "True" means there is connection and "False" means there is no connection. ##It can be called by any function inside the system, if needed. Most of the time the function "server_send()" accesses the variable to check if an message can be send. This variable is set by "_find_connection()" if a connection has been found and gets resetted by "_ping()" if an NACK has been received.## The not yet mentioned function "set_connection_status()" is used to set "connection_status" to any state. This function is used as there were concerns about the imported state of "connection_status". With "set_connection_status()" the function can change "connection_status" as a local variable in "LVL3_classes.py" instead of an imported one.
+
+The function "server_send()" can be accessed by every function in the code, which imported "LVL3_classes.py". It allows each part of the code to send a message to a connected device. The function automatically includes all necessary steps for a successfull transmission, including to check if there is a connection at all.
 
 ### Network design
 
