@@ -4,9 +4,27 @@
 
 The interface allows the Kicker to communicate with another device. By design, this other device will be the control unit of the the AuVAReS drone. The interface searches for a connection and controlls the connection's status once it is esstablished. Through the interface, the partner device can send keywords which interact with the current status of the host and the other way around.
 
-### Location
+### Network design
 
-NACH NETWORK DESIGN!
+The Network traffic is designed around global keywords. Here, a keyword is a string message that can be sended by any device and can be received by any device. Once received, a reaction is called which is defined at the receiver. The reaction being defined locally allows the each reaction to be fitted to each system, regardless of system design. Of course, all parties must agree on a common set of keywords and their functionalty (but not the technical implementation!).
+
+##### Keywords
+
+| Sender  | Schlüsselwort  | Beschreibung |ACK|
+|:----------|:----------|:----------|:----------|
+| K | ping | Wird mindestens zum Programmstart benutzt, um AuVAReS zu detektieren; nach timeout werden keine AuVAReS-abhängigängen Funktionen verwendet.   |hi
+| K | notify_drone_powered | Die Spielernamen sind eingetragen und sie haben die Drohne gestartet (Quittieren über Button) | connecting_drone
+| A | notify_drone_connected | Meldung, dass die Drone verbunden ist | waiting_for_startbutton
+| K | notify_start_permission | Meldung, dass die Drone freigegeben ist zum Starten | positioning_drone
+| A | notify_gamestart | Meldung, dass das Spiel gestartet werden kann | game_started
+| K | notify_newgoal |Ein Tor ist gefallen, ein replay sollte gestartet werden|received_newgoal 
+| K | notify_foul |Ein Regelverstoß ist vorgefallen, ein replay sollte gestartet werden|received_foul
+| K | notify_gameover |Zusätzlich zum replay des Siegertores wird die Abschlussroutine der Drohne ausgeführt.|received_gamover
+| A | please_wait| AuVAReS kann das Spiel pausieren, bspw. wenn es Zwischenfälle gibt. Tore werden nicht gezählt. |waiting
+| A |please_resume| AuVAReS ist wieder einsatzbereit und erlaubt dem Kicker, wieder Tore zu zählen.|gaming
+| K |STOP| AuVAReS soll Notlandung einleiten | received_stop
+
+### Location
 
 The interface is defined in the file "LVL2_interface.py" and also has functions and definitions in "LVL3_classes.py" . "LVL2_interface.py" controlls the connection status, listens for keywords and interprets all incoming messages. If a keyword is detected a function inside this file is called which includes the appropiate reaction to a keyword (e.g setting certain status flags). Sending messages aswell as the connection status flag and finding a connection are defined in "LVL3_classes.py" . That way they can easily be called by other functions and use the interface without importing "LVL2_interface.py" .
 
@@ -29,14 +47,6 @@ The main interface is defined in "LVL2_interface.py". It's main structure is def
  The variable "connection_status" reflects the current necessary status of a connection. "True" means there is connection and "False" means there is no connection. ##It can be called by any function inside the system, if needed. Most of the time the function "server_send()" accesses the variable to check if an message can be send. This variable is set by "_find_connection()" if a connection has been found and gets resetted by "_ping()" if an NACK has been received.## The not yet mentioned function "set_connection_status()" is used to set "connection_status" to any state. This function is used as there were concerns about the imported state of "connection_status". With "set_connection_status()" the function can change "connection_status" as a local variable in "LVL3_classes.py" instead of an imported one.
 
 The function "server_send()" can be accessed by every function in the code, which imported "LVL3_classes.py". It allows each part of the code to send a message to a connected device. The function automatically includes all necessary steps for a successfull transmission, including to check if there is a connection at all.
-
-### Network design
-
-The Network traffic is designed around global keywords. Here, a keyword is a string message that can be sended by any device and can be received by any device. Once received, a reaction is called which is defined at the receiver. The reaction being defined locally allows the each reaction to be fitted to each system, regardless of system design. Of course, all parties must agree on a common set of keywords and their functionalty (but not the technical implementation!).
-
-##### Keywords
-
-INCLUDE LIST OF KEYWORDS
 
 ### Receiving Messages, ACK and NACK
 
