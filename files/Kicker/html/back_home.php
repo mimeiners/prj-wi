@@ -12,6 +12,7 @@ $_SESSION["page"] = 3;
     <meta charset="UTF-8">
     <title>Game Running</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,7 +21,21 @@ $_SESSION["page"] = 3;
             padding: 0;
         }
 
+        .popup {
+            position: fixed;
+            text-align: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
         .container {
+            margin-top: 50px; /* Adjust this value to change the distance from the top */
             max-width: auto;
             margin: auto;
             padding: 20px;
@@ -104,6 +119,24 @@ $_SESSION["page"] = 3;
 </head>
 <body>
     <div class="container">
+
+    <div id="popup_player_1" class="popup">
+    <strong class="font-weight-bold text-danger h1">Foul Spiel</strong>
+    <p>
+    <span class="game-data" id="Player_1">--</span>
+    <span class="game-data"> hat gekurbelt</span>
+    </p>
+    </div>
+
+    <div id="popup_player_2" class="popup">
+    <strong class="font-weight-bold text-danger h1">Foul Spiel</strong>
+    <p>
+    <span class="game-data" id="Player_2">--</span>
+    <span class="game-data"> hat gekurbelt</span>
+    </p>
+    </div>
+
+    <div class="justify-content-center mt-5">
         <table>
             <tr>
                 <td colspan="2" align="center">
@@ -136,6 +169,7 @@ $_SESSION["page"] = 3;
             </tr>
         </table>
         <div class="player-data">
+        <span class="game-data">Game-ID:</span>
         <span class="game-data" id="playerData">--</span>
        
         </div>
@@ -148,8 +182,8 @@ $_SESSION["page"] = 3;
         </form>
         </div>
     </div>
-
-    <script language="javascript" type="text/javascript">
+    </div>
+    <script>
 
         // Fetch game data on page load
         window.onload = function() {
@@ -157,7 +191,7 @@ $_SESSION["page"] = 3;
             setInterval(fetchGameData, 500);
         };
 
-        var gameId, player1, player2, lastCompletedGame;
+        var gameId, player1, player2, lastCompletedGame, foulPlayer1, foulPlayer2;
 
         // Fetch game data
         function fetchGameData() {
@@ -169,12 +203,16 @@ $_SESSION["page"] = 3;
                     player2 = response.player_2;
                     gameId = response.game_id;
                     lastCompletedGame = response.last_completed_game;
+                    foulPlayer1 = response.player_1_foul || false;
+                    foulPlayer2 = response.player_2_foul|| false;
 
                     // Update HTML elements
                     document.getElementById('Player1').textContent = player1 || '--';
                     document.getElementById('Player2').textContent = player2 || '--';
-                    document.getElementById('playerData').innerHTML = "<p>Game ID: " + (gameId || '--') + "</p>";
-                    //document.getElementById('playerData2').innerHTML = "<p>Game ID (debug): " + (lastCompletedGame || '--') + "</p>";
+                    document.getElementById('Player_1').textContent = player1 || '--';
+                    document.getElementById('Player_2').textContent = player2 || '--';
+                    document.getElementById('playerData').textContent = gameId || '--';
+
                 }
 
             };
@@ -183,13 +221,23 @@ $_SESSION["page"] = 3;
         }
 
 
-
-
         function updateGameStatus() {
             if (gameId && lastCompletedGame && gameId === lastCompletedGame && player1 === "" && player2 === "") {
 
                 window.location.href = "result.php";
             }else{
+
+            if (foulPlayer1 === true) {
+                document.getElementById('popup_player_1').style.visibility = 'visible';
+            } else if (foulPlayer1 === false) {
+                document.getElementById('popup_player_1').style.visibility = 'hidden';
+            }
+
+            if (foulPlayer2 === true) {
+                document.getElementById('popup_player_2').style.visibility = 'visible';
+            } else if (foulPlayer2 === false) {
+                document.getElementById('popup_player_2').style.visibility = 'hidden';
+            }
 
             // AJAX request to get player 1's score
             var xhttpPlayer1 = new XMLHttpRequest();

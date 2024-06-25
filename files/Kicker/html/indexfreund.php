@@ -144,15 +144,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container">
         <img src="Pictures/hsb-logo.png" width="300" height="139">
         <h1>Bitte Spielernamen eingeben</h1>
-        <p>text</p>
+        <p></p>
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <label for="name1">Spieler weiss:</label>
+            <label for="name1">Spieler weiß:</label>
             <input type="text" id="name1" name="name1">
-            <label for="name2">Spieler gru:n:</label>
+            <label for="name2">Spieler grün:</label>
             <input type="text" id="name2" name="name2">
             <button>Speichern</button>
         </form>
-        <p>text</p>
+        <p></p>
     </div>
 </body>
 </html>
