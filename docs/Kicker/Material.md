@@ -42,7 +42,8 @@ Um im allgemeinen den Tisch auf das neu erstellte System einzustellen, mussten n
 | Pzsmocn 50 Sets Dupont 2.54 mm Raster 3-polige Stecker Adapter | 1 | 6,71 € | [Link](https://www.amazon.de/dp/B085T3MH8Q) |
 
 **Gesamt: 34,85 €**
-**Info Die Links könnten nicht funktionieren, da diese über den Betriebsaccount der Hochschule Bremen bestellt wurden.
+  
+Info: Die Links könnten nicht funktionieren, da diese über den Betriebsaccount der Hochschule Bremen bestellt wurden.
 ## Gesamtsumme aller Bestellungen
 
 **Reichelt: 252,45 €**  
