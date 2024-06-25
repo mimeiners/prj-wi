@@ -1,21 +1,23 @@
 {
     "player_1": {
-        "name": ""
+        "name": "wei\u00df",
+        "foul": false
     },
     "player_2": {
-        "name": ""
+        "name": "gr\u00fcn",
+        "foul": false
     },
-    "button_stop": true,
-    "button_power": true,
-    "button_start": true,
-    "game_id": "1718025220.0",
-    "final_player_1": {
-        "score": 1,
-        "name": "Johnny_Cosinus"
-    },
+    "button_stop": false,
+    "button_power": false,
+    "button_start": false,
+    "game_id": "1718155873.0",
     "final_player_2": {
-        "score": 2,
-        "name": "Luzy"
+        "score": 0,
+        "name": "gr\u00fcn"
     },
-    "last_completed_game": "1718025220.0"
+    "final_player_1": {
+        "score": 0,
+        "name": "wei\u00df"
+    },
+    "last_completed_game": "1718155808.0"
 }

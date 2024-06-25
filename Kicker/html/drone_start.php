@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Drohne Start</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .container {
             max-width: 800px;
             margin: auto;
+            margin-top: 50px; /* Adjust this value to change the distance from the top */
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;

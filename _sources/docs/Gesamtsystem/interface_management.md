@@ -1,138 +1,79 @@
 # Interface Management
 
-Diese Beschreibungen dienen als Leitfaden für die Entwicklung und kontinuierliche Dokumentation des aktuellen Standes der Schnittstelle. Einwände und Ideen sind natürlich willkommen.
+### Function
 
-Da von der Serverside aus mehrere Verbindungen möglich sind muss der Zugriff innerhalb der Threads Kollisionsfrei verlaufen. Geplant ist dafür die Function "threading.lock" und dessen Komplimentärfunktionen. Die Umsetzung dieser muss aber noch im Detail ermitttelt werden. Bis jetzt ist geplant das diese Bedingungen über "with" abgerufen.
+The interface allows the Kicker to communicate with another device. By design, this other device will be the control unit of the the AuVAReS drone. The interface searches for a connection and controlls the connection's status once it is esstablished. Through the interface, the partner device can send keywords which interact with the current status of the host and the other way around.
 
-Innerhalb vieler Funktionskritischer Schleifen wird noch die Variable some_var abgerufen welche ersetzt werden soll durch eine global systemstatus Variable.
+### Network design
 
-### Setup
+The Network traffic is designed around global keywords. Here, a keyword is a string message that can be sended by any device and can be received by any device. Once received, a reaction is called which is defined at the receiver. The reaction being defined locally allows the each reaction to be fitted to each system, regardless of system design. Of course, all parties must agree on a common set of keywords and their functionalty (but not the technical implementation!).
 
-Der Aufbau des System besteht aus zwei Hauptcomputern. Der Computer von Wohninvest, welcher im folgenden als Server bezeichnet wird, und der Computer von AuVARes welcher als Client oder Drohnen Client bezeichnet wird. Es werden Optionen offen gehalten für einen dritten Computer und/oder einer externen Quelle zur Überwachung des Systems. Der Server ist der Ansprechpatner aller Clients und ist als notwendige Hardware des Kickers von Wohninvest zu betrachten.
+##### Keywords
 
-### Nutzer Handbuch
+| Sender  | Schlüsselwort  | Beschreibung |ACK|
+|:----------|:----------|:----------|:----------|
+| K | ping | Wird mindestens zum Programmstart benutzt, um AuVAReS zu detektieren; nach timeout werden keine AuVAReS-abhängigängen Funktionen verwendet.   |hi
+| K | notify_drone_powered | Die Spielernamen sind eingetragen und sie haben die Drohne gestartet (Quittieren über Button) | connecting_drone
+| A | notify_drone_connected | Meldung, dass die Drone verbunden ist | waiting_for_startbutton
+| K | notify_start_permission | Meldung, dass die Drone freigegeben ist zum Starten | positioning_drone
+| A | notify_gamestart | Meldung, dass das Spiel gestartet werden kann | game_started
+| K | notify_newgoal |Ein Tor ist gefallen, ein replay sollte gestartet werden|received_newgoal 
+| K | notify_foul |Ein Regelverstoß ist vorgefallen, ein replay sollte gestartet werden|received_foul
+| K | notify_gameover |Zusätzlich zum replay des Siegertores wird die Abschlussroutine der Drohne ausgeführt.|received_gamover
+| A | please_wait| AuVAReS kann das Spiel pausieren, bspw. wenn es Zwischenfälle gibt. Tore werden nicht gezählt. |waiting
+| A |please_resume| AuVAReS ist wieder einsatzbereit und erlaubt dem Kicker, wieder Tore zu zählen.|gaming
+| K |STOP| AuVAReS soll Notlandung einleiten | received_stop
 
-#### Verbindung bestimmen
+### Location
 
-Die Verbindung zu einem Clienten ist repräsentiert in einem Klassenobjekt der Klasse "connection". Alle Klassenobjekte befinden sich in dem globalen Dictionary "connect_dic".
+The interface is defined in the file "LVL2_interface.py" and also has functions and definitions in "LVL3_classes.py" . "LVL2_interface.py" controlls the connection status, listens for keywords and interprets all incoming messages. If a keyword is detected a function inside this file is called which includes the appropiate reaction to a keyword (e.g setting certain status flags). Sending messages aswell as the connection status flag and finding a connection are defined in "LVL3_classes.py" . That way they can easily be called by other functions and use the interface without importing "LVL2_interface.py" .
 
-    global connect_dic
-    connect_dic = {'drone' : drone_connection,
-                   'extern1' : extern_connection_1,
-                   'extern2' : extern_connection_2,
-                   'dynamic': dynamic_connection} 
+As a Level 2 function "LVL2_interface.py" is started in "LVL1_threads.py" as a thread upon system start.
 
-Solange noch keine Vebindung gefunden wurde sind diese Objekte nur ein 'None' und haben keine Funktion. Sobald die Verbindung hinzugefügt wurde, was automatisch geschieht sobald eine Verbindung gefunden wurde, enstehen die entsprechenden Klassenobjekte.
+#### Structure
 
-Für das bisherige System ist nur die Verbindung "drone_connection" von Bedeutung. Die anderen Verbindungen dienen erstmal als Platzhalter, sind aber theoretisch schon funktional.
+##### LvL2_interface.py
 
-Um die Verbindung zu nutzen muss diese nur aus den Dictionary aufgeruden werden. Eine Variable ist dabei hilfreich
+The main interface is defined in "LVL2_interface.py". It's main structure is defined in the function "interface()", which is started as a thread in "LVL1_threads". Inside "Interface()" there two sections.
 
-    verbindung_variable = connect_dic['drone']
+ The first section initialises the used keyword dictionary for the interface. This section also includes a while loop which stops interface activity until the first connection, after a system start, has been found. The second section contains the main functionality of the interface, defined by two threads which both serve one function each. The first function is "_ping()", which sends a ping keyword to the connected client and governs the current connection status. The second the thread calls the function "_recv()" which constantly supervises the connection port. Once it receives a message from another device, it checks if this message is a keyword or a ACK. If a keyword or ACK has been detected, a reaction function is called. If the message is either, no reation follows. The reaction funtion stops the "_recv" function detecting any more messages until the reaction resolved.
 
-#### Funktionen der Verbindung
+##### LVL3_classes.py
 
-    connection.send( message , timeout = -1 )
+ Another part of the interface can be found in "LVL3_classes.py". This part includes three integral parts of the interface functionality. The function "_find_connection()", the variable "connection_status" and the function "server_send()".
 
-message : Argument des Typs str. Sollte ein definiertes Keyword sein. Leerzeichen   werden Nicht ignoriert. Eine Codierung ist nicht nötig sondern wird intern durchgeführt.
+ The function "_find_connection()" searches for a new connection. It is assumed that during the time of the function call, no connection with any other device exists.
 
-timeout : Argument des Typs int. Bestimmt wie lange auf ein ACK gewartet wird.
-|timeout = -1 | timeout = 0 | timeout = n |
-|-|-|-|
-| ACK wird ignoriert, keine Reaktion wird ausgelöst | TOE Funktion wird sofort ausgelöst | n Sekunden Wartezeit (0.1 Sekunden Genauigkeit) um das ACK zu erwarten. Wird ACK empfangen so wird die ACK Reaktionsfunktion ausgelöst. Wird n überschritten wird die TOE Funktion sofort ausgelöst |
+ The variable "connection_status" reflects the current necessary status of a connection. "True" means there is connection and "False" means there is no connection. ##It can be called by any function inside the system, if needed. Most of the time the function "server_send()" accesses the variable to check if an message can be send. This variable is set by "_find_connection()" if a connection has been found and gets resetted by "_ping()" if an NACK has been received.## The not yet mentioned function "set_connection_status()" is used to set "connection_status" to any state. This function is used as there were concerns about the imported state of "connection_status". With "set_connection_status()" the function can change "connection_status" as a local variable in "LVL3_classes.py" instead of an imported one.
 
-Die Funktion "connection.send" sendet den Inhalt des string arguments "message" an den Verbindungspatner des Verbindungsobjektes und überwacht ob ein ACK empfangen wird.
+The function "server_send()" can be accessed by every function in the code, which imported "LVL3_classes.py". It allows each part of the code to send a message to a connected device. The function automatically includes all necessary steps for a successfull transmission, including to check if there is a connection at all.
 
-Die Funktion returned ein True wenn die Nachricht gesendet wurde und das ACK abgearbeitet wurde oder ein False wenn die Nachricht nicht gesendet wurde.
+### Receiving Messages, ACK and NACK
 
-    connection.send_thread( args )
+##### Function
 
-args : Argument des Typs list. Liste aus Argumenten welche an "connection.send" weitergegeben werden.
+The system is designed to always listen for any incoming messages, send an ACK and then react to the received message. During a reaction no other message can be recieved! The system can send messages during a reaction.
 
-Funktional passiert in dieser Funktion das gleiche wie bei "connection.send" aber sie findet in einem eigenen Thread start. Definition, start und ende werden von der Funktion selbst durchgeführt. So behindert das Warten auf ein ACK den den Ablauf des Programms. Die Reaktionsfunktionen auf ACK und NACK finden ebenfalls in dem Thread statt.
+If a keyword is received, an acknowldgement(ACK) is sended. An ACK acts like another keyword, with the limitation of only being sended if it's keyword was received. The sender of the keyword can therefore check if a sended keyword was received. The interface can react to a received ACK just like to a keyeword. If no ACK has been recieved, it is counted as a NACK. There is no official implementation of a NACK and it must be added manually, if needed. The funtion "_ping()" in "LVL2_interface.py" serves as a possible example.
 
-Es wird aber kein Wert returned da Threads dies nicht können. Um sicher zu gehen das eine Nachricht gesendet wurde sollte connection.connection_status() abgerufen werden.
-
-    connection.connection_status()
-
-Diese Funktion gibt den Status einer Verbindung wieder, nachdem diese mindestens einmal nicht dynamisch (als dynamic_connection) initialisiert wurde. Zurückgegeben wird True oder False. Der Zustand wird automatisch über sekündliche Pings aktualisiert.
-
-###### Empfangen
-
-Empfangen und Interpretieren von Nachrichten geschieht automatisch. Reaktion auf Keywords, ACK und NACK wir über die Reaktionsfunktionen bestimmt. Diese werden definiert in dem Unterdictionary "connection.keyword_class_dic" . Diese Unterdictionary ist ein Dictionary bestehend aus allen offiziellen Keywords und dazugehörigen Keywordklassen. Über "connection.keyword_class_dic['keyword']" lässt sich somit auf die Eigenschaften eines Keywords zugreifen.
-
-    connection.keyword_class_dic['keyword'].keyword
-
-Gibt das dazugehörige Keyword an.
+##### Implementation
 
 
-    connection.keyword_class_dic['keyword'].ack
 
-Gibt das dazugehörige ACK an.
+### Sending Messages and Connection Status
 
-    connection.keyword_class_dic['keyword'].ack_status
+All non-LVL2_interface.py functions only interact with the interface by sending messages. The function "server_send()" has been created for this purpose. It serves as a 'interface' between the interface and the system.
 
-Objekt des Typs NoneType oder Bool. Gibt Status eines ACK von einem Keyword an.
+The connection status flag "connection_status" defined in "LVL3_classes.py" reflects the current status of a connection. By definition, a connection exists (True) or not (False). All functions can check the status flag if they imported LVL3_classes.py . The status is flaged is managed by two functions. "_find_connection()", defined in LVL3_classes.py , can set the connection status to "True". "_ping()", defined in LVL2_interface.py , can set the connection status to "False".
 
-|None|False|True|
-|-|-|-|
-|Es wird kein ACK von diesem Keyword erwartet|Es wird ein ACK von diesem Keyword erwartet aber noch nicht empfangen|Ein ACK wurde von diesem Keyword ampfangen|
+### Finding a Connection and Reconnect
 
-Nachdem ein ACK empfangen oder die Timeout Zeit überschritten wurde wird der Status automatisch wieder auf None gesetzt.
+##### Concept
 
-    connection.keyword_class_dic['keyword'].react
+Once the system starts a search for a connection is started. Aslong as no connection is found, no interface activity is done. Once it is found the connection mangement is started. Part of the management will be a ping function which checks the current state of the connection by sending a ping keyword each second. If an ACK has been detected one second after the ping was send, the next ping is sendend. If a NACK is detected, the connection is closed and all interface activity is stopped. The system then automatically starts another search for a connection. Once found, interface activity is continued.
 
-Diese Variable weißt dem Keyword eine Reaktionsfunktion zu sobald dieses empfangen wird. Im undefininierten Fall wird ein None wiedergegeben.
+##### Implementation
 
-    connection.keyword_class_dic['keyword'].ack_react
+The system searches for a connection if the function "_find_connection.py" is called. The function is first called as a daemon thread inside "init()" from "LVL3_classes.py". As long as no connection is found, the interface Thread will not start operation, instead being locked inside a while loop. The condition for the while loop is defined by the "connection_type_object" being "None". This variabe being "None" is a defined state in "LVL3_classes.init()" at the start of operation. Once a connection is established inside "_find_connection()", "_find_connection()" will return, thus ending it's thread, the while loop is broken and operation of the interface starts. All other calls of "_find_connection()" are done inside the interface and only through the function "_ping()".
 
-Diese Variable weißt dem ACK dieses Keyword eine Reaktionsfunktion zu. Im undefininierten Fall wird ein None wiedergegeben.
-
-    connection.keyword_class_dic['keyword'].ack_TOE
-
-Diese Variable weißt dem NACK dieses Keyword eine Reaktionsfunktion zu. Im undefininierten Fall wird ein None wiedergegeben.
-### Schnittstelle
-
-## Ab hier noch nicht geupdated
-
-Innerhalb aller beteiligten Teilnehmer des lokalen Netzwerkes soll zur erfolgreichen Verbindung eine "..._interface()" Funktion vorhanden sein. Im Falle des Servers liegt die Funktion "server_interface" vor. Der Drohnen Client hat die Funktion "network_connection" dafür vorgesehen. Diese Funktion dient dazu die Verbindung zu einem Verbindungspartner aufzubauen, zu organisieren und zu empfangen.
-
-Die Sende Funktionen werden dort abgerufen wo sie erzeugt werden und werden vorgegeben. Progammierung steht aber noch aus.
-
-![alt text](interface_structure-1.jpg)
-
-##### Schnittstelle von Serverside
-
-Im Falle des Servers werden die "Connection_type_objects" organisiert in dem Dictionary "connect_dic" hinterlegt. Diese "Connection_type_objects" enstehen aus der "socket_object.accept()" Funktion und beschreiben eine Verbindung von dem Server zu einem Client. Die Funktion "server_listen()" sucht kontinuierlich nach neuen Verbindungen und sotiert diese in "connect_dic". Bis zu vier Verbindungen können so erschaffen werden.
-
-Zum empfangen von Informationen wird Funktion "server_recv_man()" bzw. dessen Unterfunktion "server_recv()" genutzt. Ersteres erstellt Threads für alle möglichen Verbindungen. Die zweite Funktion übernimmt dann eine Verbindung innerhalb jedes Threads. Hier wird nun überprüft ob überhaupt eine Verbindung vorliegt, ob etwas empfangen wird und was empgangen wird. Für den Inhalt der Nachrichten werden die dokumentierten Keywords aus "network-communication-keywords.md" verwendet welche in "ack_dic" zugeordnet werden.
-
-![alt text](interface_connection_management.jpg)
-
-Geplant ist auch neben den bestehenden Befehlen Stand 03.05.2024 auch noch weiter Befehle hinzufügen welche die Verbindungen schließen, Verbindungsart in "connect_dic" ändern etc. Dies steht aber nur als Idee und ist noch nicht festgelegt.
-
-##### Schnittstelle von Clientside
-
-Die schnittstelle wird von AuVAReS verwaltet
-
-### Senden von Befehlen
-
-Funktion WIP
-
-Das senden von Befehlen wird vor Ort (wo die Bedingung erzeugt wird) geschehen. Dafür wird eine passende Funktion bereit gestellt welche sich über verschieden Parameter wie gewünscht einstellen lässt. Der zu sende Befehl wird als Argument in string in die Funktion eingesetzt und gesendet. Der gesendete Befehl wird von dem Empfänge interpretiert welcher dann wieder das entsprechende acknowledgement sendet. Wie lange auf das acknowledgement oder ob überhaupt gewartet wird ist variabel.
-
-### Acknowledgement
-
-Die Acknowledgements werden durch die dictionaries "ack_dic" und "ack_status_dic" gehandelt. Sobald ein Befehl/Keyword gesendet wird, wird das dazugehörige Value im "ack_status_dic" von None auf False gesetzt. Wenn das Acknowledgement empfangen wird und dessen status im "ack_status_dic" False ist so setzt die zuständige Empfangsfunktion das Value auf True. Sobald das Value auf True gesetzt wird, wird es in der ursprünglichen Sendefunktion wieder of None gesetzt und das Acknowledgment wird als angekommen gewertet.
-
-## Offene Baustellen
-
-- Grundlage für das desgin ist in Bearbeitung
-
-- Aktive Überprüfung der Verbindung über ping abtausch
-
-- Kollisionskontrolle ist in der Entwicklung
-
-- Display Kontrolle ist noch unbekannt. Standard Ansteuerung über Website geplant.
-
-- Es fehlen noch Reaktionsfunktionen auf Keywords und Acknowledgement timeouts. Zugriff auf diese wurde aber schon implementiert.
+Once a NACK is detected by the "ping_ack_flag" being "False" a second after the ping was send, the connection is closed by the server, "connection_status" is set to "False" and "_find_connection()" is called. This call of "_find_connection()" is done without a thread. The function "_ping()" therefore has to wait for it to return, thus stopping operation of the ping thread until a connection is found. The receive thread which calls the function "_recv()" will raise Exceptions which are simply caught by an "except:pass". Interface operation is thereby virtually stopped until a new connection can be established.

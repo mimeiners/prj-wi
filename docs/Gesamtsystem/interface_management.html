@@ -14,40 +14,40 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link media="all" rel="stylesheet" type="text/css" href="https://dokie.li/media/css/dokieli.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -88,11 +88,19 @@ var addUtterances = () => {
 commentsRunWhenDOMLoaded(addUtterances);
 </script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=afe5de03"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/Gesamtsystem/interface_management';</script>
     <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/Gesamtsystem/interface_management.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -108,23 +116,27 @@ commentsRunWhenDOMLoaded(addUtterances);
 
   
   
-  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -146,13 +158,8 @@ commentsRunWhenDOMLoaded(addUtterances);
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
-  <div class="pst-async-banner-revealer d-none">
-  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
-</div>
-
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
     </header>
   
 
@@ -220,18 +227,18 @@ commentsRunWhenDOMLoaded(addUtterances);
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Gesamtsystem</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="Projektbeschreibung.html">Projektbeschreibung</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="Projektbeschreibung.html">Projektbeschreibung</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../Kicker/temp_prj_wohlinvest_requierements.html">Wohlinvestment Anforderungen</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../AuVAReS/01_Requirements.html">Anforderungen AuVAReS</a></li>
 </ul>
-</details></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Schnittstelle Kicker - AuVAReS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Schnittstelle Kicker - AuVAReS</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="network-communication-keywords.html">Schlüsselwörter bei Kommunikation im Netzwerk von Kicker-AuVAReS</a></li>
 
 
 </ul>
-</details></li>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware-Setup</span></p>
 <ul class="nav bd-sidenav">
@@ -266,7 +273,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 
       </div>
       
-      <main id="main-content" class="bd-main" role="main">
+      <main id="main-content" class="bd-main">
         
         
 
@@ -275,14 +282,14 @@ commentsRunWhenDOMLoaded(addUtterances);
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article d-print-none">
+              <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</button></div>
+</label></div>
       
     </div>
   
@@ -440,9 +447,9 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</button>
+</label>
 </div></div>
       
     </div>
@@ -463,24 +470,30 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nutzer-handbuch">Nutzer Handbuch</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verbindung-bestimmen">Verbindung bestimmen</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funktionen-der-verbindung">Funktionen der Verbindung</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#empfangen">Empfangen</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#function">Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#network-design">Network design</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keywords">Keywords</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#location">Location</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvl2-interface-py">LvL2_interface.py</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvl3-classes-py">LVL3_classes.py</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schnittstelle">Schnittstelle</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ab-hier-noch-nicht-geupdated">Ab hier noch nicht geupdated</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schnittstelle-von-serverside">Schnittstelle von Serverside</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schnittstelle-von-clientside">Schnittstelle von Clientside</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#senden-von-befehlen">Senden von Befehlen</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgement">Acknowledgement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#receiving-messages-ack-and-nack">Receiving Messages, ACK and NACK</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#offene-baustellen">Offene Baustellen</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-messages-and-connection-status">Sending Messages and Connection Status</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-a-connection-and-reconnect">Finding a Connection and Reconnect</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concept">Concept</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Implementation</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -494,150 +507,130 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="interface-management">
 <h1>Interface Management<a class="headerlink" href="#interface-management" title="Link to this heading">#</a></h1>
-<p>Diese Beschreibungen dienen als Leitfaden für die Entwicklung und kontinuierliche Dokumentation des aktuellen Standes der Schnittstelle. Einwände und Ideen sind natürlich willkommen.</p>
-<p>Da von der Serverside aus mehrere Verbindungen möglich sind muss der Zugriff innerhalb der Threads Kollisionsfrei verlaufen. Geplant ist dafür die Function “threading.lock” und dessen Komplimentärfunktionen. Die Umsetzung dieser muss aber noch im Detail ermitttelt werden. Bis jetzt ist geplant das diese Bedingungen über “with” abgerufen.</p>
-<p>Innerhalb vieler Funktionskritischer Schleifen wird noch die Variable some_var abgerufen welche ersetzt werden soll durch eine global systemstatus Variable.</p>
-<section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
-<p>Der Aufbau des System besteht aus zwei Hauptcomputern. Der Computer von Wohninvest, welcher im folgenden als Server bezeichnet wird, und der Computer von AuVARes welcher als Client oder Drohnen Client bezeichnet wird. Es werden Optionen offen gehalten für einen dritten Computer und/oder einer externen Quelle zur Überwachung des Systems. Der Server ist der Ansprechpatner aller Clients und ist als notwendige Hardware des Kickers von Wohninvest zu betrachten.</p>
+<section id="function">
+<h2>Function<a class="headerlink" href="#function" title="Link to this heading">#</a></h2>
+<p>The interface allows the Kicker to communicate with another device. By design, this other device will be the control unit of the the AuVAReS drone. The interface searches for a connection and controlls the connection’s status once it is esstablished. Through the interface, the partner device can send keywords which interact with the current status of the host and the other way around.</p>
 </section>
-<section id="nutzer-handbuch">
-<h2>Nutzer Handbuch<a class="headerlink" href="#nutzer-handbuch" title="Link to this heading">#</a></h2>
-<section id="verbindung-bestimmen">
-<h3>Verbindung bestimmen<a class="headerlink" href="#verbindung-bestimmen" title="Link to this heading">#</a></h3>
-<p>Die Verbindung zu einem Clienten ist repräsentiert in einem Klassenobjekt der Klasse “connection”. Alle Klassenobjekte befinden sich in dem globalen Dictionary “connect_dic”.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>global connect_dic
-connect_dic = {&#39;drone&#39; : drone_connection,
-               &#39;extern1&#39; : extern_connection_1,
-               &#39;extern2&#39; : extern_connection_2,
-               &#39;dynamic&#39;: dynamic_connection} 
-</pre></div>
-</div>
-<p>Solange noch keine Vebindung gefunden wurde sind diese Objekte nur ein ‘None’ und haben keine Funktion. Sobald die Verbindung hinzugefügt wurde, was automatisch geschieht sobald eine Verbindung gefunden wurde, enstehen die entsprechenden Klassenobjekte.</p>
-<p>Für das bisherige System ist nur die Verbindung “drone_connection” von Bedeutung. Die anderen Verbindungen dienen erstmal als Platzhalter, sind aber theoretisch schon funktional.</p>
-<p>Um die Verbindung zu nutzen muss diese nur aus den Dictionary aufgeruden werden. Eine Variable ist dabei hilfreich</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>verbindung_variable = connect_dic[&#39;drone&#39;]
-</pre></div>
-</div>
-</section>
-<section id="funktionen-der-verbindung">
-<h3>Funktionen der Verbindung<a class="headerlink" href="#funktionen-der-verbindung" title="Link to this heading">#</a></h3>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.send( message , timeout = -1 )
-</pre></div>
-</div>
-<p>message : Argument des Typs str. Sollte ein definiertes Keyword sein. Leerzeichen   werden Nicht ignoriert. Eine Codierung ist nicht nötig sondern wird intern durchgeführt.</p>
-<p>timeout : Argument des Typs int. Bestimmt wie lange auf ein ACK gewartet wird.</p>
-<div class="pst-scrollable-table-container"><table class="table">
+<section id="network-design">
+<h2>Network design<a class="headerlink" href="#network-design" title="Link to this heading">#</a></h2>
+<p>The Network traffic is designed around global keywords. Here, a keyword is a string message that can be sended by any device and can be received by any device. Once received, a reaction is called which is defined at the receiver. The reaction being defined locally allows the each reaction to be fitted to each system, regardless of system design. Of course, all parties must agree on a common set of keywords and their functionalty (but not the technical implementation!).</p>
+<section id="keywords">
+<h3>Keywords<a class="headerlink" href="#keywords" title="Link to this heading">#</a></h3>
+<table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>timeout = -1</p></th>
-<th class="head"><p>timeout = 0</p></th>
-<th class="head"><p>timeout = n</p></th>
+<tr class="row-odd"><th class="head text-left"><p>Sender</p></th>
+<th class="head text-left"><p>Schlüsselwort</p></th>
+<th class="head text-left"><p>Beschreibung</p></th>
+<th class="head text-left"><p>ACK</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>ACK wird ignoriert, keine Reaktion wird ausgelöst</p></td>
-<td><p>TOE Funktion wird sofort ausgelöst</p></td>
-<td><p>n Sekunden Wartezeit (0.1 Sekunden Genauigkeit) um das ACK zu erwarten. Wird ACK empfangen so wird die ACK Reaktionsfunktion ausgelöst. Wird n überschritten wird die TOE Funktion sofort ausgelöst</p></td>
+<tr class="row-even"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>ping</p></td>
+<td class="text-left"><p>Wird mindestens zum Programmstart benutzt, um AuVAReS zu detektieren; nach timeout werden keine AuVAReS-abhängigängen Funktionen verwendet.</p></td>
+<td class="text-left"><p>hi</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_drone_powered</p></td>
+<td class="text-left"><p>Die Spielernamen sind eingetragen und sie haben die Drohne gestartet (Quittieren über Button)</p></td>
+<td class="text-left"><p>connecting_drone</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>A</p></td>
+<td class="text-left"><p>notify_drone_connected</p></td>
+<td class="text-left"><p>Meldung, dass die Drone verbunden ist</p></td>
+<td class="text-left"><p>waiting_for_startbutton</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_start_permission</p></td>
+<td class="text-left"><p>Meldung, dass die Drone freigegeben ist zum Starten</p></td>
+<td class="text-left"><p>positioning_drone</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>A</p></td>
+<td class="text-left"><p>notify_gamestart</p></td>
+<td class="text-left"><p>Meldung, dass das Spiel gestartet werden kann</p></td>
+<td class="text-left"><p>game_started</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_newgoal</p></td>
+<td class="text-left"><p>Ein Tor ist gefallen, ein replay sollte gestartet werden</p></td>
+<td class="text-left"><p>received_newgoal</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_foul</p></td>
+<td class="text-left"><p>Ein Regelverstoß ist vorgefallen, ein replay sollte gestartet werden</p></td>
+<td class="text-left"><p>received_foul</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_gameover</p></td>
+<td class="text-left"><p>Zusätzlich zum replay des Siegertores wird die Abschlussroutine der Drohne ausgeführt.</p></td>
+<td class="text-left"><p>received_gamover</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>A</p></td>
+<td class="text-left"><p>please_wait</p></td>
+<td class="text-left"><p>AuVAReS kann das Spiel pausieren, bspw. wenn es Zwischenfälle gibt. Tore werden nicht gezählt.</p></td>
+<td class="text-left"><p>waiting</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>A</p></td>
+<td class="text-left"><p>please_resume</p></td>
+<td class="text-left"><p>AuVAReS ist wieder einsatzbereit und erlaubt dem Kicker, wieder Tore zu zählen.</p></td>
+<td class="text-left"><p>gaming</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>STOP</p></td>
+<td class="text-left"><p>AuVAReS soll Notlandung einleiten</p></td>
+<td class="text-left"><p>received_stop</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<p>Die Funktion “connection.send” sendet den Inhalt des string arguments “message” an den Verbindungspatner des Verbindungsobjektes und überwacht ob ein ACK empfangen wird.</p>
-<p>Die Funktion returned ein True wenn die Nachricht gesendet wurde und das ACK abgearbeitet wurde oder ein False wenn die Nachricht nicht gesendet wurde.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.send_thread( args )
-</pre></div>
-</div>
-<p>args : Argument des Typs list. Liste aus Argumenten welche an “connection.send” weitergegeben werden.</p>
-<p>Funktional passiert in dieser Funktion das gleiche wie bei “connection.send” aber sie findet in einem eigenen Thread start. Definition, start und ende werden von der Funktion selbst durchgeführt. So behindert das Warten auf ein ACK den den Ablauf des Programms. Die Reaktionsfunktionen auf ACK und NACK finden ebenfalls in dem Thread statt.</p>
-<p>Es wird aber kein Wert returned da Threads dies nicht können. Um sicher zu gehen das eine Nachricht gesendet wurde sollte connection.connection_status() abgerufen werden.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.connection_status()
-</pre></div>
-</div>
-<p>Diese Funktion gibt den Status einer Verbindung wieder, nachdem diese mindestens einmal nicht dynamisch (als dynamic_connection) initialisiert wurde. Zurückgegeben wird True oder False. Der Zustand wird automatisch über sekündliche Pings aktualisiert.</p>
-<section id="empfangen">
-<h4>Empfangen<a class="headerlink" href="#empfangen" title="Link to this heading">#</a></h4>
-<p>Empfangen und Interpretieren von Nachrichten geschieht automatisch. Reaktion auf Keywords, ACK und NACK wir über die Reaktionsfunktionen bestimmt. Diese werden definiert in dem Unterdictionary “connection.keyword_class_dic” . Diese Unterdictionary ist ein Dictionary bestehend aus allen offiziellen Keywords und dazugehörigen Keywordklassen. Über “connection.keyword_class_dic[‘keyword’]” lässt sich somit auf die Eigenschaften eines Keywords zugreifen.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.keyword_class_dic[&#39;keyword&#39;].keyword
-</pre></div>
-</div>
-<p>Gibt das dazugehörige Keyword an.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.keyword_class_dic[&#39;keyword&#39;].ack
-</pre></div>
-</div>
-<p>Gibt das dazugehörige ACK an.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.keyword_class_dic[&#39;keyword&#39;].ack_status
-</pre></div>
-</div>
-<p>Objekt des Typs NoneType oder Bool. Gibt Status eines ACK von einem Keyword an.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>None</p></th>
-<th class="head"><p>False</p></th>
-<th class="head"><p>True</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Es wird kein ACK von diesem Keyword erwartet</p></td>
-<td><p>Es wird ein ACK von diesem Keyword erwartet aber noch nicht empfangen</p></td>
-<td><p>Ein ACK wurde von diesem Keyword ampfangen</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Nachdem ein ACK empfangen oder die Timeout Zeit überschritten wurde wird der Status automatisch wieder auf None gesetzt.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.keyword_class_dic[&#39;keyword&#39;].react
-</pre></div>
-</div>
-<p>Diese Variable weißt dem Keyword eine Reaktionsfunktion zu sobald dieses empfangen wird. Im undefininierten Fall wird ein None wiedergegeben.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.keyword_class_dic[&#39;keyword&#39;].ack_react
-</pre></div>
-</div>
-<p>Diese Variable weißt dem ACK dieses Keyword eine Reaktionsfunktion zu. Im undefininierten Fall wird ein None wiedergegeben.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connection.keyword_class_dic[&#39;keyword&#39;].ack_TOE
-</pre></div>
-</div>
-<p>Diese Variable weißt dem NACK dieses Keyword eine Reaktionsfunktion zu. Im undefininierten Fall wird ein None wiedergegeben.</p>
+</section>
+</section>
+<section id="location">
+<h2>Location<a class="headerlink" href="#location" title="Link to this heading">#</a></h2>
+<p>The interface is defined in the file “LVL2_interface.py” and also has functions and definitions in “LVL3_classes.py” . “LVL2_interface.py” controlls the connection status, listens for keywords and interprets all incoming messages. If a keyword is detected a function inside this file is called which includes the appropiate reaction to a keyword (e.g setting certain status flags). Sending messages aswell as the connection status flag and finding a connection are defined in “LVL3_classes.py” . That way they can easily be called by other functions and use the interface without importing “LVL2_interface.py” .</p>
+<p>As a Level 2 function “LVL2_interface.py” is started in “LVL1_threads.py” as a thread upon system start.</p>
+<section id="structure">
+<h3>Structure<a class="headerlink" href="#structure" title="Link to this heading">#</a></h3>
+<section id="lvl2-interface-py">
+<h4>LvL2_interface.py<a class="headerlink" href="#lvl2-interface-py" title="Link to this heading">#</a></h4>
+<p>The main interface is defined in “LVL2_interface.py”. It’s main structure is defined in the function “interface()”, which is started as a thread in “LVL1_threads”. Inside “Interface()” there two sections.</p>
+<p>The first section initialises the used keyword dictionary for the interface. This section also includes a while loop which stops interface activity until the first connection, after a system start, has been found. The second section contains the main functionality of the interface, defined by two threads which both serve one function each. The first function is “_ping()”, which sends a ping keyword to the connected client and governs the current connection status. The second the thread calls the function “_recv()” which constantly supervises the connection port. Once it receives a message from another device, it checks if this message is a keyword or a ACK. If a keyword or ACK has been detected, a reaction function is called. If the message is either, no reation follows. The reaction funtion stops the “_recv” function detecting any more messages until the reaction resolved.</p>
+</section>
+<section id="lvl3-classes-py">
+<h4>LVL3_classes.py<a class="headerlink" href="#lvl3-classes-py" title="Link to this heading">#</a></h4>
+<p>Another part of the interface can be found in “LVL3_classes.py”. This part includes three integral parts of the interface functionality. The function “_find_connection()”, the variable “connection_status” and the function “server_send()”.</p>
+<p>The function “_find_connection()” searches for a new connection. It is assumed that during the time of the function call, no connection with any other device exists.</p>
+<p>The variable “connection_status” reflects the current necessary status of a connection. “True” means there is connection and “False” means there is no connection. ##It can be called by any function inside the system, if needed. Most of the time the function “server_send()” accesses the variable to check if an message can be send. This variable is set by “_find_connection()” if a connection has been found and gets resetted by “_ping()” if an NACK has been received.## The not yet mentioned function “set_connection_status()” is used to set “connection_status” to any state. This function is used as there were concerns about the imported state of “connection_status”. With “set_connection_status()” the function can change “connection_status” as a local variable in “LVL3_classes.py” instead of an imported one.</p>
+<p>The function “server_send()” can be accessed by every function in the code, which imported “LVL3_classes.py”. It allows each part of the code to send a message to a connected device. The function automatically includes all necessary steps for a successfull transmission, including to check if there is a connection at all.</p>
 </section>
 </section>
 </section>
-<section id="schnittstelle">
-<h2>Schnittstelle<a class="headerlink" href="#schnittstelle" title="Link to this heading">#</a></h2>
+<section id="receiving-messages-ack-and-nack">
+<h2>Receiving Messages, ACK and NACK<a class="headerlink" href="#receiving-messages-ack-and-nack" title="Link to this heading">#</a></h2>
+<section id="id1">
+<h3>Function<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>The system is designed to always listen for any incoming messages, send an ACK and then react to the received message. During a reaction no other message can be recieved! The system can send messages during a reaction.</p>
+<p>If a keyword is received, an acknowldgement(ACK) is sended. An ACK acts like another keyword, with the limitation of only being sended if it’s keyword was received. The sender of the keyword can therefore check if a sended keyword was received. The interface can react to a received ACK just like to a keyeword. If no ACK has been recieved, it is counted as a NACK. There is no official implementation of a NACK and it must be added manually, if needed. The funtion “_ping()” in “LVL2_interface.py” serves as a possible example.</p>
 </section>
-<section id="ab-hier-noch-nicht-geupdated">
-<h2>Ab hier noch nicht geupdated<a class="headerlink" href="#ab-hier-noch-nicht-geupdated" title="Link to this heading">#</a></h2>
-<p>Innerhalb aller beteiligten Teilnehmer des lokalen Netzwerkes soll zur erfolgreichen Verbindung eine “…_interface()” Funktion vorhanden sein. Im Falle des Servers liegt die Funktion “server_interface” vor. Der Drohnen Client hat die Funktion “network_connection” dafür vorgesehen. Diese Funktion dient dazu die Verbindung zu einem Verbindungspartner aufzubauen, zu organisieren und zu empfangen.</p>
-<p>Die Sende Funktionen werden dort abgerufen wo sie erzeugt werden und werden vorgegeben. Progammierung steht aber noch aus.</p>
-<p><img alt="alt text" src="docs/Gesamtsystem/interface_structure-1.jpg" /></p>
-<section id="schnittstelle-von-serverside">
-<h3>Schnittstelle von Serverside<a class="headerlink" href="#schnittstelle-von-serverside" title="Link to this heading">#</a></h3>
-<p>Im Falle des Servers werden die “Connection_type_objects” organisiert in dem Dictionary “connect_dic” hinterlegt. Diese “Connection_type_objects” enstehen aus der “socket_object.accept()” Funktion und beschreiben eine Verbindung von dem Server zu einem Client. Die Funktion “server_listen()” sucht kontinuierlich nach neuen Verbindungen und sotiert diese in “connect_dic”. Bis zu vier Verbindungen können so erschaffen werden.</p>
-<p>Zum empfangen von Informationen wird Funktion “server_recv_man()” bzw. dessen Unterfunktion “server_recv()” genutzt. Ersteres erstellt Threads für alle möglichen Verbindungen. Die zweite Funktion übernimmt dann eine Verbindung innerhalb jedes Threads. Hier wird nun überprüft ob überhaupt eine Verbindung vorliegt, ob etwas empfangen wird und was empgangen wird. Für den Inhalt der Nachrichten werden die dokumentierten Keywords aus “<a class="reference external" href="http://network-communication-keywords.md">network-communication-keywords.md</a>” verwendet welche in “ack_dic” zugeordnet werden.</p>
-<p><img alt="alt text" src="docs/Gesamtsystem/interface_connection_management.jpg" /></p>
-<p>Geplant ist auch neben den bestehenden Befehlen Stand 03.05.2024 auch noch weiter Befehle hinzufügen welche die Verbindungen schließen, Verbindungsart in “connect_dic” ändern etc. Dies steht aber nur als Idee und ist noch nicht festgelegt.</p>
-</section>
-<section id="schnittstelle-von-clientside">
-<h3>Schnittstelle von Clientside<a class="headerlink" href="#schnittstelle-von-clientside" title="Link to this heading">#</a></h3>
-<p>Die schnittstelle wird von AuVAReS verwaltet</p>
-</section>
-<section id="senden-von-befehlen">
-<h3>Senden von Befehlen<a class="headerlink" href="#senden-von-befehlen" title="Link to this heading">#</a></h3>
-<p>Funktion WIP</p>
-<p>Das senden von Befehlen wird vor Ort (wo die Bedingung erzeugt wird) geschehen. Dafür wird eine passende Funktion bereit gestellt welche sich über verschieden Parameter wie gewünscht einstellen lässt. Der zu sende Befehl wird als Argument in string in die Funktion eingesetzt und gesendet. Der gesendete Befehl wird von dem Empfänge interpretiert welcher dann wieder das entsprechende acknowledgement sendet. Wie lange auf das acknowledgement oder ob überhaupt gewartet wird ist variabel.</p>
-</section>
-<section id="acknowledgement">
-<h3>Acknowledgement<a class="headerlink" href="#acknowledgement" title="Link to this heading">#</a></h3>
-<p>Die Acknowledgements werden durch die dictionaries “ack_dic” und “ack_status_dic” gehandelt. Sobald ein Befehl/Keyword gesendet wird, wird das dazugehörige Value im “ack_status_dic” von None auf False gesetzt. Wenn das Acknowledgement empfangen wird und dessen status im “ack_status_dic” False ist so setzt die zuständige Empfangsfunktion das Value auf True. Sobald das Value auf True gesetzt wird, wird es in der ursprünglichen Sendefunktion wieder of None gesetzt und das Acknowledgment wird als angekommen gewertet.</p>
+<section id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
 </section>
 </section>
-<section id="offene-baustellen">
-<h2>Offene Baustellen<a class="headerlink" href="#offene-baustellen" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Grundlage für das desgin ist in Bearbeitung</p></li>
-<li><p>Aktive Überprüfung der Verbindung über ping abtausch</p></li>
-<li><p>Kollisionskontrolle ist in der Entwicklung</p></li>
-<li><p>Display Kontrolle ist noch unbekannt. Standard Ansteuerung über Website geplant.</p></li>
-<li><p>Es fehlen noch Reaktionsfunktionen auf Keywords und Acknowledgement timeouts. Zugriff auf diese wurde aber schon implementiert.</p></li>
-</ul>
+<section id="sending-messages-and-connection-status">
+<h2>Sending Messages and Connection Status<a class="headerlink" href="#sending-messages-and-connection-status" title="Link to this heading">#</a></h2>
+<p>All non-LVL2_interface.py functions only interact with the interface by sending messages. The function “server_send()” has been created for this purpose. It serves as a ‘interface’ between the interface and the system.</p>
+<p>The connection status flag “connection_status” defined in “LVL3_classes.py” reflects the current status of a connection. By definition, a connection exists (True) or not (False). All functions can check the status flag if they imported LVL3_classes.py . The status is flaged is managed by two functions. “_find_connection()”, defined in LVL3_classes.py , can set the connection status to “True”. “_ping()”, defined in LVL2_interface.py , can set the connection status to “False”.</p>
+</section>
+<section id="finding-a-connection-and-reconnect">
+<h2>Finding a Connection and Reconnect<a class="headerlink" href="#finding-a-connection-and-reconnect" title="Link to this heading">#</a></h2>
+<section id="concept">
+<h3>Concept<a class="headerlink" href="#concept" title="Link to this heading">#</a></h3>
+<p>Once the system starts a search for a connection is started. Aslong as no connection is found, no interface activity is done. Once it is found the connection mangement is started. Part of the management will be a ping function which checks the current state of the connection by sending a ping keyword each second. If an ACK has been detected one second after the ping was send, the next ping is sendend. If a NACK is detected, the connection is closed and all interface activity is stopped. The system then automatically starts another search for a connection. Once found, interface activity is continued.</p>
+</section>
+<section id="id2">
+<h3>Implementation<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>The system searches for a connection if the function “_find_connection.py” is called. The function is first called as a daemon thread inside “init()” from “LVL3_classes.py”. As long as no connection is found, the interface Thread will not start operation, instead being locked inside a while loop. The condition for the while loop is defined by the “connection_type_object” being “None”. This variabe being “None” is a defined state in “LVL3_classes.init()” at the start of operation. Once a connection is established inside “_find_connection()”, “_find_connection()” will return, thus ending it’s thread, the while loop is broken and operation of the interface starts. All other calls of “_find_connection()” are done inside the interface and only through the function “_ping()”.</p>
+<p>Once a NACK is detected by the “ping_ack_flag” being “False” a second after the ping was send, the connection is closed by the server, “connection_status” is set to “False” and “_find_connection()” is called. This call of “_find_connection()” is done without a thread. The function “_ping()” therefore has to wait for it to return, thus stopping operation of the ping thread until a connection is found. The receive thread which calls the function “_recv()” will raise Exceptions which are simply caught by an “except:pass”. Interface operation is thereby virtually stopped until a new connection can be established.</p>
+</section>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -670,7 +663,7 @@ connect_dic = {&#39;drone&#39; : drone_connection,
               
               
               
-                <footer class="prev-next-footer d-print-none">
+                <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -707,24 +700,30 @@ connect_dic = {&#39;drone&#39; : drone_connection,
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nutzer-handbuch">Nutzer Handbuch</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verbindung-bestimmen">Verbindung bestimmen</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funktionen-der-verbindung">Funktionen der Verbindung</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#empfangen">Empfangen</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#function">Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#network-design">Network design</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keywords">Keywords</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#location">Location</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvl2-interface-py">LvL2_interface.py</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lvl3-classes-py">LVL3_classes.py</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schnittstelle">Schnittstelle</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ab-hier-noch-nicht-geupdated">Ab hier noch nicht geupdated</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schnittstelle-von-serverside">Schnittstelle von Serverside</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#schnittstelle-von-clientside">Schnittstelle von Clientside</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#senden-von-befehlen">Senden von Befehlen</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgement">Acknowledgement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#receiving-messages-ack-and-nack">Receiving Messages, ACK and NACK</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#offene-baustellen">Offene Baustellen</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sending-messages-and-connection-status">Sending Messages and Connection Status</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-a-connection-and-reconnect">Finding a Connection and Reconnect</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concept">Concept</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Implementation</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -773,8 +772,8 @@ By M. Meiners / B. Lehmann
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
   </footer>

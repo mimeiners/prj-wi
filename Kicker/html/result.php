@@ -1,6 +1,7 @@
 <?php
 session_start();
 $_SESSION["page"] = 4;
+
 // Pfad zur JSON-Datei
 $jsonFilePath = 'game_data.json';
 
@@ -47,6 +48,7 @@ if (file_exists($jsonFilePath)) {
     <meta charset="UTF-8">
     <title>Spiel Ergebnis</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,6 +61,7 @@ if (file_exists($jsonFilePath)) {
             max-width: auto;
             margin: auto;
             padding: 20px;
+            margin-top: 50px; /* Adjust this value to change the distance from the top */
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -112,38 +115,27 @@ if (file_exists($jsonFilePath)) {
 </head>
 <body>
     <div class="container">
-        <!-- Container-Inhalte hier -->
-        <img src="Pictures/hsb-logo.png" width="250">
-        <h1>Ergebnis:</h1>
-        
-        <div class="game-status">
-                    <span class="player-name"><?php echo "$finalPlayer1Name"; ?></span>
-                    <span class="player-name">&nbsp;:&nbsp;</span>
-                    <span class="player-name"><?php echo "$finalPlayer2Name"; ?></span>
-                    </div>
-                    <div class="game-status">
-                    
-                    <span class="score">    </span>
-                    <span class="score"><?php echo "$finalScore1"; ?></span>
-                    <span class="score">&nbsp;:&nbsp;</span>
-                    <span class="score"><?php echo "$finalScore2"; ?></span>
-                    <span class="score">    </span>
-                    
-        </div>
+        <div class="justify-content-center mt-5">
+            <img src="Pictures/hsb-logo.png" width="250">
+            <h1>Ergebnis:</h1>
+            
+            <div class="game-status">
+                <span class="player-name"><?php echo htmlspecialchars($finalPlayer1Name); ?></span>
+                <span class="player-name">&nbsp;:&nbsp;</span>
+                <span class="player-name"><?php echo htmlspecialchars($finalPlayer2Name); ?></span>
+            </div>
+            <div class="game-status">
+                <span class="score"><?php echo htmlspecialchars($finalScore1); ?></span>
+                <span class="score">&nbsp;:&nbsp;</span>
+                <span class="score"><?php echo htmlspecialchars($finalScore2); ?></span>
+            </div>
 
-        <div class="result-message"><?php echo htmlspecialchars($resultMessage); ?></div>
-        <div class="result-message">
-            <?php
-            if ($finalPlayer1Name !== $winner) {
-                #echo "<p>$finalPlayer1Name Tore: $finalScore1</p>";
-            } elseif ($finalPlayer2Name !== $winner) {
-                #echo "<p>$finalPlayer2Name Tore: $finalScore2</p>";
-            }
-            ?>
-        </div>
-        <form action="normal_stop.php" method="get">
-            <button type="submit">Zurück zur Startseite</button>
-        </form>
+            <div class="result-message"><?php echo htmlspecialchars($resultMessage); ?></div>
+            
+            <form action="normal_stop.php" method="get">
+                <button type="submit">Zurück zur Startseite</button>
+            </form>
+        </div>    
     </div>
 </body>
 </html>
