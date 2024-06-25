@@ -35,7 +35,7 @@ Dieser Plan zeigt die Verdrahtung des Kickertisches. Er beinhaltet folgende Komp
 
 * **Spannung 5V DC:** Stromversorgung der Peripheriegeräte
 
-* **Daten Binär:** Eigentlich Digital aber um auszudrücken, dass die Sensoren entweder 0 V oder 5V ausgeben. Auslösekriterien der Sensoren entweder als Low oder High gecoded.
+* **Daten Binär:** Die Sensoren geben im Grunde ein digitales Signal aus, das entweder 0 oder 1 ist, und können daher als "binär" betrachtet werden. Die Auslösekriterien der Sensoren sind entsprechend als Low oder High codiert.
 
 * **HDMI:**  Videodaten
 
