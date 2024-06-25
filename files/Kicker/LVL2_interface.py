@@ -6,7 +6,7 @@ interface for sending keywords/receiving ACKs
 """
 
 __author__ = "Marvin Otten"
-__version__ = "1.0.7"
+__version__ = "1.0.8"
 __status__ = "WIP"
 
 #import globally needed libraries
@@ -230,17 +230,18 @@ def _ping():
             with lvl3.port_lock:
                 lvl3.connection_type_object.sendall( ping )
                 lvl3.ping_ack_flag = False
-                time.sleep(10**-2)
-            time.sleep(0.99)
+                time.sleep(10**-3)
+            time.sleep(0.999)
             #if ack not received, set connection_status to False
-            if lvl3.ping_ack_flag == False: raise Exception('Ping NACK')
+            if lvl3.ping_ack_flag == False: lvl3.set_connection_status(False)
 
         #if ping could not be sended, close connection, find new connection
         except Exception as e:
-            #print('ping not sended because %s \nconnection status is : %s' % ( e , lvl3.connection_status))
+            print('ping not sended because %s \nconnection status is : %s' % ( e , lvl3.connection_status))
             lvl3.set_connection_status(False)
             lvl3.connection_type_object.close()
             lvl3._find_connection()
+
 
     
 #%%

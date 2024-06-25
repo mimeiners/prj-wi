@@ -3,12 +3,10 @@
 LEVEL 2
 Pregame stuff
 
-> button_stop has to be tested
-
 """
 
 __author__ = "Lukas Haberkorn", "Martin Schwarz", "Torge Plate"
-__version__ = "1.5.3"
+__version__ = "1.5.4"
 __status__ = "good"
 
 
@@ -36,7 +34,7 @@ def pregame():
                 data = lvl3.json_read()
                 if data["player_1"]["name"] != "":
                     break
-                time.sleep(0.5)
+                time.sleep(2)
             lvl3.player1_name = data["player_1"]["name"]
             lvl3.player2_name = data["player_2"]["name"]
             print("Received playernames!")
@@ -90,7 +88,8 @@ def pregame():
 
             # write game ID and reset Website Buttons
             data = lvl3.json_read()
-            data["game_id"] = lvl3.gameID; data["button_start"] = False; data["button_power"] = False
+            data["game_id"] = lvl3.gameID; data["button_start"] = False; data["button_power"] = False; data["button_stop"] = False
+            # data["player_1"]["foul"] = False; data["player_2"]["foul"] = False
             lvl3.json_write(data)
 
             lvl3.goals_player1 = 0; lvl3.goals_player2 = 0
