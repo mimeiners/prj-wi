@@ -28,9 +28,8 @@ Func:   This function allows for continuous receiving of messages.
         The received data is decoded (utf-8) and given as an argument
         to the function _data_interpret which interprets the data based
         on systemwide keywords. Afterwards the function receives a new message.
-
-        The included while loop for continues operation does not include
-        a condition but loops indefintly (v. 1.0.4). There is no return.
+        
+        There is no return.
 '''
 
 
@@ -167,7 +166,6 @@ def _ack_react( ack ):
 
     if ack == 'hi':
         lvl3.ping_ack_flag = True
-        lvl3.set_connection_status(True)
         return
         
     elif ack == 'connecting_drone':
@@ -233,7 +231,7 @@ def _ping():
                 time.sleep(10**-3)
             time.sleep(0.999)
             #if ack not received, set connection_status to False
-            if lvl3.ping_ack_flag == False: lvl3.set_connection_status(False)
+            if lvl3.ping_ack_flag == False: raise Exception('NACK received')
 
         #if ping could not be sended, close connection, find new connection
         except Exception as e:
