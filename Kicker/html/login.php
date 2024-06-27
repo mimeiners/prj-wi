@@ -1,81 +1,87 @@
 <?php
-// Initialize the session
+/**
+ * login.php
+ * 
+ * Anmeldeseite für Nutzer
+ * 
+ */
+
+// Neue Session starten bzw. vorhandene fortsetzen
 session_start();
 
-// Check if the user is already logged in
+// Weiterleitung für bereits angemeldete Nutzer 
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    // Call the check_second_user.php script to get the value
+    // Datenbankabfrage zur Anzahl der angemeldeten Nutzer
     $secondUserValue = file_get_contents('check_second_user.php');
 
-    // Redirect based on the value from check_second_user.php
+    // Wenn der Nutzer der zweite Spieler ist, dann Warteseite überspringen
     if ($secondUserValue == 2) {
-        header("location: welcome.php");
+        header("location: redirect.php");
         exit;
     } else {
-        // Handle any other cases if needed
+        // Fehlermeldung
     }
 } else {
+    // Fehlermeldung
 }
 
-// Include config file
+// Für unangemeldete Nutzer neue Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
 require_once "config.php";
 
-// Define variables and initialize with empty values
+// Variablen für die Eingabefelder initialisieren
 $username = $password = "";
 $username_err = $password_err = $login_err = "";
 
-// Processing form data when form is submitted
+// Eingabefelderinhalt prüfen und ggf. verarbeiten
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check if username is empty
+    
+    // Nutzernameneingabe übergeben
     if (empty(trim($_POST["username"]))) {
         $username_err = "Please enter username.";
     } else {
         $username = trim($_POST["username"]);
     }
 
-    // Check if password is empty
+    // Passworteingabe übergeben
     if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter your password.";
     } else {
         $password = trim($_POST["password"]);
     }
 
-    // Validate credentials
+    // Passwort und Nutzername prüfen
     if (empty($username_err) && empty($password_err)) {
-        // Prepare a select statement
         $sql = "SELECT id, username, password FROM users WHERE username = ?";
 
+        // Nutzernameneingabe für Datenbankeintragung vorbereiten
         if ($stmt = mysqli_prepare($link, $sql)) {
-            // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_username);
 
-            // Set parameters
             $param_username = $username;
 
-            // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
-                // Store result
                 mysqli_stmt_store_result($stmt);
 
-                // Check if username exists, if yes then verify password
+                // Wenn der Nutzername vorhanden ist, wird das Passwort verifiziert
                 if (mysqli_stmt_num_rows($stmt) == 1) {
-                    // Bind result variables
+        
                     mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
                     if (mysqli_stmt_fetch($stmt)) {
+
+                        // Wenn das Passwort stimmt, ermittle Anzahl an angemeldeten Nutzern
                         if (password_verify($password, $hashed_password)) {
                             							
-                            // Check if another user is already logged in
+                            // Datenbanktabelle active_users wird abgefragt
                             $check_sql = "SELECT COUNT(*) as count FROM active_users";
                             $check_result = mysqli_query($link, $check_sql);
                             $row = mysqli_fetch_assoc($check_result);
                             $count = $row['count'];
 
+                            // Wenn noch kein Nutzer angemeldet ist, eintragen und weiterleiten
                             if ($count == 0) {
-								// Password is correct
 								$_SESSION["loggedin"] = true;
-								//$_SESSION["id"] = $id;
 								$_SESSION["username"] = $username;
-                                // No other user is logged in, insert this user into the active_users table
+                                // Nutzer als ersten Spieler eintragen
                                 $insert_sql = "INSERT INTO active_users (username) VALUES (?)";
                                 $insert_stmt = mysqli_prepare($link, $insert_sql);
                                 mysqli_stmt_bind_param($insert_stmt, "s", $username);
@@ -85,54 +91,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 								header("location: waiting.php");
 								exit;
 							
-
-                            } elseif ($count == 1) {
-								
-								// Password is correct
+                            // Wenn ein Nutzer angemeldet ist, eintragen und weiterleiten
+                            } elseif ($count == 1) {	
 								$_SESSION["loggedin"] = true;
-								//$_SESSION["id"] = $id;
 								$_SESSION["username"] = $username;
-								// One user is already logged in, insert this user as the second user
+								// Nutzer als zweiten Spieler eintragen
 								$insert_sql = "INSERT INTO active_users (username) VALUES (?)";
 								$insert_stmt = mysqli_prepare($link, $insert_sql);
 								mysqli_stmt_bind_param($insert_stmt, "s", $username);
 								mysqli_stmt_execute($insert_stmt);
 								mysqli_stmt_close($insert_stmt);
 								
-								header("location: welcome.php");
+								header("location: redirect.php");
 								exit;					
 
+                            // Wenn schon zwei Nutzer angemeldet sind, Fehler melden
                             } else {
-                                // More than two users are already logged in, display an error message
-                                $login_err = "Es sind bereits zwei Spieler angemeldet.";
-								
+                                $login_err = "Es sind bereits zwei Spieler angemeldet.";							
                             }
 
                         } else {
-                            // Password is not valid, display a generic error message
+                            // Falsches Passwort
                             $login_err = "Passwort oder Nutzername falsch.";
                         }
                     }
                 } else {
-                    // Username doesn't exist, display a generic error message
+                    // Falscher Nutzername
                     $login_err = "Passwort oder Nutzername falsch.";
                 }
             } else {
                 echo "Unbekannte Fehlermeldung.";
             }
 
-            // Close statement
+            // SQL statement beenden
             mysqli_stmt_close($stmt);
         }
     }
 
-    // Close connection
+    // Datenbankverbindung beenden
     mysqli_close($link);
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">

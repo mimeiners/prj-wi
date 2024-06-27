@@ -14,40 +14,40 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link media="all" rel="stylesheet" type="text/css" href="https://dokie.li/media/css/dokieli.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=87e54e7c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -88,25 +88,17 @@ var addUtterances = () => {
 commentsRunWhenDOMLoaded(addUtterances);
 </script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js?v=36754332"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js?v=afe5de03"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/AuVAReS/Anleitungen/setup';</script>
     <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/AuVAReS/Anleitungen/setup.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Willkommen zur ewigen Liste!" href="../../Kicker/01_Kicker.html" />
-    <link rel="prev" title="Einrichtung des Raspberry PI" href="../../Kicker/Pi_Einrichtung.html" />
+    <link rel="prev" title="Kickertisch Verdrahtungsplan" href="../../Kicker/01_Hardware_Setup/05_Verdrahtung.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -116,27 +108,23 @@ const thebe_selector_output = ".output, .cell_output"
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -158,8 +146,13 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -227,22 +220,30 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Gesamtsystem</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../Gesamtsystem/Projektbeschreibung.html">Projektbeschreibung</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Gesamtsystem/Projektbeschreibung.html">Projektbeschreibung</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/temp_prj_wohlinvest_requierements.html">Wohlinvestment Anforderungen</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="../01_Requirements.html">Anforderungen AuVAReS</a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../Gesamtsystem/interface_management.html">Schnittstelle Kicker - AuVAReS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Gesamtsystem/interface_management.html">Schnittstelle Kicker - AuVAReS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../Gesamtsystem/network-communication-keywords.html">Schlüsselwörter bei Kommunikation im Netzwerk von Kicker-AuVAReS</a></li>
 
 
 </ul>
-</li>
+</details></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware-Setup</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware-Setup und Software Einrichtung</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../Kicker/Pi_Einrichtung.html">Kicker Raspberry Pi Setup</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Kicker/01_Hardware_Setup/00_Hardware_Setup_index.html">Tischkicker Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Hardware_Setup/01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Hardware_Setup/02_Datenbank.html">Pi-Einrichtung von Telegraf, influxDB und Grafana</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Hardware_Setup/03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Hardware_Setup/04_Material.html">Listung der Materialien</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Hardware_Setup/05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">AuVAReS Nvidia Jetson Setup</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Kicker</span></p>
@@ -273,7 +274,7 @@ const thebe_selector_output = ".output, .cell_output"
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -282,14 +283,14 @@ const thebe_selector_output = ".output, .cell_output"
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -447,9 +448,9 @@ document.write(`
   </button>
 `);
 </script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -498,7 +499,7 @@ document.write(`
 <section id="hardware">
 <h2>Hardware<a class="headerlink" href="#hardware" title="Link to this heading">#</a></h2>
 <p>AuVAReS ist auf einem Nvidia Jetson Orin Nano implementiert. Bei der Hardware handelt es sich um ein Entwicklungskit, damit die gesamte Peripherie rund um den Chip genutzt werden kann. <br>
-Es ist nicht zwingend notwendig das Nvidia Jetson Board zu verwenden mit Ubuntu Linux 18.04 zu verwenden. Alle Codes sind auch auf anderen Systemen wie Windows oder MacOS lauffähig, es müssen hierzu lediglich die <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> Eingaben, welche genutzt werden um CLI-Eingaben auszuführen, müssen an das jeweilige Betriebssystem angepasst werden. Die Standard-CLI Eingaben sind für Ubuntu Linux ausgelegt.</p>
+Es ist nicht zwingend notwendig das Nvidia Jetson Board mit Ubuntu Linux 20.04 zu verwenden. Alle Codes sind auch auf anderen Systemen wie Windows oder MacOS lauffähig, es müssen hierzu lediglich die <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> Eingaben, welche genutzt werden um CLI-Eingaben um beispielsweise die Drohne per Wifi zu verbinden, an das jeweilige Betriebssystem angepasst werden. Die Standard-CLI Eingaben sind für Ubuntu Linux ausgelegt.</p>
 <section id="nvidia-jetson-nano-orin">
 <h3>Nvidia Jetson Nano Orin<a class="headerlink" href="#nvidia-jetson-nano-orin" title="Link to this heading">#</a></h3>
 </section>
@@ -515,7 +516,7 @@ Es ist nicht zwingend notwendig das Nvidia Jetson Board zu verwenden mit Ubuntu 
 <h2>Besonderheiten<a class="headerlink" href="#besonderheiten" title="Link to this heading">#</a></h2>
 <section id="inbetriebnahme-jetson-nano">
 <h3>Inbetriebnahme Jetson Nano<a class="headerlink" href="#inbetriebnahme-jetson-nano" title="Link to this heading">#</a></h3>
-<p>Zum Flaschen des Jetsons kann eine SD Karte genutzt werden. Aufgrund von Schwierigkeiten mit <code class="docutils literal notranslate"><span class="pre">Cuda</span></code> und anderen Bibliotheken ist es zu empfehlen eine NVME Festplatte zu nutzen. Zum Flaschen benötigt man eine Linux Umgebung mit dem Nvidia SDK Manager installiert. Stand Mai 2024 ist die <code class="docutils literal notranslate"><span class="pre">Version</span> <span class="pre">5.1.2</span></code> die stabilste Version. Alle, für das Projekt relevanten Bibliotheken können bei dieser Version verhältnismäßig einfach eingerichtet werden. Zu empfehlen ist dabei das Video von <a class="reference external" href="https://youtu.be/art0-99fFa8?si=-EsLxhJP-dhlvC51">JetsonHacks</a> um Cuda richtig zu installieren und zu aktivieren.</p>
+<p>Zum Flashen des Jetsons kann eine SD Karte genutzt werden. Aufgrund von Schwierigkeiten mit <code class="docutils literal notranslate"><span class="pre">Cuda</span></code> und anderen Bibliotheken ist es zu empfehlen eine NVME Festplatte zu nutzen. Zum Flaschen benötigt man eine Linux Umgebung mit dem Nvidia SDK Manager installiert. Stand Mai 2024 ist die <a class="reference external" href="https://developer.nvidia.com/embedded/jetpack-sdk-512"><code class="docutils literal notranslate"><span class="pre">Version</span> <span class="pre">5.1.2</span></code></a> die stabilste Version. Alle, für das Projekt relevanten Bibliotheken können bei dieser Version verhältnismäßig einfach eingerichtet werden. Zu empfehlen ist dabei das Video von <a class="reference external" href="https://youtu.be/art0-99fFa8?si=-EsLxhJP-dhlvC51">JetsonHacks</a> um Cuda richtig zu installieren und zu aktivieren.</p>
 </section>
 <section id="python-modul-djitellopy">
 <h3>Python-Modul djitellopy<a class="headerlink" href="#python-modul-djitellopy" title="Link to this heading">#</a></h3>
@@ -527,7 +528,7 @@ Es ist nicht zwingend notwendig das Nvidia Jetson Board zu verwenden mit Ubuntu 
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>In dem entgültigen Programm wird das Video in einem seperaten Thread verarbeitet. In der <a class="reference download internal" download="" href="../../../_downloads/343244ca2b89172da1f207b7749e3884/export_drone.py"><span class="xref download myst">export_drone.py</span></a> wird eine vereinfachte Klasse namens VideoGrabber für den Abgegriff und Bereitgestellung des Videos genutzt.</p>
+<p>In dem entgültigen Programm wird das Video in einem seperaten Thread verarbeitet. In der <a class="reference internal" href="#../../../files/Drohne/main/export_drone.py"><span class="xref myst">export_drone.py</span></a> wird eine vereinfachte Klasse namens VideoGrabber für den Abgegriff und Bereitgestellung des Videos genutzt.</p>
 </section>
 </section>
 </section>
@@ -545,7 +546,7 @@ Es ist nicht zwingend notwendig das Nvidia Jetson Board zu verwenden mit Ubuntu 
         },
         kernelOptions: {
             name: "python3",
-            path: "./docs/AuVAReS/Anleitungen"
+            path: "./docs\AuVAReS\Anleitungen"
         },
         predefinedOutput: true
     }
@@ -559,16 +560,16 @@ Es ist nicht zwingend notwendig das Nvidia Jetson Board zu verwenden mit Ubuntu 
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../Kicker/Pi_Einrichtung.html"
+       href="../../Kicker/01_Hardware_Setup/05_Verdrahtung.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Einrichtung des Raspberry PI</p>
+        <p class="prev-next-title">Kickertisch Verdrahtungsplan</p>
       </div>
     </a>
     <a class="right-next"
@@ -654,8 +655,8 @@ By M. Meiners / B. Lehmann
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
 
   <footer class="bd-footer">
   </footer>

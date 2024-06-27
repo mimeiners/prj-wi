@@ -1,37 +1,46 @@
 <?php
+/**
+ * waiting.php
+ * 
+ * Warteseite für ersten Spieler, der auf einen Gegner wartet
+ * 
+ */
+
+
+// Neue Session starten bzw. vorhandene fortsetzen
 session_start();
 
-// Check if the user is already logged in
+// Nur angemeldete Nutzer sollen hier zugreifen
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    // Call the check_second_user.php script to get the value
+    // Datenbankabfrage zur Anzahl aktiver Nutzer 
     $secondUserValue = file_get_contents('check_second_user.php');
 
-    // Redirect based on the value from check_second_user.php
+    // Wenn Nutzer einer der aktiven Spieler ist, dann weiterleiten
     if ($secondUserValue == 2) {
         header("location: back_home.php");
         exit;
     } else {
-        // Handle any other cases if needed
+        // Andere Fälle
     }
 } else {
-
-        header("location: index.php"); // currently playing so redirect somewhere
+        // Wenn nicht angemeldet, dann weiterleiten auf Startseite
+        header("location: index.php");
 		exit;
 
 }
 
-// Include config file
+// Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
 require_once "config.php";
-
+// Datenbankverbindung beenden
 $link->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Login</title>
+    <title>Warten</title>
     <link rel="stylesheet" href="bootstrap.min.css">
     <style>
         body { font: 13px sans-serif; }
@@ -62,15 +71,15 @@ $link->close();
                 .then(response => response.text())
                 .then(data => {
                     if (parseInt(data) === 2) {
-                        window.location.href = 'welcome.php';
+                        window.location.href = 'redirect.php'; // Sobald zwei Spieler in active_users stehen folgt Weiterleitung
                     } else if (parseInt(data) === 0) {
-                        window.location.href = 'index.php'; // someone used the same login twice; thus both are removed from active_users and you have to try again.
+                        window.location.href = 'index.php'; // Wenn der zweite Spieler sich doppelt angemeldet hat, dann Warten abbrechen
                     }
                 })
                 .catch(error => console.error('Error:', error));
         }
 
-        setInterval(checkActiveUsers, 1000); // Check every second
+        setInterval(checkActiveUsers, 1000); // Datenbank wiederholt abfragen
     </script>
 </body>
 </html>

@@ -24,5 +24,3 @@ Um das Spiel zu beenden sendet der Kicker das Keyword *notify_gameover*, AuVAReS
 2. Beenden der Videoaufnahme
 3. Reinitialisierung des VideoHandler-Objektes, um alle Variablen inkl. Drohne zu resetten.<br><br>
 AuVAReS ist nun wieder bereit für ein neues Spiel.
-
-## Objekterkennung
