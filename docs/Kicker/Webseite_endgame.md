@@ -16,7 +16,12 @@ $_SESSION["page"] = 4;
 
 Der nächste Abschnitt des Codes liest die Spielerdaten und Ergebnisse aus einer JSON-Datei und verarbeitet sie, um den Gewinner zu ermitteln:
 
-```php
+Pfad zur JSON-Datei und Initialisierung der Variablen
+
+Zunächst wird der Pfad zur JSON-Datei festgelegt und einige Variablen initialisiert, um die Daten zu speichern:
+
+php
+
 // Pfad zur JSON-Datei
 $jsonFilePath = 'game_data.json';
 
@@ -28,10 +33,29 @@ $finalScore2 = 0;
 $winner = '';
 $resultMessage = '';
 
+    $jsonFilePath speichert den Pfad zur JSON-Datei.
+    Die Variablen $finalPlayer1Name, $finalPlayer2Name, $finalScore1, $finalScore2, $winner und $resultMessage werden initialisiert, um später die Spielerdaten, die Punktzahlen und das Ergebnis zu speichern.
+
+Überprüfen, ob die JSON-Datei existiert, und Lesen der Daten
+
+Der nächste Schritt ist die Überprüfung, ob die JSON-Datei existiert, und das Lesen der Daten aus dieser Datei:
+
+php
+
 // Überprüfe, ob die JSON-Datei existiert und lese die Daten
 if (file_exists($jsonFilePath)) {
     $jsonData = file_get_contents($jsonFilePath);
     $data = json_decode($jsonData, true);
+
+    file_exists($jsonFilePath): Überprüft, ob die JSON-Datei existiert.
+    file_get_contents($jsonFilePath): Liest den Inhalt der JSON-Datei.
+    json_decode($jsonData, true): Dekodiert den JSON-Inhalt in ein assoziatives Array.
+
+Überprüfen der JSON-Daten und Zuweisen der Werte
+
+Falls die JSON-Daten korrekt dekodiert wurden, werden die Daten den entsprechenden Variablen zugewiesen:
+
+php
 
     // Überprüfe, ob die JSON-Daten korrekt dekodiert wurden
     if ($data !== null) {
@@ -39,6 +63,15 @@ if (file_exists($jsonFilePath)) {
         $finalPlayer2Name = $data['final_player_2']['name'] ?? '';
         $finalScore1 = $data['final_player_1']['score'] ?? 0;
         $finalScore2 = $data['final_player_2']['score'] ?? 0;
+
+    ?? '': Wenn der Wert nicht existiert, wird ein leerer String zugewiesen.
+    ?? 0: Wenn der Wert nicht existiert, wird 0 zugewiesen.
+
+Bestimmen des Gewinners
+
+Der Gewinner wird basierend auf den Punktzahlen der Spieler ermittelt:
+
+php
 
         if ($finalScore1 > $finalScore2) {
             $winner = $finalPlayer1Name;
@@ -56,7 +89,11 @@ if (file_exists($jsonFilePath)) {
     $resultMessage = "JSON-Datei nicht gefunden.";
 }
 ?>
-```
+
+    Wenn $finalScore1 größer als $finalScore2 ist, wird $finalPlayer1Name als Gewinner gesetzt.
+    Wenn $finalScore2 größer als $finalScore1 ist, wird $finalPlayer2Name als Gewinner gesetzt.
+    Wenn die Punktzahlen gleich sind, wird ein Unentschieden festgestellt.
+    Die entsprechende Nachricht wird in $resultMessage gespeichert.
 
 ## HTML Grundstruktur
 
