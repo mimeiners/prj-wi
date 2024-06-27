@@ -1,10 +1,10 @@
-# Datei: get_game_status.php
+# Datei: html/get_game_status.php
 
 # Voraussetzungen und Installation der InfluxDB PHP Library
 
 ## Voraussetzungen
 
-Bevor Sie den PHP-Code zur Abfrage von Spielstandsdaten aus einer InfluxDB-Datenbank verwenden können, stellen Sie sicher, dass die folgenden Voraussetzungen erfüllt sind:
+Bevor man den PHP-Code zur Abfrage von Spielstandsdaten aus einer InfluxDB-Datenbank verwenden können, muss man sicher stellen, dass die folgenden Voraussetzungen erfüllt sind:
 
 - **PHP installiert**: PHP muss auf Ihrem Server oder lokalen Rechner installiert sein.
 - **Composer installiert**: Composer ist ein Abhängigkeitsmanager für PHP, den Sie benötigen, um die InfluxDB PHP Library zu installieren.
@@ -12,8 +12,7 @@ Bevor Sie den PHP-Code zur Abfrage von Spielstandsdaten aus einer InfluxDB-Daten
 - **Zugangsdaten zur InfluxDB**: Sie benötigen die URL, das Token, die Organisation und den Bucket-Namen Ihrer InfluxDB-Instanz.
 
 ## Installation der InfluxDB PHP Library
-
-Verwenden Sie Composer, um die InfluxDB PHP Library zu installieren:
+Dazu benötigt man den Composer, um die InfluxDB PHP Library zu installieren:
 
 ```bash
 composer require influxdata/influxdb-client-php
@@ -23,7 +22,7 @@ Dieser Befehl installiert die erforderliche InfluxDB-Client-Bibliothek und ihre 
 
 # Erklärung des PHP-Codes zur Abfrage von Spielstandsdaten aus InfluxDB
 
-Dieser PHP-Code ermöglicht es, den Spielstand eines Spielers aus einer InfluxDB-Datenbank abzurufen und zurückzugeben. Der Code nutzt die InfluxDB-Client-Bibliothek und ist in verschiedene Abschnitte unterteilt. Im Folgenden wird der Code Schritt für Schritt erklärt.
+Dieser PHP-Code ermöglicht es, den Spielstand eines Spielers aus der InfluxDB-Datenbank abzurufen und zurückzugeben, als eingabe wird dafür der User und die Spiel-ID benötigt. Der Code nutzt die InfluxDB-Client-Bibliothek und ist in verschiedene Abschnitte unterteilt. Im Folgenden wird der Code Schritt für Schritt erklärt.
 
 ## Einbinden der notwendigen Bibliotheken
 
