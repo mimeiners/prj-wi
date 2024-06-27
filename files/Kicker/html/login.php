@@ -37,14 +37,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Nutzernameneingabe übergeben
     if (empty(trim($_POST["username"]))) {
-        $username_err = "Please enter username.";
+        $username_err = "Bitte Nutzernamen eingeben.";
     } else {
         $username = trim($_POST["username"]);
     }
 
     // Passworteingabe übergeben
     if (empty(trim($_POST["password"]))) {
-        $password_err = "Please enter your password.";
+        $password_err = "Bitte Passwort eingeben.";
     } else {
         $password = trim($_POST["password"]);
     }
