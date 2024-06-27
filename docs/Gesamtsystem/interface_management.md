@@ -2,15 +2,15 @@
 
 ### Function
 
-The interface allows the Kicker to communicate with another device. By design, this other device will be the control unit of the the AuVAReS drone. The interface searches for a connection and controlls the connection's status once it is esstablished. Through the interface, the partner device can send keywords which interact with the current status of the host and the other way around.
+Die Schnittstelle ermöglicht es dem Kicker, mit einem anderen Gerät zu kommunizieren. Dieses andere Gerät wird, durch das Patnerprojekt bestimmt, die Steuereinheit der AuVAReS-Drohne sein. Die Schnittstelle sucht nach einer Verbindung und überwacht den Verbindungsstatus, sobald dieser hergestellt ist. Über die Schnittstelle kann das Partnergerät Schlüsselwörter senden, die mit dem aktuellen Status des Hosts interagieren, und umgekehrt.
 
 Das hauptsächlich genutzte Modul ist "socket", welches einer einer der Grund Module von Python 3.+ darstellt.
 
 ### Network design
 
-The Network traffic is designed around global keywords. Here, a keyword is a string message that can be sended by any device and can be received by any device. Once received, a reaction is called which is defined at the receiver. The reaction being defined locally allows the each reaction to be fitted to each system, regardless of system design. Of course, all parties must agree on a common set of keywords and their functionalty (but not the technical implementation!).
+Der Netzwerkverkehr basiert auf globale Schlüsselwörtern. Hierbei ist ein Schlüsselwort eine Varible von Typ "str", die von jedem Gerät gesendet und von jedem Gerät empfangen werden kann. Sobald sie empfangen wird, wird eine Reaktion aufgerufen, die am Empfänger definiert ist. Die lokal definierte Reaktion ermöglicht es, dass jede Reaktion an jedes System angepasst werden kann, unabhängig vom Systemdesign. Natürlich müssen sich alle Parteien auf einen gemeinsamen Satz von Schlüsselwörtern und deren Funktionalität einigen (aber nicht auf die technische Umsetzung!). In dem unter Kapitel Schlüsselwörter ist eine Tabelle mit allen Schlüsselwörtern, deren Funktion und deren dazugehöriges ACK.
 
-##### Keywords
+##### Schlüsselwörter
 
 | Sender  | Schlüsselwort  | Beschreibung |ACK|
 |:----------|:----------|:----------|:----------|
@@ -26,29 +26,29 @@ The Network traffic is designed around global keywords. Here, a keyword is a str
 | A |please_resume| AuVAReS ist wieder einsatzbereit und erlaubt dem Kicker, wieder Tore zu zählen.|gaming
 | K |STOP| AuVAReS soll Notlandung einleiten | received_stop
 
-### Location
+### Speicherorte
 
-The interface is defined in the file "LVL2_interface.py" and also has functions and definitions in "LVL3_classes.py" . "LVL2_interface.py" controlls the connection status, listens for keywords and interprets all incoming messages. Sending messages aswell as the connection status flag and finding a connection are defined in "LVL3_classes.py" . That way they can easily be called by other functions and use the interface without importing "LVL2_interface.py" .
+Die Schnittstelle ist in der Datei "LVL2_interface.py" definiert und enthält auch Funktionen und Definitionen in "LVL3_classes.py". "LVL2_interface.py" steuert den Verbindungsstatus, hört auf Schlüsselwörter und interpretiert alle eingehenden Nachrichten. Das Senden von Nachrichten sowie das Verbindungsstatus-Flag und das Finden einer Verbindung sind in "LVL3_classes.py" definiert. Auf diese Weise können sie leicht von anderen Funktionen aufgerufen werden und die Schnittstelle verwenden, ohne "LVL2_interface.py" importieren zu müssen.
 
-As a Level 2 function "LVL2_interface.py" is started in "LVL1_threads.py" as a thread upon system start.
+Als eine Level-2-Funktion wird "LVL2_interface.py" bei Systemstart in "LVL1_threads.py" als Thread gestartet.
 
-#### Structure
+#### Struktur
 
 ##### LvL2_interface.py
 
-The main interface is defined in "LVL2_interface.py". It's main structure is defined in the function "interface()", which is started as a thread in "LVL1_threads". Inside "Interface()" there two sections.
+Der Hauptteil der Schnittstelle ist in "LVL2_interface.py" definiert. Ihre Hauptstruktur ist in der Funktion "interface()" definiert, die in "LVL1_threads" als Thread gestartet wird. Innerhalb von "interface()" gibt es zwei Abschnitte.
 
- The first section initialises the used keyword dictionary for the interface. This section also includes a while loop which stops interface activity until the first connection, after a system start, has been found.
+Der erste Abschnitt initialisiert das verwendete Schlüsselwortverzeichnis für die Schnittstelle. Dieser Abschnitt enthält auch eine While-Schleife, welche verhindert das die Schnittstellenoperation startet bevor, nach einem Systemstart, eine erste Verbindung gefunden wurde.
  
-The second section contains the main functionality of the interface, defined by two threads which both serve one function each. The first function is "_ping()", which sends a ping keyword to the connected client and governs the current connection status. The second the thread calls the function "_recv()" which constantly supervises the connection port.
+Der zweite Abschnitt beinhaltet die Hauptfunktionen der Schnittstelle. Diese werden durch zwei Threads gestartet, von denen jeder eine Funktion ausführt. Die erste Funktion ist "_ping()", die ein Ping-Schlüsselwort an den verbundenen Client sendet und den aktuellen Verbindungsstatus überwacht. Der zweite Thread ruft die Funktion "_recv()" auf, welche es der Schnittstelle erlaubt jederzeit Nachrichten zu empfangen.
 
 ##### LVL3_classes.py
 
- Another part of the interface can be found in "LVL3_classes.py". This part includes three integral parts of the interface functionality. The function "_find_connection()", the variable "connection_status" and the function "server_send()".
+Ein weiterer Teil der Schnittstelle befindet sich in "LVL3_classes.py". Dieser Teil umfasst drei wesentliche Bestandteile der Schnittstelle: die Funktion "_find_connection()", die Variable "connection_status" und die Funktion "server_send()". Diese Bestandteile werden von anderen Funktionen, außerhalb "LVL2_interface.py" benötigt und werden deshalb in Level 3 definiert.
 
- The function "_find_connection()" searches for a new connection. It is assumed that during the time of the function call, no connection with any other device exists. As a found connection has been defined by a function in "LVL3_classes.py", any action concerning the interface and must be attributed to the object "connection_type_object". This object includes the connection object, as defined by the module "socket". A call on this object outside of Level 3 might look like "LVL3_classes.connection_type_object.a_function()".
+Die Funktion "_find_connection()" sucht nach einer neuen Verbindung. Es wird angenommen, dass zum Zeitpunkt des Funktionsaufrufs keine Verbindung zu einem anderen Gerät besteht. Da eine gefundene Verbindung durch eine Funktion in "LVL3_classes.py" definiert wurde, müssen alle Aktionen, welche die Schnittstelle betreffen, dem Objekt "connection_type_object" zugeordnet werden. Dieses Objekt umfasst das Verbindungsobjekt, wie es vom Modul "socket" definiert wird. Ein Aufruf dieses Objekts außerhalb von Level 3 könnte beispielsweise so aussehen: "LVL3_classes.connection_type_object.eine_funktion()".
 
- The variable "connection_status" reflects the current necessary status of a connection. "True" means there is a connection and "False" means there is no connection. The not yet mentioned function "set_connection_status()" is used to set "connection_status" to any state.
+Die Variable "connection_status" spiegelt den aktuellen Status einer Verbindung wieder. "True" bedeutet, dass eine Verbindung besteht, und "False" bedeutet, dass keine Verbindung besteht. Die bisher nicht erwähnte Funktion "set_connection_status()" wird verwendet, um den Wert von "connection_status" auf einen beliebigen Zustand zu setzen.
 
 The function "server_send()" can be accessed by every function in the code, which imported "LVL3_classes.py". It allows each part of the code to send a message to a connected device. The function automatically includes all necessary steps for a successfull transmission, including to check if there is a connection at all and 6 retires if there isn't.
 
