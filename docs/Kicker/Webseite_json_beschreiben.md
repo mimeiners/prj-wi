@@ -1,7 +1,7 @@
 # Erklärung des PHP-Codes zur Aktualisierung von Spieler-Toren in einer JSON-Datei
 # Datei: html/write_goals_to_json.php
 
-Dieser PHP-Code ermöglicht es, die Tore von Spielern in einer JSON-Datei zu aktualisieren. Der Code ist in mehrere Funktionen unterteilt, die jeweils spezifische Aufgaben übernehmen. Im Folgenden wird der Code Schritt für Schritt erklärt.
+Dieser PHP-Code ermöglicht es, die Tore von Spielern in einer JSON-Datei zu aktualisieren. Die Tore sind nachher für das result erforderlich, da die Daten von Python nach dem Spiel gecleart werden. Der Code ist in mehrere Funktionen unterteilt, die jeweils spezifische Aufgaben übernehmen. Im Folgenden wird der Code Schritt für Schritt erklärt.
 
 ## JSON-Dateipfad
 
