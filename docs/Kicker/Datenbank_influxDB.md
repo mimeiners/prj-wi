@@ -1,3 +1,11 @@
+# Datenbank InxluxDB
+
+## Zielsetzung:
+
+Wir haben uns bei diesen Projekt für InfluxDB entschieden, da dies als Empfehlung vorgegeben wurde und InfluxDB einige Vorteile bietet was das zeitliche Erfassen von Ereignissen betrifft.
+
+## Struktur der Datenbank
+
 Um die Datenstruktur in der InfluxDB für das Kickerspiel zu verstehen, betrachten wir zunächst, wie die Daten bei jedem neuen Spiel organisiert werden. Hier sind die Hauptpunkte zur Struktur und den relevanten Details:
 
 ### Struktur der Daten in InfluxDB
@@ -24,9 +32,9 @@ Angenommen, wir haben ein Spiel mit der Spiel-ID `game_123`. Während des Spiels
 | _time                  | Spieler | Tore |
 |------------------------|---------|------|
 | 2024-06-25T10:00:00Z   | PlayerA | 1    |
-| 2024-06-25T10:02:00Z   | PlayerB | 1    |
-| 2024-06-25T10:05:00Z   | PlayerA | 1    |
-| 2024-06-25T10:07:00Z   | PlayerB | 1    |
+| 2024-06-25T10:02:00Z   | PlayerB | 2    |
+| 2024-06-25T10:05:00Z   | PlayerA | 2    |
+| 2024-06-25T10:07:00Z   | PlayerB | 3    |
 
 - **_time**: Zeitstempel des Events
 - **Spieler**: Name des Spielers
