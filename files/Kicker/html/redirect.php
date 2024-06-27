@@ -1,46 +1,54 @@
 <?php
-// Initialize the session
+/**
+ * redirect.php
+ * 
+ * Weiterleitung für angemeldete Nutzer zum Spiel
+ * 
+ */
+
+// Neue Session starten bzw. vorhandene fortsetzen
 session_start();
 
-// Check if the user is logged in, if not then redirect to the login page
+// Nur angemeldete Nutzer sollen auf diese Seite zugreifen
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
 
-// Include config file
+// Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
 require_once "config.php";
 
-// Query to fetch the names of players from the active_users table
+// Datenbank active_users wird auf Nutzernamen abgefragt
 $sql = "SELECT username FROM active_users";
 $result = $link->query($sql);
-
 $players = [];
 
 if ($result->num_rows > 0) {
-    // Fetch all player names and store them in the $players array
+    // Nutzernamen an Variable übergeben
     while ($row = $result->fetch_assoc()) {
         $players[] = $row["username"];
     }
 
-    // Check for duplicate usernames
+    // Bei Doppelanmeldung wird der Spieler abgemeldet
     $uniquePlayers = array_unique($players);
     if (count($players) !== count($uniquePlayers)) {
-        // Remove the user from the active_users table
+        // Aktive Nutzer aus Datenbank löschen
         $sql = "DELETE FROM active_users";
 
         if ($link->query($sql) === TRUE){
+            // Nutzer gelöscht
         } else {
         }
-        // Logout all users and redirect to login page
+        // Weiterleiten auf Startseite
         session_destroy();
         header("location: index.php");
         exit;
     }
- // Initialize data array
+
+    // Schnittstelle für json-Datei für weiteren Spielverlauf
     $data = [];
 
-    // Ensure there are at least two players
+    // Nutzernamen für json-Datei vorbereiten
     if (count($uniquePlayers) >= 2) {
         $data['player_1']['name'] = $uniquePlayers[0];
 		$player1 = $uniquePlayers[0];
@@ -56,10 +64,9 @@ if ($result->num_rows > 0) {
     $data['button_start'] = false;
     $data['game_id'] = "";
     
-    // Convert the data array to JSON
     $jsonData = json_encode($data, JSON_PRETTY_PRINT);
 
-    // Write the JSON data to a file
+    // json-Datei für weiteren Spielverlauf schreiben und weiterleiten
     if (file_put_contents('game_data.json', $jsonData) === false) {
         echo "Failed to write to game_data.json.";
         exit;
@@ -73,18 +80,16 @@ if ($result->num_rows > 0) {
     exit();
 }
 
-
-
-// Close the database connection
+// Datenbankverbindung beenden
 $link->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Welcome</title>
+    <title>Willkommen</title>
     <link rel="stylesheet" href="bootstrap.min.css">
     <style>
         body { font: 16px sans-serif; text-align: center; }

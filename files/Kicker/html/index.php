@@ -1,7 +1,13 @@
 <?php
-// Check if the form is submitted
+/**
+ * index.php
+ * 
+ * Startseite für das Kickerspiel
+ * 
+ */
+
+// Bei Knopfdruck zur Anmeldung weiterleiten
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Redirect the user to the login page
     header("Location: login.php");
     exit();
 }

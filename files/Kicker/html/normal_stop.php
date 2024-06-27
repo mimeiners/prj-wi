@@ -1,17 +1,19 @@
 <?php
+// Neue Session starten bzw. vorhandene fortsetzen
 session_start();
 
-
-// Include config file
+// Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
 require_once "config.php";
 
-// Remove the user from the active_users table
+// Nutzer aus der Datenbank entfernen
 $sql = "DELETE FROM active_users";
 
+// SQL Statement ausführen 
 if ($link->query($sql) === TRUE){
 } else {
 }
-        
+
+// Datenbankverbindung beenden
 $link->close();
 
 // Pfad zur JSON-Datei

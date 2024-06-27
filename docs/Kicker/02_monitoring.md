@@ -1,15 +1,6 @@
-# Infrastructure Monitoring mit TIG-Stack
+# Pi-Einrichtung von Telegraf, influxDB und Grafana
 
-## Sinnhaftigkeit der Veränderung des Datenbanksystems
-
-+ Eine Zeitreihendatenbank ist für eine "ewige Tabelle" gut geeignet
-+ Infrastructure Monitoring
-	+ "In InfluxDB you don’t have to define schemas up front." [^0]
-	+ "Relational databases can handle time series data, but are not optimized for common time series workloads." [^0]
-	+ "Using predefined rules and thresholds, the monitoring process detects potential issues and generates alerts when threshold breaches occur, thereby helping to maintain system health." [^5]
-+ Kombinierte Datenerfassung von Kickertisch und AuVAReS wahrscheinlich möglich
-
-## TIG-Stack Setup auf dem Raspberry Pi 3
+## Einrichtung von Telegraf, influxDB und Grafana auf dem Raspberry Pi
 
 Um die Adresse des RPi herauszufinden nutzen wir den Befehl `ip a`. Im Folgenden kann diese IP `localhost` ersetzten.
 Wir bringen APT auf den neusten Stand.
@@ -17,7 +8,7 @@ Wir bringen APT auf den neusten Stand.
 sudo apt update
 sudo apt upgrade -y
 ```
-Wir installieren die Services telegraf, influxDB und grafana. [^1], [^'2] 
+Wir installieren die Services telegraf, influxDB und grafana. [^1], [^2] 
 
 `influxDB` wird für die vorhandene OS Version heruntergeladen und installiert. Die Datenbank wird über `http://localhost:8086` erreicht.
 ```bash
@@ -54,6 +45,7 @@ cd /etc/telegraf
 sudo nano telegraf.conf
 systemctl start telegraf
 ```
+
 Um in grafana auf influxDB und telegraf zugreifen zu können legen wir in influxDB entsprechende Nutzer an.
 Wir können influxDB mit dem Befehl `influx` aufrufen und die Datenbanken und Messungen im Terminal ausgeben.
 ```bash
@@ -88,14 +80,14 @@ In der grafana Oberfläche können wir influxDB als Datenquelle hinzufügen inde
 
 Mit grafana können wir ein Dashboard erstellen, über welches das Gesamtsystem überwacht werden kann.  
 
-# Quellen
+## Raspberry Pi als Wireless Access Point
 
-#[^1]: https://simonhearne.com/2020/pi-influx-grafana/
+Seit der Raspian Version 12 (Bookworm), das Einrichten eines Hotspots ist über die Nutzeroberfläche möglich. Durch klicken auf das Netzwerksymbol gibt es neben der Auflistung verfügbarer Netzwerkverbindungen unter den erweiterten Option die Obtion zur Hotspoterstellung gegeben; die Einrichtung wird durch den Einrichtungsassistenten trivial. Damit der Hotspot nach jedem Neustart des Pi startet, sollte in den Netzwerkeinstellungen die Verbindungspriorität auf 0 gesetzt werden.  
 
-#[^2]: https://devconnected.com/how-to-setup-telegraf-influxdb-and-grafana-on-linux/
+# Fußnoten
 
-#[^3]: https://docs.influxdata.com/influxdb/v1/write_protocols/line_protocol_tutorial/
+[^1]: https://simonhearne.com/2020/pi-influx-grafana/
 
-#[^0]: https://docs.influxdata.com/influxdb/v1/concepts/crosswalk/
+[^2]: https://devconnected.com/how-to-setup-telegraf-influxdb-and-grafana-on-linux/
 
-#[^5]: https://www.influxdata.com/blog/infrastructure-monitoring-basics-telegraf-influxdb-grafana/
+[^3]: https://docs.influxdata.com/influxdb/v1/write_protocols/line_protocol_tutorial/
