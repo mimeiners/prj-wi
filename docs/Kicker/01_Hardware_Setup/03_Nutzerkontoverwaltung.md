@@ -1,8 +1,6 @@
-# Nutzerkontoverwaltung
+# Einrichtung der Softwareumgebung für Nutzerkontoverwaltung
 
 Da ein zentrales Alleinstellungsmerkmal des Kickers die Verwaltung einer ELO-Rangliste aller Spieler sein soll, die sogenannte ewige Tabelle, haben wir uns für die funktionale Erweiterung der Software um eine Nutzerverwaltung entschieden. Durch den passwortgeschützten Anmeldeprozess für registrierte Benutzerkonten soll sichergestellt werden, dass die Leistung der Spielteilnehmer ordnungsgemäß verbucht werden und so die Möglichkeiten einer Tabellenmanipulation minimieren. Diese Anmeldefunktion lässt sich in den bestehenden Spielablauf einbinden, indem die Anmeldung der restlichen Spielinitialisierung vorgeschaltet wird, und die durch Nutzerkontoverifizierung via Datenbankabgleich bestätigten Nutzernamen an die Folgeprozesse übergeben werden. Der Raspberry Pi 4, auf dem der Webserver läuft, wird daher durch einige Softwarepakete erweitert.
-
-## Einrichtung der Softwareumgebung für Nutzerkontoverwaltung
 
 Auf dem Raspberry Pi 4 ist bereits ein Apache-Webserver eingerichtet um den Spielablauf zu steuern. Speziell für die Nutzerkontoverwaltung, wird zusätzlich ein MariaDB Datenbankserver installiert, welcher mit dem PHP-MYSQL Modul die Interaktion zwischen PHP-Skripten und der Datenbank ermöglicht. Es sei an dieser Stelle darauf hingewiesen, dass die Verwendung von MySQL grundsätzlich durch das resourcensparendere SQLite3 ersetzt hätte werden können, in Anbetracht der Systemauslastung des Raspberry Pi 4 dies jedoch bei weitem keine Notwendigkeit darstellt.   
 
