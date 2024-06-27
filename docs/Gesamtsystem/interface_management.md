@@ -1,12 +1,12 @@
-# Interface Management
+# Schnittstellen Verwaltung
 
-### Function
+### Funktion
 
 Die Schnittstelle ermöglicht es dem Kicker, mit einem anderen Gerät zu kommunizieren. Dieses andere Gerät wird, durch das Patnerprojekt bestimmt, die Steuereinheit der AuVAReS-Drohne sein. Die Schnittstelle sucht nach einer Verbindung und überwacht den Verbindungsstatus, sobald dieser hergestellt ist. Über die Schnittstelle kann das Partnergerät Schlüsselwörter senden, die mit dem aktuellen Status des Hosts interagieren, und umgekehrt.
 
 Das hauptsächlich genutzte Modul ist "socket", welches einer einer der Grund Module von Python 3.+ darstellt.
 
-### Network design
+### Schnittstellen Konzept
 
 Der Netzwerkverkehr basiert auf globale Schlüsselwörtern. Hierbei ist ein Schlüsselwort eine Varible von Typ "str", die von jedem Gerät gesendet und von jedem Gerät empfangen werden kann. Sobald sie empfangen wird, wird eine Reaktion aufgerufen, die am Empfänger definiert ist. Die lokal definierte Reaktion ermöglicht es, dass jede Reaktion an jedes System angepasst werden kann, unabhängig vom Systemdesign. Natürlich müssen sich alle Parteien auf einen gemeinsamen Satz von Schlüsselwörtern und deren Funktionalität einigen (aber nicht auf die technische Umsetzung!). In dem unter Kapitel Schlüsselwörter ist eine Tabelle mit allen Schlüsselwörtern, deren Funktion und deren dazugehöriges ACK.
 
@@ -50,33 +50,33 @@ Die Funktion "_find_connection()" sucht nach einer neuen Verbindung. Es wird ang
 
 Die Variable "connection_status" spiegelt den aktuellen Status einer Verbindung wieder. "True" bedeutet, dass eine Verbindung besteht, und "False" bedeutet, dass keine Verbindung besteht. Die bisher nicht erwähnte Funktion "set_connection_status()" wird verwendet, um den Wert von "connection_status" auf einen beliebigen Zustand zu setzen.
 
-The function "server_send()" can be accessed by every function in the code, which imported "LVL3_classes.py". It allows each part of the code to send a message to a connected device. The function automatically includes all necessary steps for a successfull transmission, including to check if there is a connection at all and 6 retires if there isn't.
+Die Funktion "server_send()" kann von jeder Funktion im Code aufgerufen werden, die "LVL3_classes.py" importiert hat. Sie ermöglicht es jedem Teil des Codes, eine Nachricht an ein verbundenes Gerät zu senden. Die Funktion beinhaltet automatisch alle notwendigen Schritte für eine erfolgreiche Übertragung.
 
-### Receiving Messages, ACK and NACK
+### Empfangen von Nachrichten, ACK und NACK
 
-##### Function
+##### Konzept
 
-The system is designed to always listen for any incoming messages, send an ACK and then react to the received message. During a reaction no other message can be recieved! The system can send messages during a reaction.
+Das System ist so konzipiert, dass es immer auf eingehende Nachrichten hört, eine ACK-Nachricht sendet und dann auf die empfangene Nachricht reagiert. Während einer Reaktion kann keine andere Nachricht empfangen werden! Das System kann jedoch während einer Reaktion Nachrichten senden.
 
-If a keyword is received, an acknowldgement(ACK) is sended. An ACK acts like another keyword, with the limitation of only being sended if it's keyword was received. The sender of the keyword can therefore check if a sended keyword was received. The interface can react to a received ACK just like to a keyeword. If no ACK has been recieved, it is counted as a NACK. There is no official implementation of a NACK and it must be added manually, if needed. The funtion "_ping()" in "LVL2_interface.py" serves as a possible example.
+Wenn ein Schlüsselwort empfangen wird, wird eine Bestätigung (ACK) gesendet. Ein ACK funktioniert wie ein weiteres Schlüsselwort, mit der Einschränkung, dass es nur gesendet wird, wenn sein Schlüsselwort empfangen wurde. Der Sender des Schlüsselworts kann somit überprüfen, ob ein gesendetes Schlüsselwort empfangen wurde. Die Schnittstelle kann auf ein empfangenes ACK genauso reagieren wie auf ein Schlüsselwort. Wenn kein ACK empfangen wurde, wird dies als NACK gezählt. Es gibt keine offizielle Implementierung eines NACK, und es muss bei Bedarf manuell hinzugefügt werden. Die Funktion "_ping()" in "LVL2_interface.py" dient als mögliches Beispiel.
 
-##### Implementation
+##### Umsetzung
 
-Receiving messages is done inside the second thread of the main interface function with the function call of "_recv()". The act of actually receiving a message is done with the imported function "lvl3.connection_type_object.listen(1024)". The rest of the function is an active while-loop, decoding from "utf-8" and the function call of "_data_interpret()".
+Das Empfangen von Nachrichten erfolgt im zweiten Thread von "interface()" mit dem Funktionsaufruf von "_recv()". Das eigentliche Empfangen einer Nachricht erfolgt mit der importierten Funktion "lvl3.connection_type_object.listen(1024)". Der Rest der Funktion ist eine aktive While-Schleife, welche die empfangenen Daten aus "utf-8" decodiert und den Funktionsaufruf von "_data_interpret()" enthält.
 
-The function "_data_interpret()" is used to decide on an appropiate response to a received message. First a check occurs which determines if a received message is a keyword or an ACK. Sollte es sich um ein Schlüsselwort handeln, so wird automatisch ein entsprechendes ACK gesendet. Danach wird entsprechend "_keyword_react()" oder "_ack_react()" aufgerufen. Die Nachricht wird als Argument an diese weitergegeben. Durch eine if/else Kette wird dann eine entsprechde Reaktion ausgeführt. Diese Reaktionen können Funktionsaufrufe seinen, welche lokal in ihren entsprechenden Modulen definiert wurden, oder gleich die entsprechende Reaktion ausgeschrieben (z.B setzen von Variablen, das senden von Schlüsselwöretern etc.).
+Die Funktion "_data_interpret()" wird verwendet, um eine angemessene Reaktion auf eine empfangene Nachricht zu bestimmen. Zuerst erfolgt eine Überprüfung, ob die empfangene Nachricht ein Schlüsselwort oder ein ACK ist. Sollte es sich um ein Schlüsselwort handeln, so wird automatisch ein entsprechendes ACK gesendet. Danach wird entsprechend "_keyword_react()" oder "_ack_react()" aufgerufen. Die Nachricht wird als Argument an diese weitergegeben. Durch eine if/else Kette wird dann eine entsprechde Reaktion ausgeführt. Diese Reaktionen können Funktionsaufrufe seinen, welche lokal in ihren entsprechenden Modulen definiert wurden, oder gleich die entsprechende Reaktion ausgeschrieben (z.B setzen von Variablen, das senden von Schlüsselwöretern etc.).
 
 Alle ACK sind im voherein definiert in der Schlüsselwort Tabelle. Ein NACK ist nicht global definiert sondern muss gesondert eingesetzt werden. Eine mögliche Umsetzung nutzt das Schlüsselwort "ping". Die Funktion "_ping()" setzt in "LVL3_classes.py" die "ping_ack_flag" auf "False". Das zurücksetzen auf "True" erfolgt als Reaktionsfunktion auf das entsprechende ACK "hi". Nach einer Sekunde wird der Zustand der Flagge überprüft. Sollte dieser dann immer noch "False" sein, wird die Verbidnung geschlossen und eine neue wird gesucht. Ist die Flagge auf "True" gesetzt wird das nächste "ping" gesendet.
 
-### Sending Messages and Connection Status
+### Sende Funktion und Verbindungsstatus
 
-##### Concept
+##### Konzept
 
-All non-LVL2_interface.py functions only interact with the interface by sending messages. The function "server_send()" has been created for this purpose. It serves as a 'interface' between the interface and the system.
+Alle Funktionen außerhalb von "LVL2_interface.py" interagieren nur durch das Senden von Nachrichten mit der Schnittstelle. Die Funktion "server_send()" wurde zu diesem Zweck erstellt. Sie dient als 'Schnittstelle' zwischen der eigentlichen Schnittstelle und dem System.
 
-The connection status flag "connection_status" defined in "LVL3_classes.py" reflects the current status of a connection. By definition, a connection exists (True) or not (False). All functions can check the status flag if they imported "LVL3_classes.py".
+Das Verbindungsstatus-Flag "connection_status", das in "LVL3_classes.py" definiert ist, spiegelt den aktuellen Status einer Verbindung wider. Per Definition existiert entweder eine Verbindung (True) oder nicht (False). Alle Funktionen können das Status-Flag überprüfen, sofern sie "LVL3_classes.py" importiert haben.
 
-##### Implementation
+##### Umsetzung
 
 Soll eine Nachricht gesendet werden so geschieht dies über die Funktion "sendall()". Die Funktion "server_send()" übernimmt diese Funktion und auch alle anderen Aufgaben, die sich durch die Systemstruktur, ergeben. Auch Aufgaben welche immer durchgführt werden müssen, werden übernommen.
 
@@ -86,20 +86,21 @@ Insgesamt versucht "server_send()" eine Nachricht 6 mal abzuschicken, falls ein 
 
 Sollte der Status "True" sein, nutzt die Funktion das "port_lock". Die verschieden Locks kommen aus dem thread-modul und verwalten den Zugriff unterschiedlicher threads auf geteilelte Ressourcen.
 
-The connection status is managed by two functions. "_find_connection()", defined in "LVL3_classes.py", can set the connection status to "True". "_ping()" can set the connection status to "False". Sie kann von allen Funktionen im System abgerufen werden, sollte aber nicht von diesen geändert werden.
+Der Verbindungsstatus wird von zwei Funktionen verwaltet. "_find_connection()", definiert in "LVL3_classes.py", kann den Verbindungsstatus auf "True" setzen. "_ping()" kann den Verbindungsstatus auf "False" setzen.
+Sie kann von allen Funktionen im System abgerufen werden, sollte aber nicht von diesen geändert werden.
 
-The not yet mentioned function "set_connection_status()" is used to set "connection_status" to any state. This function is used as there were concerns about the imported state of "connection_status". With "set_connection_status()" the function can change "connection_status" as a local variable in "LVL3_classes.py" instead of an imported one.
+Die bisher nicht erwähnte Funktion "set_connection_status()" wird verwendet, um "connection_status" auf einen beliebigen Zustand zu setzen. Diese Funktion wird genutzt, da Bedenken hinsichtlich des importierten Zustands von "connection_status" bestanden. Mit "set_connection_status()" kann die Funktion "connection_status" als lokale Variable in "LVL3_classes.py" geändert werden, anstatt eine importierte Variable zu verwenden.
 
-### Finding a Connection and Reconnect
+### Verbindungsaufbau
 
-##### Concept
+##### Konzept
 
-Once the system starts, a search for a connection is started. Aslong as no connection is found, no interface activity is done. Once it is found the connection mangement is started. 
+Nach dem Systemstart wird die Suche nach einer Verbindung gestartet. Solange keine Verbindung gefunden wird, findet keine Schnittstellenaktivität statt. Sobald eine Verbindung gefunden wird, wird das Verbindungsmanagement gestartet.
 
-Wenn "_ping()" ein NACK feststellt so wird die aktuelle Verbindung geschlossen und eine neue wird gesucht. Solange keine Verbindung vorliegt werden auch alle Porzesse der Schnittstelle gestoppt bzw. vrituell aufgehalten.
+Wenn "_ping()" ein NACK feststellt so wird die aktuelle Verbindung geschlossen und eine neue wird gesucht. Solange keine Verbindung vorliegt werden auch alle Prozesse der Schnittstelle gestoppt bzw. virtuell aufgehalten.
 
-##### Implementation
+##### Umsetzung
 
-The system searches for a connection if the function "_find_connection.py" is called. The function is first called as a daemon thread inside "init()" from "LVL3_classes.py". As long as no connection is found, the interface thread will not start operation, instead being locked inside a while loop. The condition for the while loop is defined by the "connection_type_object" being "None". This variabe being "None" is a defined state in "LVL3_classes.init()" at the start of operation. Once a connection is established inside "_find_connection()", "_find_connection()" will return, thus ending it's thread, the while loop is broken and operation of the interface starts. All other calls of "_find_connection()" are done inside the interface and only through the function "_ping()".
+Das System sucht nach einer Verbindung, wenn die Funktion "_find_connection()" aufgerufen wird. Diese Funktion wird zuerst als Daemon-Thread innerhalb von "init()" in "LVL3_classes.py" aufgerufen. Solange keine Verbindung gefunden wird, wird der Schnittstellen-Thread nicht gestartet und bleibt stattdessen in einer While-Schleife gesperrt. Die Bedingung für die While-Schleife ist, dass "connection_type_object" gleich "None" ist. Dies stellt einen definierten Zustand in "LVL3_classes.init()" zu Beginn des Betriebs dar. Sobald eine Verbindung innerhalb von "_find_connection()" hergestellt ist, kehrt die Funktion zurück und beendet ihren Thread. Die While-Schleife wird unterbrochen und der Betrieb der Schnittstelle beginnt. Alle anderen Aufrufe von "_find_connection()" erfolgen innerhalb der Schnittstelle und nur über die Funktion "_ping()".
 
-Once a NACK is detected by the "ping_ack_flag" being "False" a second after the ping was send, the connection is closed by the server, "connection_status" is set to "False" and "_find_connection()" is called. This call of "_find_connection()" is done without a thread. The function "_ping()" therefore has to wait for it to return, thus stopping operation of the ping thread until a connection is found. The receive thread which calls the function "_recv()" will raise Exceptions which are simply caught by an "except:pass". Interface operation is thereby virtually stopped until a new connection can be established.
+Wenn ein NACK erkannt wird dadurch das "ping_ack_flag" "False" ist, eine Sekunde nach dem Senden des Pings, schließt der Server die Verbindung, setzt "connection_status" auf "False" und ruft "_find_connection()" auf. Dieser Aufruf von "_find_connection()" erfolgt ohne Thread. Die Funktion "_ping()" muss daher auf ihre Rückkehr (return) warten und stoppt somit den Betrieb des Ping-Threads, bis eine Verbindung gefunden ist. Der Empfangsthread, der die Funktion "_recv()" aufruft, wird Exceptions auslösen, die einfach durch "except: pass" abgefangen werden. Die Betriebsfähigkeit der Schnittstelle wird dadurch praktisch gestoppt, bis eine neue Verbindung hergestellt werden kann.
