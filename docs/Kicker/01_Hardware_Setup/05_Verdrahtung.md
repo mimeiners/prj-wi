@@ -25,7 +25,7 @@ Dieser Plan zeigt die Verdrahtung des Kickertisches. Er beinhaltet folgende Komp
 
     * **Torerkennung:** 2 Einfache Infrarot-Sensoren, welche
 
-    * **Kurbelerkennung:**  Überprüft die Bewegung der Spieler für mehr Informationen bitte unter [kurbel](kurbel.md) schauen.
+    * **Kurbelerkennung:**  Überprüft die Bewegung der Spieler für mehr Informationen bitte unter [kurbel](06_Kurbelerkennung.md) schauen.
 
 
 **Legende:**
