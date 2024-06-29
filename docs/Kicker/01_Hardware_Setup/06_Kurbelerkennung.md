@@ -6,12 +6,12 @@ Zur Erkennung von einem Foul in Form einer Kurbelung wurden Sensoren für diese 
 ## Konzept der Sensoren
 Die Kurbelsensoren bestehen aus drei IR-Hindernis-Sensoren, welche die Stangen überwachen, ob eine Markierung an der Stange die Sensoren passiert. Die Markierung ist Isolierband, welches auf der Oberseite der Stangen in der Ruheposition angebracht wurde. Für die drei Sensoren wurde eine Gehäuse entworfen und als 3D Druck hergestellt.
 
-![Verdrahtungsplan](/docs/Gesamtsystem/Verdrahtungsplan.PNG)
+![Konzept und Ergebnis der Kurbelsensoren](/docs/Gesamtsystem/konzept_ergebnis.PNG)
 
 ## Beschaltung
 Die Sensoren werden durch zwei Arduino Nanos verarbeitet. Einen für jede Seite. Jeder Arduino verarbeitet jeweils vier Stangen. Die Arduinos senden jeweils nur ein Signal an den Raspberry Pi, auf welchem die Fouls verarbeitet werden. Die Sensoren und die Arduinos werden mit 5V betrieben.
 
-![Verdrahtungsplan](/docs/Gesamtsystem/Verdrahtungsplan.PNG)
+![Sensoren Pinout](/docs/Gesamtsystem/kurbel_pinout.jpg)
 
 # Code
 Der Code wurde verfasst in der Arduino IDE
