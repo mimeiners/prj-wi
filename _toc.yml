@@ -26,10 +26,21 @@ parts:
       
 
 # Hardware Setup
-  - caption: Hardware-Setup
+  - caption: Hardware-Setup und Software Einrichtung
     chapters:
-      - file: docs/Kicker/Pi_Einrichtung
-        title: Kicker Raspberry Pi Setup
+      - file: docs/Kicker/01_Hardware_Setup/00_Hardware_Setup_index
+        title: Tischkicker Setup 
+        sections:
+          - file: docs/Kicker/01_Hardware_Setup/01_Webserver
+            title: Einrichtung von Webserver und Hotspot
+          - file: docs/Kicker/01_Hardware_Setup/02_Datenbank
+            title: Einrichtung von influxDB und Grafana
+          - file: docs/Kicker/01_Hardware_Setup/03_Nutzerkontoverwaltung
+            title: Einrichtung der Nutzerkontoverwaltung
+          - file: docs/Kicker/01_Hardware_Setup/04_Material
+            title: Listung der Materialien
+          - file: docs/Kicker/01_Hardware_Setup/05_Verdrahtung
+            title: Übersicht der Verdrahtung des Subsystems
       - file: docs/AuVAReS/Anleitungen/setup
         title: AuVAReS Nvidia Jetson Setup
 

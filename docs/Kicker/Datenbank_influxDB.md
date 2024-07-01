@@ -1,3 +1,45 @@
+# Datenbank InxluxDB
+
+## Zielsetzung:
+
+Wir haben uns bei diesen Projekt für InfluxDB entschieden, da dies als Empfehlung vorgegeben wurde und InfluxDB einige Vorteile bietet was das zeitliche Erfassen von Ereignissen betrifft.
+
+# Installation von InfluxDB
+
+**Installation von InfluxDB auf Linux**
+
+Um InfluxDB auf Linux zu installieren, befolgen Sie diese Schritte:
+
+1. **Paketverzeichnis aktualisieren:**
+   ```bash
+   sudo apt update
+   ```
+
+2. **InfluxDB installieren:**
+   ```bash
+   sudo apt install influxdb
+   ```
+
+3. **InfluxDB-Dienst starten:**
+   ```bash
+   sudo service influxdb start
+   ```
+
+4. **Status überprüfen:**
+   ```bash
+   sudo service influxdb status
+   ```
+
+5. **Webanwendung öffnen:**
+   Besuchen Sie [http://localhost:8086](http://localhost:8086) in Ihrem Browser.
+
+6. **Weitere Konfiguration:**
+   Erstellen Sie eine Datenbank und beginnen Sie mit der Nutzung von InfluxDB für Ihre Projekte.
+
+Das sind die Schritte für die Installation und Konfiguration von InfluxDB auf Linux.
+
+## Struktur der Datenbank
+
 Um die Datenstruktur in der InfluxDB für das Kickerspiel zu verstehen, betrachten wir zunächst, wie die Daten bei jedem neuen Spiel organisiert werden. Hier sind die Hauptpunkte zur Struktur und den relevanten Details:
 
 ### Struktur der Daten in InfluxDB
@@ -24,9 +66,9 @@ Angenommen, wir haben ein Spiel mit der Spiel-ID `game_123`. Während des Spiels
 | _time                  | Spieler | Tore |
 |------------------------|---------|------|
 | 2024-06-25T10:00:00Z   | PlayerA | 1    |
-| 2024-06-25T10:02:00Z   | PlayerB | 1    |
-| 2024-06-25T10:05:00Z   | PlayerA | 1    |
-| 2024-06-25T10:07:00Z   | PlayerB | 1    |
+| 2024-06-25T10:02:00Z   | PlayerB | 2    |
+| 2024-06-25T10:05:00Z   | PlayerA | 2    |
+| 2024-06-25T10:07:00Z   | PlayerB | 3    |
 
 - **_time**: Zeitstempel des Events
 - **Spieler**: Name des Spielers

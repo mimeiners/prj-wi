@@ -25,7 +25,7 @@ Dieser Plan zeigt die Verdrahtung des Kickertisches. Er beinhaltet folgende Komp
 
     * **Torerkennung:** 2 Einfache Infrarot-Sensoren, welche
 
-    * **Kurbelerkennung:**  Überprüft die Bewegung der Spieler für mehr Informationen bitte unter [kurbel](kurbel.md) schauen.
+    * **Kurbelerkennung:**  Überprüft die Bewegung der Spieler für mehr Informationen bitte unter [kurbel](06_Kurbelerkennung.md) schauen.
 
 
 **Legende:**
@@ -41,7 +41,7 @@ Dieser Plan zeigt die Verdrahtung des Kickertisches. Er beinhaltet folgende Komp
 
   
 ## Weitere Informationen
-Alle Versorgungs und Datenkabel die vom Raspberry Pi 4 ausgehen wurden selbst hergestellt. Für weitere Informationen bitte unter [Materialien](Material.md) die Bestelliste der Verkabelung Kurbelerkennung beachten. 
+Alle Versorgungs und Datenkabel die vom Raspberry Pi 4 ausgehen wurden selbst hergestellt. Für weitere Informationen bitte unter [Materialien](01_Hardware_Setup/04_Material.md) die Bestelliste der Verkabelung Kurbelerkennung beachten. 
 
 
 **Hinweis:** 
