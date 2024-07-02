@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Fehlermeldung setzen, wenn der Nutzername leer ist oder ungültige Zeichen enthält
 		$username_error = empty($username) ? "Bitte Nutzernamen angeben." : "Dieser Nutzername enthält unzulässige Zeichen.";
 	} else {
-		// Nutzernameneingabe für Datenbankeintragung vorbereiten
+		// Nutzernameneingabe für Datenbankabfrage vorbereiten
 		$sql_cmd = "SELECT id FROM users WHERE username = ?";
 		
 		if($stmt = mysqli_prepare($link, $sql_cmd)){
@@ -52,10 +52,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			if(mysqli_stmt_execute($stmt)){
 				mysqli_stmt_store_result($stmt);
 				
+                // Wenn wir ein Ergebnis für diesen Nutzernamen bekommen,
 				if(mysqli_stmt_num_rows($stmt) == 1){
-                    // Fehlermeldung setzen, wenn der Nutzername bereits existiert
+                    // dann Fehlermeldung setzen, wenn der Nutzername bereits existiert
 					$username_error = "Dieser Nutzer existiert bereits.";
 				} else {
+                    // sonst Nutzername beibehalten
 					$username = $username;
 				}
 			} else {
