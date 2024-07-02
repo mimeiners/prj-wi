@@ -1,6 +1,6 @@
-# Datei: html/get_game_status.php
-
 # Voraussetzungen und Installation der InfluxDB PHP Library
+
+_Datei:_ `html/get_game_status.php`
 
 ## Voraussetzungen
 

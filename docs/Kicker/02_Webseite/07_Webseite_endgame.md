@@ -1,6 +1,6 @@
-# Datei: html/result.php
-
 # Ergebnis-Seite
+
+_Datei:_ `html/result.php`
 
 Diese Anleitung beschreibt den Aufbau und die Funktionsweise der Ergebnis-Seite, die das Endergebnis eines Spiels anzeigt.
 

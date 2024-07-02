@@ -26,30 +26,48 @@ parts:
       
 
 # Hardware Setup
-  - caption: Hardware-Setup und Software Einrichtung
+  - caption: Hardware-Setup
     chapters:
-      - file: docs/Kicker/01_Hardware_Setup/00_Hardware_Setup_index
-        title: Tischkicker Setup 
-        sections:
-          - file: docs/Kicker/01_Hardware_Setup/01_Webserver
-            title: Einrichtung von Webserver und Hotspot
-          - file: docs/Kicker/01_Hardware_Setup/02_Datenbank
-            title: Einrichtung von influxDB und Grafana
-          - file: docs/Kicker/01_Hardware_Setup/03_Nutzerkontoverwaltung
-            title: Einrichtung der Nutzerkontoverwaltung
-          - file: docs/Kicker/01_Hardware_Setup/04_Material
-            title: Listung der Materialien
-          - file: docs/Kicker/01_Hardware_Setup/05_Verdrahtung
-            title: Übersicht der Verdrahtung des Subsystems
       - file: docs/AuVAReS/Anleitungen/setup
         title: AuVAReS Nvidia Jetson Setup
 
 # Technische Details Kicker
   - caption: Kicker
     chapters:
-    # Muss noch bearbeitet werden - Struktur wird von Kickergruppe gegeben
-      - file: docs/Kicker/01_Kicker
-        title: Einleitung und Übersicht
+      - file: docs/Kicker/01_Setup/00_Setup_index
+        title: Tischkicker Setup 
+        sections:
+          - file: docs/Kicker/01_Setup/01_Webserver
+            title: Einrichtung von Webserver und Hotspot
+          - file: docs/Kicker/01_Setup/02_Datenbank
+            title: Einrichtung von influxDB und Grafana
+          - file: docs/Kicker/01_Setup/03_Nutzerkontoverwaltung
+            title: Einrichtung der Nutzerkontoverwaltung
+          - file: docs/Kicker/01_Setup/04_Material
+            title: Listung der Materialien
+          - file: docs/Kicker/01_Setup/05_Verdrahtung
+            title: Übersicht der Verdrahtung des Subsystems
+          - file: docs/Kicker/01_Setup/06_Kurbelerkennung
+            title: Aufbau der Kurbelerkennung
+      - file: docs/Kicker/02_Webseite/00_Webseite_Struktur
+        title: Funktionen der Webseite
+        sections:
+          - file: docs/Kicker/02_Webseite/01_Webseite_pregame.md
+            title: Vor dem Spielstart
+          - file: docs/Kicker/02_Webseite/02_Webseite_ingame
+            title: Spielsteuerung und Übersicht
+          - file: docs/Kicker/02_Webseite/03_Webseite_json_abfrage
+            title: Spieldatenabfrage mit JSON-Datei
+          - file: docs/Kicker/02_Webseite/04_Webseite_json_beschreiben
+            title: Spieldatenverwaltung mit JSON-Datei
+          - file: docs/Kicker/02_Webseite/05_Webseite_Datenbankabfrage
+            title: Interaktion zwischen Webseite und InfluxDB
+          - file: docs/Kicker/02_Webseite/06_Webseite_Anzeigetafel
+            title: Spielstandsanzeige auf Anzeigetafel
+          - file: docs/Kicker/02_Webseite/07_Webseite_endgame
+            title: Spielabwicklung und Ergebnisbestimmung
+      - file: docs/Kicker/03_Spielsteuerung
+        title: Programmablauf zur Spielsteuerung      
 
 
 # Technische Details AuVAReS
@@ -76,3 +94,7 @@ parts:
     chapters:
       - file: docs/Meetings/04-11_Protokoll
         title: Kick-Off
+      - file: docs/Meetings/04-17_Protokoll
+        title: Meeting am 2024-04-17
+      - file: docs/Meetings/05-03_Protokoll
+        title: Meeting am 2024-05-03

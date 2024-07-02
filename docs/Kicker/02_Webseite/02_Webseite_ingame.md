@@ -1,6 +1,6 @@
-# Datei: html/back_home.php
-
 # Beschreibung des PHP-Codes für die "Ingame" Seite
+
+_Datei:_ `html/back_home.php`
 
 Dieser PHP- und HTML-Code erstellt eine interaktive Webseite, die den aktuellen Spielstatus eines Spiels anzeigt, das in Echtzeit abläuft. Die Seite verwendet PHP-Sitzungsvariablen, um den Status des Spiels zu verfolgen und AJAX-Anfragen, um Spielerdaten und Spielstände dynamisch zu aktualisieren.
 

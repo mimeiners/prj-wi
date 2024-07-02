@@ -1,5 +1,6 @@
 # Anzeigetafel über Webseite
-In diesem Segment wird der Aufbau und Funktion der auf der Anzeigetafel angezeigten OR-Kode und Punktestandseite beschrieben.
+
+In diesem Segment wird der Aufbau und Funktion der auf der Anzeigetafel angezeigten QR-Kode und Punktestandseite beschrieben.
 
 ## QR-Seite:
 Diese Seite wird immer auf den Anzeigetafeln angezeigt, wenn aktuell kein Spiel läuft. Zweck des QR-Kodes ist es auf die Anmeldeseite zu verweisen. <br>

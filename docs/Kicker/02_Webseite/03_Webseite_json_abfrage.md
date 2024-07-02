@@ -1,6 +1,6 @@
-# Datei: html/get_game_data.php
-
 # Erklärung des PHP-Codes zum Lesen und Zurückgeben von JSON-Daten
+
+_Datei:_ `html/get_game_data.php`
 
 Dieser PHP-Code liest die Spielerdaten und Informationen aus einer JSON-Datei und gibt sie im JSON-Format zurück. Der Code stellt sicher, dass die Daten korrekt dekodiert werden und behandelt Fälle, in denen die Datei nicht existiert oder die Dekodierung fehlschlägt. Der Prozess ist in mehrere Abschnitte unterteilt, die im Folgenden beschrieben werden.
 
