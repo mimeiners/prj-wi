@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Einrichtung des Raspberry PI als Webserver &#8212; PRJ2/PRJ3 Wohninvest 4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link media="all" rel="stylesheet" type="text/css" href="https://dokie.li/media/css/dokieli.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script async="async" kind="dokieli" src="https://dokie.li/scripts/dokieli.js"></script>
+    <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "mimeiners/prj-wi");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section");
+    if (sections !== null) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/Kicker/01_Setup/01_Webserver';</script>
+    <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/Kicker/01_Setup/01_Webserver.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Pi-Einrichtung von InfluxDB und Grafana" href="02_Datenbank.html" />
+    <link rel="prev" title="Hardware-Setup und Software Einrichtung des Subsystems Kickertisch" href="00_Setup_index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../about/unsyllabus.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/hsb-logo.png" class="logo__image only-light" alt="PRJ2/PRJ3 Wohninvest 4.0 - Home"/>
+    <script>document.write(`<img src="../../../_static/hsb-logo.png" class="logo__image only-dark" alt="PRJ2/PRJ3 Wohninvest 4.0 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../about/unsyllabus.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">HowTo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../HowTo/HowTo_JB.html">How-To Jupyter-Book</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Gesamtsystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Gesamtsystem/Projektbeschreibung.html">Projektbeschreibung</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../temp_prj_wohlinvest_requierements.html">Wohlinvestment Anforderungen</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../AuVAReS/01_Requirements.html">Anforderungen AuVAReS</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Gesamtsystem/interface_management.html">Schnittstelle Kicker - AuVAReS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Gesamtsystem/network-communication-keywords.html">Schlüsselwörter bei Kommunikation im Netzwerk von Kicker-AuVAReS</a></li>
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware-Setup</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../AuVAReS/Anleitungen/setup.html">AuVAReS Nvidia Jetson Setup</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kicker</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_Setup_index.html">Tischkicker Setup</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Einrichtung von Webserver und Hotspot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_Datenbank.html">Pi-Einrichtung von InfluxDB und Grafana</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_Material.html">Listung der Materialien</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../02_Webseite/00_Webseite_Struktur.html">Funktionen der Webseite</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../02_Webseite/01_Webseite_pregame.html">Anmelde- und Registrierungsvorgänge der Webseite</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../02_Webseite/02_Webseite_ingame.html">Spielsteuerung und Übersicht</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Webseite/03_Webseite_json_abfrage.html">Spieldatenabfrage mit JSON-Datei</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Webseite/04_Webseite_json_beschreiben.html">Spieldatenverwaltung mit JSON-Datei</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Webseite/05_Webseite_Datenbankabfrage.html">Voraussetzungen und Installation der InfluxDB PHP Library</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../02_Webseite/06_Webseite_Anzeigetafel.html">Spielstandsanzeige auf Anzeigetafel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../02_Webseite/07_Webseite_endgame.html">Spielabwicklung und Ergebnisbestimmung</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_Spielsteuerung.html">Programmablauf zur Spielsteuerung</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../AuVAReS/Anleitungen/Programm%20-%20AuVAReS.html">Programmablauf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../AuVAReS/Anleitungen/Objekterkennung.html">Objekterkennung</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../AuVAReS/Anleitungen/Known_Issues.html">Bekannte Probleme</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meetings</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Meetings/04-11_Protokoll.html">Kick-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Meetings/04-17_Protokoll.html">Meeting am 2024-04-17</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Meetings/05-03_Protokoll.html">Meeting am 2024-05-03</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/mimeiners/prj-wi" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/mimeiners/prj-wi/edit/master/docs/Kicker/01_Setup/01_Webserver.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/mimeiners/prj-wi/issues/new?title=Issue%20on%20page%20%2Fdocs/Kicker/01_Setup/01_Webserver.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/docs/Kicker/01_Setup/01_Webserver.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Einrichtung des Raspberry PI als Webserver</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pi-vorbereiten">Pi vorbereiten:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apache2-und-php-installieren">Apache2 und PHP installieren:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#berechtigungen-setzen-und-testseite">Berechtigungen setzen und Testseite:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#einrichtung-einer-autostartroutine-fur-den-main-code">Einrichtung einer Autostartroutine für den Main-Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raspberry-pi-als-wireless-access-point">Raspberry Pi als Wireless Access Point</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="einrichtung-des-raspberry-pi-als-webserver">
+<h1>Einrichtung des Raspberry PI als Webserver<a class="headerlink" href="#einrichtung-des-raspberry-pi-als-webserver" title="Link to this heading">#</a></h1>
+<p>Damit der Raspberry Pi selbständig eine Webseite hosten kann, müssen einige Pakete installiert werden. Diese werden durch das Eingeben der untenstehenden Befehle über das interne Terminal installiert.</p>
+<section id="pi-vorbereiten">
+<h2>Pi vorbereiten:<a class="headerlink" href="#pi-vorbereiten" title="Link to this heading">#</a></h2>
+<p>Vor jeder Installation sollte der Pi auf den neusten Stand gebracht werden, solange es keinen Grund gibt dies nicht zu tun.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">upgrate</span>
+</pre></div>
+</div>
+</section>
+<section id="apache2-und-php-installieren">
+<h2>Apache2 und PHP installieren:<a class="headerlink" href="#apache2-und-php-installieren" title="Link to this heading">#</a></h2>
+<p>Apache2 ist ein Paket, welches dem Pi ermöglicht Webseiten zu hosten.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">apache2</span>
+</pre></div>
+</div>
+<p>Da Teile der Webseiten mit <em>php</em> geschrieben wurden, muss auch ein entsprechendes Paket zur Unterstützung installiert werden. Vorsichtshalber wird die Unterstützung für <em>MySQL</em> mit installiert.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">php</span> <span class="n">php</span><span class="o">-</span><span class="n">mysql</span> <span class="n">php</span><span class="o">-</span><span class="n">mbstring</span>
+</pre></div>
+</div>
+<p>Damit die installieren Pakete in Kraft treten muss, Apache2 neugestartet werden.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">restart</span> <span class="n">apache2</span>
+</pre></div>
+</div>
+</section>
+<section id="berechtigungen-setzen-und-testseite">
+<h2>Berechtigungen setzen und Testseite:<a class="headerlink" href="#berechtigungen-setzen-und-testseite" title="Link to this heading">#</a></h2>
+<p>Standartmäßig führt Apache alle Dateien aus welche sich in <strong>/var/www/html</strong> befinden. Da dies jedoch Teil des root-Verzeichnis ist, müssen Berechtigungen gesetzt werden, damit drauf gearbeitet werden kann. <br></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">pi</span><span class="p">:</span><span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="o">-</span><span class="n">R</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chmod</span> <span class="mi">750</span> <span class="o">-</span><span class="n">R</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>Hat der Benutzer ein andren Namen als <em>pi</em>, dann sollte <em>pi</em> durch den <em>Benutzernamen</em> ersetzt werden. <br>
+Um zu testen ob die Pakete richtig installiert worden muss zuerst die IP-Adresse des Pi herausgefunden werden.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ifconfig</span> <span class="o">-</span><span class="n">a</span>
+</pre></div>
+</div>
+<p>Je nachdem ob der Pi Teil eines bestehenden Netzwerkes ist oder selbst eines bildet, können zwei IP-Adressen angezeigt werden. <br>
+Unter <em>wlan0</em> wird die Adresse der <em>W-LAN-Schnittstelle</em> angezeigt und unter <em>eth0</em> die der <em>Ethernet-Schnittstelle</em> <br>
+<br>
+<strong>Wichtig:</strong> sollte einer der Beiden Schnittstellen nicht genutzt werden, dann wird dessen IP-Adresse <em>nicht</em> angezeigt. <br>
+<br>
+Je nachdem welche Schnittstelle am Ende verwendet wird, ist es sinnvoll auch diese IP-Adresse zu nutzten. Alternativ lässt sich auch eine Statische IP setzten.<br>
+<br>
+Apache installiert eine Test-Seite namens <em>index.html</em>. Diese sollte sich im Browser mit: <em><a class="reference external" href="http://10.42.0.1/index.html">http://10.42.0.1/index.html</a></em> aufrufen lassen. <br>
+Die IP-Adresse sollte hier durch die ersetzt werden, welche man vorher herausgefunden hat. <br>
+Alternativ lässt sich die Test-Seite auch local auf dem Pi unter <a class="reference external" href="http://localhost/index.html">http://localhost/index.html</a> öffnen. <br>
+<br>
+Sollte alles funktioniert haben, lassen sich nun alle Webseiten automatisch hosten, welche sich in dem Verzeichnis ( <em>/var/www/html</em>) befinden.<br>
+<br></p>
+</section>
+<section id="einrichtung-einer-autostartroutine-fur-den-main-code">
+<h2>Einrichtung einer Autostartroutine für den Main-Code<a class="headerlink" href="#einrichtung-einer-autostartroutine-fur-den-main-code" title="Link to this heading">#</a></h2>
+<p>Zur automatischen Ausführung von Kode oder einem Programm beim Booten des Pi gibt es verschiedene Möglichkeiten. Hier haben wir uns für eine Methode über <em>rc.local</em> entschieden. <br>
+Auf <em>rc.local</em> lässt sich über das Terminal zugreifen:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">nano</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">rc</span><span class="o">.</span><span class="n">local</span>
+</pre></div>
+</div>
+<p>In dem Terminal-Fenster, ganz unten über <em>exit 0</em> lassen sich nun Zeilen einfügen, welche dann beim Boot ausgeführt werden. <br>
+Für das automatische Ausführen eines Python-Scripts trägt man ein:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">/</span><span class="n">data_path</span><span class="o">/</span><span class="n">python_script</span><span class="o">.</span><span class="n">py</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+<p>Für das Ausführen eines beliebigen Python-Skript muss der <em>volle</em> Datei-Pfad angegen, Relative Pfade funktionieren nicht.<br>
+<br>
+<strong>Wichtig:</strong> Am Ende <em>jeder</em> Zeile <strong>muss</strong> ein “<em>&amp;</em>” stehen, sonst bleib der Boot-Prozess an dieser Zeile hängen. Außerdem <strong>muss</strong> am <em>Ende</em> von <em>rc.local</em> immer “<em>exit 0</em>”, sonst wird der Pi sich ebenfalls beim Boot-Prozess aufhängen.<br>
+<br></p>
+</section>
+<section id="raspberry-pi-als-wireless-access-point">
+<h2>Raspberry Pi als Wireless Access Point<a class="headerlink" href="#raspberry-pi-als-wireless-access-point" title="Link to this heading">#</a></h2>
+<p>Seit der Raspian-OS Version 12 (Bookworm), das Einrichten eines Hotspots ist über die Nutzeroberfläche möglich. Durch klicken auf das Netzwerksymbol gibt es neben der Auflistung verfügbarer Netzwerkverbindungen unter den erweiterten Option die Obtion zur Hotspoterstellung gegeben; die Einrichtung wird durch den Einrichtungsassistenten trivial. Damit der Hotspot nach jedem Neustart des Pi startet, sollte in den Netzwerkeinstellungen die Verbindungspriorität auf 0 gesetzt werden.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "mimeiners/prj-wi",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs\Kicker\01_Setup"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="00_Setup_index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hardware-Setup und Software Einrichtung des Subsystems Kickertisch</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_Datenbank.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Pi-Einrichtung von InfluxDB und Grafana</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pi-vorbereiten">Pi vorbereiten:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apache2-und-php-installieren">Apache2 und PHP installieren:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#berechtigungen-setzen-und-testseite">Berechtigungen setzen und Testseite:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#einrichtung-einer-autostartroutine-fur-den-main-code">Einrichtung einer Autostartroutine für den Main-Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raspberry-pi-als-wireless-access-point">Raspberry Pi als Wireless Access Point</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By M. Meiners / B. Lehmann
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png"></a>
+    All content on this site (unless otherwise specified) is licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 license</a>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

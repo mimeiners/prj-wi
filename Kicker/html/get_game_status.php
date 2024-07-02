@@ -5,7 +5,7 @@ use InfluxDB2\Client;
 
 // Verbindungseinstellungen
 $host = 'http://127.0.0.1:8086';
-$token = '8RxLuigXS1MYsJ-7m9iii7vvRVp2ph5uoBgl9mloUv7TWeKbJj0kkYZPhzWO1Ww7bJ8olK9qwYs7k0npUMFVDg==';
+$token = '****';
 $org = 'Hochschule Bremen';
 $bucket = 'kicker';
 

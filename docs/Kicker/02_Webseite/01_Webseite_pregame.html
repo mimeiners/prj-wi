@@ -1,0 +1,1385 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Anmelde- und Registrierungsvorgänge der Webseite &#8212; PRJ2/PRJ3 Wohninvest 4.0</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link media="all" rel="stylesheet" type="text/css" href="https://dokie.li/media/css/dokieli.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=87e54e7c" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script async="async" kind="dokieli" src="https://dokie.li/scripts/dokieli.js"></script>
+    <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "mimeiners/prj-wi");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section");
+    if (sections !== null) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/Kicker/02_Webseite/01_Webseite_pregame';</script>
+    <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/Kicker/02_Webseite/01_Webseite_pregame.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Beschreibung des PHP-Codes für die “Ingame” Seite" href="02_Webseite_ingame.html" />
+    <link rel="prev" title="Struktur des Frontends (Weboberfläche)" href="00_Webseite_Struktur.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../about/unsyllabus.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/hsb-logo.png" class="logo__image only-light" alt="PRJ2/PRJ3 Wohninvest 4.0 - Home"/>
+    <script>document.write(`<img src="../../../_static/hsb-logo.png" class="logo__image only-dark" alt="PRJ2/PRJ3 Wohninvest 4.0 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../about/unsyllabus.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">HowTo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../HowTo/HowTo_JB.html">How-To Jupyter-Book</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Gesamtsystem</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Gesamtsystem/Projektbeschreibung.html">Projektbeschreibung</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../temp_prj_wohlinvest_requierements.html">Wohlinvestment Anforderungen</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../AuVAReS/01_Requirements.html">Anforderungen AuVAReS</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../Gesamtsystem/interface_management.html">Schnittstelle Kicker - AuVAReS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Gesamtsystem/network-communication-keywords.html">Schlüsselwörter bei Kommunikation im Netzwerk von Kicker-AuVAReS</a></li>
+
+
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hardware-Setup</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../AuVAReS/Anleitungen/setup.html">AuVAReS Nvidia Jetson Setup</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Kicker</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../01_Setup/00_Setup_index.html">Tischkicker Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../01_Setup/01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_Setup/02_Datenbank.html">Pi-Einrichtung von InfluxDB und Grafana</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../01_Setup/03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_Setup/04_Material.html">Listung der Materialien</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_Setup/05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../01_Setup/06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="00_Webseite_Struktur.html">Funktionen der Webseite</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Anmelde- und Registrierungsvorgänge der Webseite</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="02_Webseite_ingame.html">Spielsteuerung und Übersicht</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_Webseite_json_abfrage.html">Spieldatenabfrage mit JSON-Datei</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_Webseite_json_beschreiben.html">Spieldatenverwaltung mit JSON-Datei</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Webseite_Datenbankabfrage.html">Voraussetzungen und Installation der InfluxDB PHP Library</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="06_Webseite_Anzeigetafel.html">Spielstandsanzeige auf Anzeigetafel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07_Webseite_endgame.html">Spielabwicklung und Ergebnisbestimmung</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../03_Spielsteuerung.html">Programmablauf zur Spielsteuerung</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../AuVAReS/Anleitungen/Programm%20-%20AuVAReS.html">Programmablauf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../AuVAReS/Anleitungen/Objekterkennung.html">Objekterkennung</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../AuVAReS/Anleitungen/Known_Issues.html">Bekannte Probleme</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meetings</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../Meetings/04-11_Protokoll.html">Kick-Off</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Meetings/04-17_Protokoll.html">Meeting am 2024-04-17</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Meetings/05-03_Protokoll.html">Meeting am 2024-05-03</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/mimeiners/prj-wi" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/mimeiners/prj-wi/edit/master/docs/Kicker/02_Webseite/01_Webseite_pregame.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/mimeiners/prj-wi/issues/new?title=Issue%20on%20page%20%2Fdocs/Kicker/02_Webseite/01_Webseite_pregame.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/docs/Kicker/02_Webseite/01_Webseite_pregame.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Anmelde- und Registrierungsvorgänge der Webseite</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Anmelde- und Registrierungsvorgänge der Webseite</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#index-php">index.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#login-php">login.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#register-php">register.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#config-php">config.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waiting-php">waiting.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-second-user-php">check_second_user.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redirect-php">redirect.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-stop-php">normal_stop.php</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#fusznoten">Fußnoten</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="anmelde-und-registrierungsvorgange-der-webseite">
+<h1>Anmelde- und Registrierungsvorgänge der Webseite<a class="headerlink" href="#anmelde-und-registrierungsvorgange-der-webseite" title="Link to this heading">#</a></h1>
+<p>Der Webserver des Raspberry Pi hostet eine Webseite auf welche die Spieler zugreifen um das Spiel zu starten, Punktestände und andere Informationen abzufragen, und um ggf. das Spielergebnis in die ewige Tabelle zu übergeben.</p>
+<p>Dem Spiel vorgelagert gibt es die Möglichkeit zwischen einem Freundschaftsspiel und einem weiteren Spielmodus zu wählen, welcher Einfluss auf die ewige Tabellenplazierung hat. Um einer Tabellenmanipulation vorzubeugen ist für diesen Fall eine Nutzerkontoverwaltung notwendig. Im Folgenden werden die dazu verwendeten Dateien angeführt, welche sich im <code class="docutils literal notranslate"><span class="pre">html</span></code> Ordner auf dem Raspberry Pi zu befinden haben. Wir verwenden eine Datenbank mit zwei Tabellen, der Nutzertabelle <code class="docutils literal notranslate"><span class="pre">users</span></code> und der Tabelle aktiver Nutzer <code class="docutils literal notranslate"><span class="pre">active_users</span></code>, welche jene Nutzer enthält, die am aktuellen Spiel teilnehmen. Weiteres dazu findet sich im Abschnitt zur Nutzerkontoverwaltung.</p>
+<section id="index-php">
+<h2>index.php<a class="headerlink" href="#index-php" title="Link to this heading">#</a></h2>
+<p>Die Startseite des Projekts, die den Nutzer zur Anmeldeseite weiterleitet, wenn ein entsprechender Button gedrückt wird.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+/**
+ * index.php
+ * 
+ * Startseite für das Kickerspiel
+ * 
+ */
+
+// Bei Knopfdruck zur Anmeldung weiterleiten
+if ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;) {
+    header(&quot;Location: login.php&quot;);
+    exit();
+}
+?&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;de&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Namen speichern&lt;/title&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bootstrap.min.css&quot;&gt;
+    &lt;style&gt;
+        body { font: 16px sans-serif; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center mt-5&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;div class=&quot;card-body text-center&quot;&gt;
+                        &lt;img src=&quot;Pictures/hsb-logo.png&quot; class=&quot;img-fluid mb-4&quot; alt=&quot;HSB Logo&quot; width=&quot;300&quot; height=&quot;139&quot;&gt;
+                        &lt;h1 class=&quot;card-title&quot;&gt;Willkommen beim Spiel&lt;/h1&gt;
+                        &lt;p class=&quot;card-text&quot;&gt;Klicken Sie auf den Button, um zum Login weitergeleitet zu werden.&lt;/p&gt;
+                        &lt;form method=&quot;post&quot; action=&quot;&lt;?php echo htmlspecialchars($_SERVER[&quot;PHP_SELF&quot;]);?&gt;&quot;&gt;
+                            &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;Zum Login&lt;/button&gt;
+                        &lt;/form&gt;
+                        &lt;br&gt;
+                        &lt;p&gt;&lt;a href=&quot;indexfreund.php&quot;&gt;Zum Freundschaftsspiel&lt;/a&gt;, Punkte werden nicht gezählt.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+</section>
+<section id="login-php">
+<h2>login.php<a class="headerlink" href="#login-php" title="Link to this heading">#</a></h2>
+<p>Diese Datei dient der Nutzeranmeldung. Sie startet eine Session und prüft, ob der Nutzer bereits eingeloggt ist. Falls ja, wird er zur Startseite weitergeleitet. Andernfalls wird die Anmeldung durchgeführt, indem die eingegebenen Nutzerdaten gegen die in der Datenbank gespeicherten Daten geprüft werden. Erfolgt die Anmeldung erfolgreich, wird der Nutzer zur entsprechenden Seite weitergeleitet. <a class="footnote-reference brackets" href="#q1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+/**
+ * login.php
+ * 
+ * Anmeldeseite für Nutzer
+ * 
+ */
+
+// Neue Session starten bzw. vorhandene fortsetzen
+session_start();
+
+// Weiterleitung für bereits angemeldete Nutzer 
+if (isset($_SESSION[&quot;loggedin&quot;]) &amp;&amp; $_SESSION[&quot;loggedin&quot;] === true) {
+    // Datenbankabfrage zur Anzahl der angemeldeten Nutzer
+    $secondUserValue = file_get_contents(&#39;check_second_user.php&#39;);
+
+    // Wenn der Nutzer der zweite Spieler ist, dann Warteseite überspringen
+    if ($secondUserValue == 2) {
+        header(&quot;location: redirect.php&quot;);
+        exit;
+    } else {
+        // Fehlermeldung
+    }
+} else {
+    // Fehlermeldung
+}
+
+// Für unangemeldete Nutzer neue Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
+require_once &quot;config.php&quot;;
+
+// Variablen für die Eingabefelder initialisieren
+$username = $password = &quot;&quot;;
+$username_error = $password_error = &quot;&quot;;
+$login_error = &quot;&quot;;
+
+// Eingabefelderinhalt prüfen und ggf. verarbeiten
+if ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;) {
+
+	// Nutzernameneingabe übergeben
+	$username = trim($_POST[&quot;username&quot;]);
+	$username_error = empty($username) ? &quot;Bitte Nutzernamen eingeben.&quot; : &quot;&quot;;
+
+	// Passworteingabe übergeben
+	$password = trim($_POST[&quot;password&quot;]);
+	$password_error = empty($password) ? &quot;Bitte Passwort eingeben.&quot; : &quot;&quot;;
+   
+    // Passwort und Nutzername prüfen
+    if (empty($username_error) &amp;&amp; empty($password_error)) {
+        $sql_cmd = &quot;SELECT id, username, password FROM users WHERE username = ?&quot;;
+
+        // Nutzernameneingabe für Datenbankeintragung vorbereiten
+        if ($stmt = mysqli_prepare($link, $sql_cmd)) {
+            mysqli_stmt_bind_param($stmt, &quot;s&quot;, $username_parameter);
+            $username_parameter = $username;
+
+            if (mysqli_stmt_execute($stmt)) {
+                mysqli_stmt_store_result($stmt);
+
+                // Wenn der Nutzername vorhanden ist, wird das Passwort verifiziert
+                if (mysqli_stmt_num_rows($stmt) == 1) {
+        
+                    mysqli_stmt_bind_result($stmt, $id, $username, $password_hash);
+                    if (mysqli_stmt_fetch($stmt)) {
+
+                        // Wenn das Passwort stimmt, ermittle Anzahl an angemeldeten Nutzern
+                        if (password_verify($password, $password_hash)) {
+                            							
+                            // Datenbanktabelle active_users wird abgefragt
+                            $check_sql = &quot;SELECT COUNT(*) as count FROM active_users&quot;;
+                            $check_result = mysqli_query($link, $check_sql);
+                            $row = mysqli_fetch_assoc($check_result);
+                            $count = $row[&#39;count&#39;];
+
+                            // Wenn noch kein Nutzer angemeldet ist, eintragen und weiterleiten
+                            if ($count == 0) {
+								$_SESSION[&quot;loggedin&quot;] = true;
+								$_SESSION[&quot;username&quot;] = $username;
+                                // Nutzer als ersten Spieler eintragen
+                                $insert_sql = &quot;INSERT INTO active_users (username) VALUES (?)&quot;;
+                                $insert_stmt = mysqli_prepare($link, $insert_sql);
+                                mysqli_stmt_bind_param($insert_stmt, &quot;s&quot;, $username);
+                                mysqli_stmt_execute($insert_stmt);
+                                mysqli_stmt_close($insert_stmt);
+								
+								header(&quot;location: waiting.php&quot;);
+								exit;
+							
+                            // Wenn ein Nutzer angemeldet ist, eintragen und weiterleiten
+                            } elseif ($count == 1) {	
+								$_SESSION[&quot;loggedin&quot;] = true;
+								$_SESSION[&quot;username&quot;] = $username;
+								// Nutzer als zweiten Spieler eintragen
+								$insert_sql = &quot;INSERT INTO active_users (username) VALUES (?)&quot;;
+								$insert_stmt = mysqli_prepare($link, $insert_sql);
+								mysqli_stmt_bind_param($insert_stmt, &quot;s&quot;, $username);
+								mysqli_stmt_execute($insert_stmt);
+								mysqli_stmt_close($insert_stmt);
+								
+								header(&quot;location: redirect.php&quot;);
+								exit;					
+
+                            // Wenn schon zwei Nutzer angemeldet sind, Fehler melden
+                            } else {
+                                $login_error = &quot;Es sind bereits zwei Spieler angemeldet.&quot;;							
+                            }
+
+                        } else {
+                            // Falsches Passwort
+                            $login_error = &quot;Passwort oder Nutzername falsch.&quot;;
+                        }
+                    }
+                } else {
+                    // Falscher Nutzername
+                    $login_error = &quot;Passwort oder Nutzername falsch.&quot;;
+                }
+            } else {
+                echo &quot;Unbekannte Fehlermeldung.&quot;;
+            }
+
+            // SQL statement beenden
+            mysqli_stmt_close($stmt);
+        }
+    }
+
+    // Datenbankverbindung beenden
+    mysqli_close($link);
+}
+?&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;de&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;title&gt;Anmeldung&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bootstrap.min.css&quot;&gt;
+    &lt;style&gt;
+        body { font: 16px sans-serif; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card mt-5&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title&quot;&gt;Anmeldung&lt;/h2&gt;
+                        &lt;p class=&quot;card-text&quot;&gt;Hier bitte Nutzerdaten eingeben.&lt;/p&gt;
+                        &lt;form action=&quot;&lt;?php echo htmlspecialchars($_SERVER[&quot;PHP_SELF&quot;]); ?&gt;&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;label for=&quot;username&quot;&gt;Nutzername&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; class=&quot;form-control &lt;?php echo (!empty($username_error)) ? &#39;is-invalid&#39; : &#39;&#39;; ?&gt;&quot; value=&quot;&lt;?php echo $username; ?&gt;&quot;&gt;
+                                &lt;span class=&quot;invalid-feedback&quot;&gt;&lt;?php echo $username_error; ?&gt;&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;label for=&quot;password&quot;&gt;Passwort&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control &lt;?php echo (!empty($password_error)) ? &#39;is-invalid&#39; : &#39;&#39;; ?&gt;&quot;&gt;
+                                &lt;span class=&quot;invalid-feedback&quot;&gt;&lt;?php echo $password_error; ?&gt;&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;input type=&quot;submit&quot; class=&quot;btn btn-primary&quot; value=&quot;Anmelden&quot;&gt;
+								&lt;?php
+								if (!empty($login_error)) {echo &#39;&lt;div class=&quot;alert alert-danger&quot;&gt;&#39; . $login_error . &#39;&lt;/div&gt;&#39;;}
+								?&gt;
+                            &lt;/div&gt;
+                            &lt;p&gt;&lt;a href=&quot;register.php&quot;&gt;Zur Registrierung&lt;/a&gt;.&lt;/p&gt;
+							&lt;p&gt;&lt;a href=&quot;index.php&quot;&gt;Zur Startseite&lt;/a&gt;.&lt;/p&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+</section>
+<section id="register-php">
+<h2>register.php<a class="headerlink" href="#register-php" title="Link to this heading">#</a></h2>
+<p>Diese Datei stellt die Registrierungsseite für neue Nutzer bereit. Sie bindet die config.php ein, um eine Datenbankverbindung zu nutzen. Die Datei prüft die vom Nutzer eingegebenen Daten auf Korrektheit, wie zum Beispiel die Formatierung des Nutzernamens und die Übereinstimmung der eingegebenen Passwörter. Erfolgreich verifizierte Daten werden in die Datenbank eingetragen. Bei erfolgreicher Registrierung wird der Nutzer zur Anmeldeseite weitergeleitet. <a class="footnote-reference brackets" href="#q1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+/**
+ * register.php
+ * 
+ * Registrierungsseite für Nutzer
+ * 
+ */
+
+// Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
+require_once &quot;config.php&quot;;
+ 
+// Variablen für die Eingabefelder initialisieren
+$username = $password = &quot;&quot;;
+$username_error = $password_error = &quot;&quot;;
+$password_check = $password_check_error = &quot;&quot;;
+
+// Eingabefelderinhalt prüfen und ggf. verarbeiten
+if($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;){
+
+	// Passworteingabe prüfen
+	$password = trim($_POST[&quot;password&quot;]);
+    // Fehlermeldung setzen, wenn das Passwort leer ist oder weniger als 5 Zeichen hat
+	if(empty($password) || strlen($password) &lt; 5){
+		$password_error = empty($password) ? &quot;Bitte ein Passwort eingeben.&quot; : &quot;Das Passwort sollte mindestens fünf Zeichen lang sein.&quot;;
+	}
+
+	// Passworteingabewiederholung prüfen
+	$password_check = trim($_POST[&quot;confirm_password&quot;]);
+	if(empty($password_check)){
+        // Fehlermeldung setzen, wenn das Passwort-Wiederholungsfeld leer ist
+		$password_check_error = &quot;Bitte das Passwort wiederholen.&quot;;     
+	} elseif(empty($password_error) &amp;&amp; ($password != $password_check)){
+        // Fehlermeldung setzen, wenn die Passwörter nicht übereinstimmen
+		$password_check_error = &quot;Passwort stimmt nicht überein.&quot;;
+	}
+
+	// Nutzernameneingabe prüfen
+	$username = trim($_POST[&quot;username&quot;]);
+	if(empty($username) || !preg_match(&#39;/^[a-zA-Z0-9_]+$/&#39;, $username)){
+        // Fehlermeldung setzen, wenn der Nutzername leer ist oder ungültige Zeichen enthält
+		$username_error = empty($username) ? &quot;Bitte Nutzernamen angeben.&quot; : &quot;Dieser Nutzername enthält unzulässige Zeichen.&quot;;
+	} else {
+		// Nutzernameneingabe für Datenbankeintragung vorbereiten
+		$sql_cmd = &quot;SELECT id FROM users WHERE username = ?&quot;;
+		
+		if($stmt = mysqli_prepare($link, $sql_cmd)){
+            // Parameter binden und vorbereiten
+			mysqli_stmt_bind_param($stmt, &quot;s&quot;, $username_parameter);
+			$username_parameter = $username;
+
+            // SQL-Befehl ausführen
+			if(mysqli_stmt_execute($stmt)){
+				mysqli_stmt_store_result($stmt);
+				
+				if(mysqli_stmt_num_rows($stmt) == 1){
+                    // Fehlermeldung setzen, wenn der Nutzername bereits existiert
+					$username_error = &quot;Dieser Nutzer existiert bereits.&quot;;
+				} else {
+					$username = $username;
+				}
+			} else {
+				echo &quot;Unbekannte Fehlermeldung.&quot;;
+			}
+
+			mysqli_stmt_close($stmt);
+		}
+	}
+ 
+    // Datenbankeintragung durchführen, wenn Nutzereingaben zulässig sind
+    if(empty($username_error) &amp;&amp; empty($password_error) &amp;&amp; empty($password_check_error)){
+        
+        // Nutzername und Passwort für Dateinbankeintrag vorbereiten
+        $sql_cmd = &quot;INSERT INTO users (username, password) VALUES (?, ?)&quot;;
+         
+        if($stmt = mysqli_prepare($link, $sql_cmd)){
+            // Parameter binden und vorbereiten
+            mysqli_stmt_bind_param($stmt, &quot;ss&quot;, $username_parameter, $password_parameter);
+            $username_parameter = $username;
+            $password_parameter = password_hash($password, PASSWORD_DEFAULT);
+            
+            // Datenbankeintragung durchführen
+            if(mysqli_stmt_execute($stmt)){
+                // Umleitung nach erfolgreicher Registrierung
+                header(&quot;location: login.php&quot;);
+            } else {
+                echo &quot;Unbekannte Fehlermeldung&quot;;
+            }
+
+            mysqli_stmt_close($stmt);
+        }
+    }
+    
+    // Datenbankverbindung beenden
+    mysqli_close($link);
+}
+?&gt;
+ 
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;de&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;title&gt;Registrierung&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bootstrap.min.css&quot;&gt;
+    &lt;style&gt;
+        body { font: 16px sans-serif; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card mt-5&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title&quot;&gt;Registrierung&lt;/h2&gt;
+                        &lt;p class=&quot;card-text&quot;&gt;Hier erstellen Sie ein Nutzerkonto.&lt;/p&gt;
+                        &lt;form action=&quot;&lt;?php echo htmlspecialchars($_SERVER[&quot;PHP_SELF&quot;]); ?&gt;&quot; method=&quot;post&quot;&gt;
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;label for=&quot;username&quot;&gt;Nutzername&lt;/label&gt;
+                                &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; class=&quot;form-control &lt;?php echo (!empty($username_error)) ? &#39;is-invalid&#39; : &#39;&#39;; ?&gt;&quot; value=&quot;&lt;?php echo $username; ?&gt;&quot;&gt;
+                                &lt;span class=&quot;invalid-feedback&quot;&gt;&lt;?php echo $username_error; ?&gt;&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;label for=&quot;password&quot;&gt;Passwort&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; id=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control &lt;?php echo (!empty($password_error)) ? &#39;is-invalid&#39; : &#39;&#39;; ?&gt;&quot; value=&quot;&lt;?php echo $password; ?&gt;&quot;&gt;
+                                &lt;span class=&quot;invalid-feedback&quot;&gt;&lt;?php echo $password_error; ?&gt;&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;label for=&quot;confirm_password&quot;&gt;Passwort wiederholen&lt;/label&gt;
+                                &lt;input type=&quot;password&quot; id=&quot;confirm_password&quot; name=&quot;confirm_password&quot; class=&quot;form-control &lt;?php echo (!empty($password_check_error)) ? &#39;is-invalid&#39; : &#39;&#39;; ?&gt;&quot; value=&quot;&lt;?php echo $password_check; ?&gt;&quot;&gt;
+                                &lt;span class=&quot;invalid-feedback&quot;&gt;&lt;?php echo $password_check_error; ?&gt;&lt;/span&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;input type=&quot;submit&quot; class=&quot;btn btn-primary&quot; value=&quot;Submit&quot;&gt;
+                            &lt;/div&gt;
+                            &lt;p&gt;&lt;a href=&quot;login.php&quot;&gt;Zum Login&lt;/a&gt;.&lt;/p&gt;
+							&lt;p&gt;&lt;a href=&quot;index.php&quot;&gt;Zur Startseite&lt;/a&gt;.&lt;/p&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+</section>
+<section id="config-php">
+<h2>config.php<a class="headerlink" href="#config-php" title="Link to this heading">#</a></h2>
+<p>Diese Datei ist verantwortlich für den Aufbau der Datenbankverbindung. Sie enthält die notwendigen Parameter für den Datenbankzugriff wie den Servernamen, den Benutzernamen, das Passwort und den Datenbanknamen. Die Datei initialisiert die Verbindung zur Datenbank und prüft, ob die Verbindung erfolgreich hergestellt werden konnte. Bei einem Fehler wird eine Fehlermeldung ausgegeben.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+/**
+ * config.php
+ * 
+ * Zum Datenbankverbindungsaufbau
+ * 
+ */
+
+// Datenbankverbindungsparameter aus Webserver-Konfiguration übernehmen
+define(&#39;DB_LOGIN_SERVER&#39;, &#39;localhost&#39;);
+define(&#39;DB_LOGIN_USERNAME&#39;, &#39;admin&#39;);
+define(&#39;DB_LOGIN_PASSWORD&#39;, &#39;&lt;password&gt;&#39;); // Hier Passwort eintragen
+define(&#39;DB_LOGIN_NAME&#39;, &#39;usersdb&#39;);
+
+// Datenbankverbindung aufbauen
+$link = mysqli_connect(DB_LOGIN_SERVER, DB_LOGIN_USERNAME, DB_LOGIN_PASSWORD, DB_LOGIN_NAME);
+	
+// ERROR: Datenbankverbindungsfehler
+if ($link === false){
+	die(&quot;ERROR: Verbindung fehlgeschlagen. &quot; . mysqli_connect_error());
+}
+?&gt;
+</pre></div>
+</div>
+</section>
+<section id="waiting-php">
+<h2>waiting.php<a class="headerlink" href="#waiting-php" title="Link to this heading">#</a></h2>
+<p>Diese Seite wird angezeigt, wenn der erste Spieler angemeldet ist und auf einen zweiten Spieler wartet. Sie prüft in regelmäßigen Abständen die Anzahl der aktiven Nutzer und leitet weiter, sobald ein zweiter Nutzer angemeldet ist.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+/**
+ * waiting.php
+ * 
+ * Warteseite für ersten Spieler, der auf einen Gegner wartet
+ * 
+ */
+
+
+// Neue Session starten bzw. vorhandene fortsetzen
+session_start();
+
+// Nur angemeldete Nutzer sollen hier zugreifen
+if (isset($_SESSION[&quot;loggedin&quot;]) &amp;&amp; $_SESSION[&quot;loggedin&quot;] === true) {
+    // Datenbankabfrage zur Anzahl aktiver Nutzer 
+    $secondUserValue = file_get_contents(&#39;check_second_user.php&#39;);
+
+    // Wenn Nutzer einer der aktiven Spieler ist, dann weiterleiten
+    if ($secondUserValue == 2) {
+        header(&quot;location: back_home.php&quot;);
+        exit;
+    } else {
+        // Andere Fälle
+    }
+} else {
+        // Wenn nicht angemeldet, dann weiterleiten auf Startseite
+        header(&quot;location: index.php&quot;);
+		exit;
+
+}
+
+// Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
+require_once &quot;config.php&quot;;
+// Datenbankverbindung beenden
+$link-&gt;close();
+?&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;de&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;title&gt;Warten&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bootstrap.min.css&quot;&gt;
+    &lt;style&gt;
+        body { font: 13px sans-serif; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center&quot;&gt;
+            &lt;div class=&quot;col-md-6&quot;&gt;
+                &lt;div class=&quot;card mt-5&quot;&gt;
+                    &lt;div class=&quot;card-body&quot;&gt;
+                        &lt;h2 class=&quot;card-title&quot;&gt;Du bist auf der Seite &quot;weiß&quot;. Eine zweite Person muss sich anmelden und wird Spieler der Seite &quot;grün&quot;.&lt;/h2&gt;
+                        &lt;div class=&quot;spinner-border text-primary&quot; role=&quot;status&quot;&gt; &lt;/div&gt;						
+						&lt;?php
+                        if (!empty($login_err)) {
+                            echo &#39;&lt;div class=&quot;alert alert-danger&quot;&gt;&#39; . $login_err . &#39;&lt;/div&gt;&#39;;
+                        }
+                        ?&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        function checkActiveUsers() {
+            fetch(&#39;check_second_user.php&#39;)
+                .then(response =&gt; response.text())
+                .then(data =&gt; {
+                    if (parseInt(data) === 2) {
+                        window.location.href = &#39;redirect.php&#39;; // Sobald zwei Spieler in active_users stehen folgt Weiterleitung
+                    } else if (parseInt(data) === 0) {
+                        window.location.href = &#39;index.php&#39;; // Wenn der zweite Spieler sich doppelt angemeldet hat, dann Warten abbrechen
+                    }
+                })
+                .catch(error =&gt; console.error(&#39;Error:&#39;, error));
+        }
+
+        setInterval(checkActiveUsers, 1000); // Datenbank wiederholt abfragen
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+</section>
+<section id="check-second-user-php">
+<h2>check_second_user.php<a class="headerlink" href="#check-second-user-php" title="Link to this heading">#</a></h2>
+<p>Diese Datei überprüft die Anzahl der angemeldeten Nutzer in der Datenbank und gibt diese Zahl zurück. Diese Datei wird von der Warteseite waiting.php verwendet, um die Anzahl der angemeldeten Nutzer in regelmäßigen Abständen zu überprüfen.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+/**
+ * check_second_user.php
+ * 
+ * Datenbankabrage zur Anzahl der angemeldeten Nutzer
+ * 
+ */
+
+// Neue Session starten bzw. vorhandene fortsetzen
+session_start();
+
+// Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
+require_once &quot;config.php&quot;;
+
+// Anzahl der angemeldeten Nutzer abfragen
+$check_sql = &quot;SELECT COUNT(*) as count FROM active_users&quot;;
+$check_result = mysqli_query($link, $check_sql);
+$row = mysqli_fetch_assoc($check_result);
+$count = $row[&#39;count&#39;];
+
+echo $count; // Anzahl der aktiven Spieler ausgeben
+
+// Datenbankverbindung beenden
+$link-&gt;close();
+?&gt;
+</pre></div>
+</div>
+</section>
+<section id="redirect-php">
+<h2>redirect.php<a class="headerlink" href="#redirect-php" title="Link to this heading">#</a></h2>
+<p>Diese Datei leitet angemeldete Nutzer zum Spiel weiter. Sie prüft, ob der Nutzer eingeloggt ist und ermittelt die in der Datenbank gespeicherten aktiven Nutzer. Bei doppelter Anmeldung wird der Nutzer abgemeldet und auf die Startseite weitergeleitet. Die Datei erstellt zudem eine JSON-Datei mit den Nutzerdaten für den weiteren Spielverlauf.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+/**
+ * redirect.php
+ * 
+ * Weiterleitung für angemeldete Nutzer zum Spiel
+ * 
+ */
+
+// Neue Session starten bzw. vorhandene fortsetzen
+session_start();
+
+// Nur angemeldete Nutzer sollen auf diese Seite zugreifen
+if (!isset($_SESSION[&quot;loggedin&quot;]) || $_SESSION[&quot;loggedin&quot;] !== true) {
+    header(&quot;location: login.php&quot;);
+    exit;
+}
+
+// Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
+require_once &quot;config.php&quot;;
+
+// Datenbank active_users wird auf Nutzernamen abgefragt
+$sql = &quot;SELECT username FROM active_users&quot;;
+$result = $link-&gt;query($sql);
+$players = [];
+
+if ($result-&gt;num_rows &gt; 0) {
+    // Nutzernamen an Variable übergeben
+    while ($row = $result-&gt;fetch_assoc()) {
+        $players[] = $row[&quot;username&quot;];
+    }
+
+    // Bei Doppelanmeldung wird der Spieler abgemeldet
+    $uniquePlayers = array_unique($players);
+    if (count($players) !== count($uniquePlayers)) {
+        // Aktive Nutzer aus Datenbank löschen
+        $sql = &quot;DELETE FROM active_users&quot;;
+
+        if ($link-&gt;query($sql) === TRUE){
+            // Nutzer gelöscht
+        } else {
+        }
+        // Weiterleiten auf Startseite
+        session_destroy();
+        header(&quot;location: index.php&quot;);
+        exit;
+    }
+
+    // Schnittstelle für json-Datei für weiteren Spielverlauf
+    $data = [];
+
+    // Nutzernamen für json-Datei vorbereiten
+    if (count($uniquePlayers) &gt;= 2) {
+        $data[&#39;player_1&#39;][&#39;name&#39;] = $uniquePlayers[0];
+		$player1 = $uniquePlayers[0];
+        $data[&#39;player_2&#39;][&#39;name&#39;] = $uniquePlayers[1];
+		$player2 = $uniquePlayers[1];
+    } else {
+        echo &quot;Not enough players.&quot;;
+        exit();
+    }
+    
+    $data[&#39;button_stop&#39;] = false;
+    $data[&#39;button_power&#39;] = false;
+    $data[&#39;button_start&#39;] = false;
+    $data[&#39;game_id&#39;] = &quot;&quot;;
+    
+    $jsonData = json_encode($data, JSON_PRETTY_PRINT);
+
+    // json-Datei für weiteren Spielverlauf schreiben und weiterleiten
+    if (file_put_contents(&#39;game_data.json&#39;, $jsonData) === false) {
+        echo &quot;Failed to write to game_data.json.&quot;;
+        exit;
+    } else {
+        echo &quot;Player data successfully written to game_data.json.&quot;;
+		header(&quot;Location: drone_check.php?player1=$player1&amp;player2=$player2&quot;);
+		exit();
+    }
+} else {
+    echo &quot;No active users found.&quot;;
+    exit();
+}
+
+// Datenbankverbindung beenden
+$link-&gt;close();
+?&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;de&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, shrink-to-fit=no&quot;&gt;
+    &lt;title&gt;Willkommen&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;bootstrap.min.css&quot;&gt;
+    &lt;style&gt;
+        body { font: 16px sans-serif; text-align: center; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;row justify-content-center&quot;&gt;
+            &lt;div class=&quot;col-md-8&quot;&gt;
+                &lt;h1 class=&quot;mb-4&quot;&gt;Willkommen Spieler&lt;/h1&gt;
+                &lt;ul class=&quot;list-group&quot;&gt;
+                    &lt;?php foreach ($players as $player): ?&gt;
+                        &lt;li class=&quot;list-group-item&quot;&gt;&lt;?php echo htmlspecialchars($player); ?&gt;&lt;/li&gt;
+                    &lt;?php endforeach; ?&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+</section>
+<section id="normal-stop-php">
+<h2>normal_stop.php<a class="headerlink" href="#normal-stop-php" title="Link to this heading">#</a></h2>
+<p>Wenn das Spiel vorbei ist, dann werden die Spieler aus der entsprechenden Datenbanktabelle für aktive Nutzer entfernt.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+// Neue Session starten bzw. vorhandene fortsetzen
+session_start();
+
+// Datenbankverbindung aufbauen (Passwortdeklaration nicht vergessen)
+require_once &quot;config.php&quot;;
+
+// Nutzer aus der Datenbank entfernen
+$sql = &quot;DELETE FROM active_users&quot;;
+
+// SQL Statement ausführen 
+if ($link-&gt;query($sql) === TRUE){
+} else {
+}
+
+// Datenbankverbindung beenden
+$link-&gt;close();
+
+// Pfad zur JSON-Datei
+$jsonFilePath = &#39;game_data.json&#39;;
+
+// Überprüfe, ob die JSON-Datei existiert und lese die Daten
+if (file_exists($jsonFilePath)) {
+    $jsonData = file_get_contents($jsonFilePath);
+    $data = json_decode($jsonData, true);
+
+    // Überprüfe, ob die JSON-Daten korrekt dekodiert wurden
+    if ($data !== null) {
+        // Setze die Werte für button_start und button_power auf false
+        $data[&#39;button_stop&#39;] = true;
+
+        $data[&#39;player_1&#39;][&#39;name&#39;] = &quot;&quot;;
+        $data[&#39;player_2&#39;][&#39;name&#39;] = &quot;&quot;;
+
+        $_SESSION[&quot;ingame&quot;] = True;
+
+        // Schreibe die aktualisierten Daten zurück in die JSON-Datei
+        file_put_contents($jsonFilePath, json_encode($data, JSON_PRETTY_PRINT));
+        // Session beenden
+        session_destroy();
+        header(&quot;Location: index.php&quot;);  
+        exit(); // Beende das Skript, um eine doppelte Weiterleitung zu verhindern
+    } else {
+        echo &quot;Fehler beim Dekodieren der JSON-Daten.&quot;;
+        // Session beenden
+        session_destroy();
+        header(&quot;Location: index.php&quot;);  
+        exit();
+    }
+} else {
+    echo &quot;JSON-Datei nicht gefunden.&quot;;
+    // Session beenden
+    session_destroy();
+    header(&quot;Location: index.php&quot;);  
+    exit();
+}
+// Session beenden
+session_destroy();
+// Weiterleitung mit Spieler-Namen und Drohnenstatus
+header(&quot;Location: index.php&quot;);
+exit(); // Sicherstellen, dass das Skript nach der Weiterleitung beendet wird
+?&gt;
+
+</pre></div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="fusznoten">
+<h1>Fußnoten<a class="headerlink" href="#fusznoten" title="Link to this heading">#</a></h1>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="q1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>Vgl. <a class="reference external" href="https://www.tutorialrepublic.com/php-tutorial/php-mysql-login-system.php">PHP MySQL Login System</a> und <a class="reference external" href="https://www.php.net/manual/en/book.mysqli.php">PHP MySQL Improved Extension</a></p>
+</aside>
+</aside>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "mimeiners/prj-wi",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs\Kicker\02_Webseite"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="00_Webseite_Struktur.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Struktur des Frontends (Weboberfläche)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_Webseite_ingame.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Beschreibung des PHP-Codes für die “Ingame” Seite</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Anmelde- und Registrierungsvorgänge der Webseite</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#index-php">index.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#login-php">login.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#register-php">register.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#config-php">config.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#waiting-php">waiting.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-second-user-php">check_second_user.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redirect-php">redirect.php</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-stop-php">normal_stop.php</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#fusznoten">Fußnoten</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By M. Meiners / B. Lehmann
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png"></a>
+    All content on this site (unless otherwise specified) is licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0 license</a>
+</div>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

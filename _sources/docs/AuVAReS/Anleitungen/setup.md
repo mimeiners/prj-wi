@@ -6,6 +6,7 @@ AuVAReS ist auf einem Nvidia Jetson Orin Nano implementiert. Bei der Hardware ha
 Es ist nicht zwingend notwendig das Nvidia Jetson Board mit Ubuntu Linux 20.04 zu verwenden. Alle Codes sind auch auf anderen Systemen wie Windows oder MacOS lauffähig, es müssen hierzu lediglich die `subprocess` Eingaben, welche genutzt werden um CLI-Eingaben um beispielsweise die Drohne per Wifi zu verbinden, an das jeweilige Betriebssystem angepasst werden. Die Standard-CLI Eingaben sind für Ubuntu Linux ausgelegt.
 ### Nvidia Jetson Nano Orin
 
+Für die entwicklung auf dem Jetson wurde ein VNC Server darauf eingerichtet, auf dem direkt nach start zugegriffen werden kann. Die IP ist dabei via DHCP eingestellt und muss initial nachgeguckt werden. Für die Verwendung des VNC Servers muss ggf. ein Bidschirm angeschlossen werden, da der desktop sonst nicht richtig upgedatet wird.
 
 ## Software
 QUICKSTART-GUIDE zu
