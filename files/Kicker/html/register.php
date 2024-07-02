@@ -17,54 +17,55 @@ $password_check = $password_check_error = "";
 // Eingabefelderinhalt prüfen und ggf. verarbeiten
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Passworteingabe prüfen
-    if(empty(trim($_POST["password"]))){
-        $password_error = "Bitte ein Passwort eingeben.";     
-    } elseif(strlen(trim($_POST["password"])) < 5) {
-        $password_error = "Das Passwort sollte mindestens fünf Zeichen lang sein.";
-    } else {
-        $password = trim($_POST["password"]);
-    }
-    
-    // Passworteingabewiederholung prüfen
-    if(empty(trim($_POST["confirm_password"]))){
-        $password_check_error = "Bitte das Passwort wiederholen.";     
-    } else {
-        $password_check = trim($_POST["confirm_password"]);
-        if(empty($password_error) && ($password != $password_check)){
-            $password_check_error = "Passwort stimmt nicht überein.";
-        }
-    }
+	// Passworteingabe prüfen
+	$password = trim($_POST["password"]);
+    // Fehlermeldung setzen, wenn das Passwort leer ist oder weniger als 5 Zeichen hat
+	if(empty($password) || strlen($password) < 5){
+		$password_error = empty($password) ? "Bitte ein Passwort eingeben." : "Das Passwort sollte mindestens fünf Zeichen lang sein.";
+	}
+
+	// Passworteingabewiederholung prüfen
+	$password_check = trim($_POST["confirm_password"]);
+	if(empty($password_check)){
+        // Fehlermeldung setzen, wenn das Passwort-Wiederholungsfeld leer ist
+		$password_check_error = "Bitte das Passwort wiederholen.";     
+	} elseif(empty($password_error) && ($password != $password_check)){
+        // Fehlermeldung setzen, wenn die Passwörter nicht übereinstimmen
+		$password_check_error = "Passwort stimmt nicht überein.";
+	}
+
+	// Nutzernameneingabe prüfen
+	$username = trim($_POST["username"]);
+	if(empty($username) || !preg_match('/^[a-zA-Z0-9_]+$/', $username)){
+        // Fehlermeldung setzen, wenn der Nutzername leer ist oder ungültige Zeichen enthält
+		$username_error = empty($username) ? "Bitte Nutzernamen angeben." : "Dieser Nutzername enthält unzulässige Zeichen.";
+	} else {
+		// Nutzernameneingabe für Datenbankeintragung vorbereiten
+		$sql_cmd = "SELECT id FROM users WHERE username = ?";
+		
+		if($stmt = mysqli_prepare($link, $sql_cmd)){
+            // Parameter binden und vorbereiten
+			mysqli_stmt_bind_param($stmt, "s", $username_parameter);
+			$username_parameter = $username;
+
+            // SQL-Befehl ausführen
+			if(mysqli_stmt_execute($stmt)){
+				mysqli_stmt_store_result($stmt);
+				
+				if(mysqli_stmt_num_rows($stmt) == 1){
+                    // Fehlermeldung setzen, wenn der Nutzername bereits existiert
+					$username_error = "Dieser Nutzer existiert bereits.";
+				} else {
+					$username = $username;
+				}
+			} else {
+				echo "Unbekannte Fehlermeldung.";
+			}
+
+			mysqli_stmt_close($stmt);
+		}
+	}
  
-    // Nutzernameneingabe prüfen
-    if(empty(trim($_POST["username"]))){
-        $username_error = "Bitte Nutzernamen angeben.";
-    } elseif(!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))){
-        $username_error = "Dieser Nutzername enthält unzulässige Zeichen.";
-    } else {
-        // Nutzernameneingabe für Datenbankeintragung vorbereiten
-        $sql_cmd = "SELECT id FROM users WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql_cmd)){
-            mysqli_stmt_bind_param($stmt, "s", $username_parameter);
-            $username_parameter = trim($_POST["username"]);
-
-            if(mysqli_stmt_execute($stmt)){
-                mysqli_stmt_store_result($stmt);
-                
-                if(mysqli_stmt_num_rows($stmt) == 1){
-                    $username_error = "Dieser Nutzer existiert bereits.";
-                } else{
-                    $username = trim($_POST["username"]);
-                }
-            } else{
-                echo "Unbekannte Fehlermeldung.";
-            }
-
-            mysqli_stmt_close($stmt);
-        }
-    }
-      
     // Datenbankeintragung durchführen, wenn Nutzereingaben zulässig sind
     if(empty($username_error) && empty($password_error) && empty($password_check_error)){
         
@@ -72,6 +73,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $sql_cmd = "INSERT INTO users (username, password) VALUES (?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql_cmd)){
+            // Parameter binden und vorbereiten
             mysqli_stmt_bind_param($stmt, "ss", $username_parameter, $password_parameter);
             $username_parameter = $username;
             $password_parameter = password_hash($password, PASSWORD_DEFAULT);

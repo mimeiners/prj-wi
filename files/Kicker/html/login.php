@@ -35,21 +35,15 @@ $login_error = "";
 
 // Eingabefelderinhalt prüfen und ggf. verarbeiten
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    // Nutzernameneingabe übergeben
-    if (empty(trim($_POST["username"]))) {
-        $username_error = "Bitte Nutzernamen eingeben.";
-    } else {
-        $username = trim($_POST["username"]);
-    }
 
-    // Passworteingabe übergeben
-    if (empty(trim($_POST["password"]))) {
-        $password_error = "Bitte Passwort eingeben.";
-    } else {
-        $password = trim($_POST["password"]);
-    }
+	// Nutzernameneingabe übergeben
+	$username = trim($_POST["username"]);
+	$username_error = empty($username) ? "Bitte Nutzernamen eingeben." : "";
 
+	// Passworteingabe übergeben
+	$password = trim($_POST["password"]);
+	$password_error = empty($password) ? "Bitte Passwort eingeben." : "";
+   
     // Passwort und Nutzername prüfen
     if (empty($username_error) && empty($password_error)) {
         $sql_cmd = "SELECT id, username, password FROM users WHERE username = ?";
@@ -57,7 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Nutzernameneingabe für Datenbankeintragung vorbereiten
         if ($stmt = mysqli_prepare($link, $sql_cmd)) {
             mysqli_stmt_bind_param($stmt, "s", $username_parameter);
-
             $username_parameter = $username;
 
             if (mysqli_stmt_execute($stmt)) {
