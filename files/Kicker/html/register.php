@@ -116,27 +116,42 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div class="card-body">
                         <h2 class="card-title">Registrierung</h2>
                         <p class="card-text">Hier erstellen Sie ein Nutzerkonto.</p>
+                        
+                        <!-- Fehlermeldungen -->
+                        <?php if(!empty($username_error) || !empty($password_error) || !empty($password_check_error)): ?>
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                <?php if(!empty($username_error)): ?>
+                                    <li><?php echo $username_error; ?></li>
+                                <?php endif; ?>
+                                <?php if(!empty($password_error)): ?>
+                                    <li><?php echo $password_error; ?></li>
+                                <?php endif; ?>
+                                <?php if(!empty($password_check_error)): ?>
+                                    <li><?php echo $password_check_error; ?></li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                        <?php endif; ?>
+                        
                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                             <div class="form-group">
                                 <label for="username">Nutzername</label>
-                                <input type="text" id="username" name="username" class="form-control <?php echo (!empty($username_error)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-                                <span class="invalid-feedback"><?php echo $username_error; ?></span>
+                                <input type="text" id="username" name="username" class="form-control" value="<?php echo $username; ?>">
                             </div>
                             <div class="form-group">
                                 <label for="password">Passwort</label>
-                                <input type="password" id="password" name="password" class="form-control <?php echo (!empty($password_error)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
-                                <span class="invalid-feedback"><?php echo $password_error; ?></span>
+                                <input type="password" id="password" name="password" class="form-control" value="<?php echo $password; ?>">
                             </div>
                             <div class="form-group">
                                 <label for="confirm_password">Passwort wiederholen</label>
-                                <input type="password" id="confirm_password" name="confirm_password" class="form-control <?php echo (!empty($password_check_error)) ? 'is-invalid' : ''; ?>" value="<?php echo $password_check; ?>">
-                                <span class="invalid-feedback"><?php echo $password_check_error; ?></span>
+                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" value="<?php echo $password_check; ?>">
                             </div>
                             <div class="form-group">
-                                <input type="submit" class="btn btn-primary" value="Submit">
+                                <input type="submit" class="btn btn-primary" value="Registrieren">
                             </div>
                             <p><a href="login.php">Zum Login</a>.</p>
-							<p><a href="index.php">Zur Startseite</a>.</p>
+                            <p><a href="index.php">Zur Startseite</a>.</p>
                         </form>
                     </div>
                 </div>
