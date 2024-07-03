@@ -96,12 +96,12 @@ aufgelistet. Diese sind Abschnittsweise im Code kommentiert.
 
 * Abfragen der Lichtschranken
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/Sensoren.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/Sensoren.py
 ```
 
 * Anzeige des Spielstands auf den Anzeigetafeln
 
-```{literalinclude} ../../files/Kicker/Anzeigetafel/main.py
+```{literalinclude} ../../../files/Kicker/Archiv/Anzeigetafel/main.py
 ```
 
 * Index Datei der WEBGUI
@@ -111,50 +111,50 @@ aufgelistet. Diese sind Abschnittsweise im Code kommentiert.
 
 * Funktion zum Hinzufügen und Löschen der Spiele
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/function_add_game.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/function_add_game.py
 ```
 
 * HTML Header der WEBGUI
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/main_top.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/main_top.py
 ```
 
 * HTML Main Seite
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/main_home.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/main_home.py
 ```
 
 * Einstellungen an der HTML-Seite vornehmen
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/main_settings.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/main_settings.py
 ```
 
 * Funktionsblock
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/function_settings.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/function_settings.py
 ```
 
 * Alle Spiele Anzeigen
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/main_games.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/main_games.py
 ```
 
 * Ewige Tabelle Anzeigen
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/main_ever_table.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/main_ever_table.py
 ```
 
 * Spieler miteinander Vergleichen
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/main_compare.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/main_compare.py
 ```
 
 * Funktionsblock
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/function_compare.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/function_compare.py
 ```
 
 * Spieltag anzeigen und Spiel starten
 
-```{literalinclude} ../../files/Kicker/www/cgi-bin/main_gameday.py
+```{literalinclude} ../../../files/Kicker/Archiv/cgi-bin/main_gameday.py
 ```

@@ -67,7 +67,9 @@ parts:
           - file: docs/Kicker/02_Webseite/07_Webseite_endgame
             title: Spielabwicklung und Ergebnisbestimmung
       - file: docs/Kicker/03_Spielsteuerung
-        title: Programmablauf zur Spielsteuerung      
+        title: Programmablauf zur Spielsteuerung   
+      - file: docs/Kicker/04_Appendix/01_Kicker
+        title: Dokumentation des Vorgängerprojekts   
 
 
 # Technische Details AuVAReS
