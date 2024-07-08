@@ -75,7 +75,7 @@ parts:
 # Technische Details AuVAReS
   - caption: AuVAReS
     chapters:
-      - file: docs/AuVAReS/Anleitungen/Programm - AuVAReS
+      - file: docs/AuVAReS/Anleitungen/Programm-AuVAReS
         title: Programmablauf
       - file: docs/AuVAReS/Anleitungen/Objekterkennung
         title: Objekterkennung
