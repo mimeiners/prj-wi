@@ -30,7 +30,7 @@ class Flugsteuerung():
         self.emergency_land = False
         
         # YOLO
-        self.model = YOLO('best.pt') # Pfad zum YOLOv8 Modell
+        self.model = YOLO('yolov8_train5.pt') # Pfad zum YOLOv8 Modell
         # CPU nutzen falls GPU nicht verfügbar
         if torch.cuda.is_available():
             self.model.to('cuda')

@@ -136,8 +136,12 @@ In der grafana Oberfläche können wir influxDB als Datenquelle hinzufügen inde
     + User: `grafana`
     + Password: `<password>`
 
+Den Fußnoten ist der Link zu einem Video mit anschaulichen Erklärungen beigefügt [^2].
+
 Mit grafana können wir ein Dashboard erstellen, über welches das Gesamtsystem überwacht werden kann.  
 
 # Fußnoten
 
 [^3]: https://docs.influxdata.com/influxdb/v1/write_protocols/line_protocol_tutorial/
+
+[^2]:https://www.youtube.com/watch?v=Jszd7zrl-_U&t=104s
