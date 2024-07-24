@@ -1,6 +1,6 @@
 # Startup des Jetson
 
-Diese Anleitung bezieht sich au die Verwendung der Programms ohne die Steuerung vom Kicker.
+Diese Anleitung bezieht sich auf die Verwendung der Programms ohne die Steuerung vom Kicker.
 
 Das Repository zum Projekt liegt im Verzeichniss `/home/jetson`. Es kann über den Ordner `jetson` auf dem desktop erreicht werden.
 
@@ -21,7 +21,7 @@ jetson@ubuntu:~/prj-wi/files/Drohne/main$ python3 main.py
 Doing network connection
 ```
 
-## Starten des Programms mit Dummy
+## Programmstart - Simulation mit Server-Dummy
 
 Für den Start mit dem Dummy werden 2 Terminals benötigt. Beim Ausführen der Befehe ist die Reihnfolge zu beachten!
 
