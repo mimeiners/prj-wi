@@ -49,6 +49,8 @@ parts:
             title: Übersicht der Verdrahtung des Subsystems
           - file: docs/Kicker/01_Setup/06_Kurbelerkennung
             title: Aufbau der Kurbelerkennung
+          - file: docs/Kicker/01_Setup/07_3D-Modelle
+            title: 3D Modelle
       - file: docs/Kicker/02_Webseite/00_Webseite_Struktur
         title: Funktionen der Webseite
         sections:
@@ -67,8 +69,10 @@ parts:
           - file: docs/Kicker/02_Webseite/07_Webseite_endgame
             title: Spielabwicklung und Ergebnisbestimmung
       - file: docs/Kicker/03_Spielsteuerung
-        title: Programmablauf zur Spielsteuerung   
-      - file: docs/Kicker/04_Appendix/01_Kicker
+        title: Programmablauf zur Spielsteuerung
+      - file: docs/Kicker/04_known_issues
+        title: Bekannte Probleme    
+      - file: docs/Kicker/05_Appendix/01_Kicker
         title: Dokumentation des Vorgängerprojekts   
 
 

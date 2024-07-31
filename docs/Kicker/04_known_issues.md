@@ -1,4 +1,5 @@
 # Bekannte Probleme mit dem Kicker
+
 Aufgrund der begrenzten Zeit wurde der Kicker softwareseitig nicht lange genug getestet, weshalb es noch zu unerwarteten Fehlern kommen kann. Die meisten von denen lassen sich mit einem einfachen Neustart beheben. <br>
 Um das Auftreten von Fehlern zu minimieren ist es daher notwendig **den Kicker erst dann abzuschalten wenn das aktuelle Spiel beendet wurde**, sei es durch einen Gewinner oder durch einen Spielabbruch.<br>
 *Andernfalls können Fehler auftreten, die manuelles eingreifen auf den Raspberry PI erfordern.* <br><br>
