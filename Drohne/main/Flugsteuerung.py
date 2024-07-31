@@ -75,10 +75,12 @@ class Flugsteuerung():
         center_y = (y1 + y2) / 2
         return center_x, center_y
 
-    def process_angle(self, center_x, center_y) -> int: 
+    def process_angle(self, center) -> int: 
+	    # center_x = center[0]
+	    # center_y = center[1]
         # Berechnung des Punktes (center_x, center_y) relativ zur Bildmitte
-        dx = center_x - self.image_width / 2
-        dy = center_y - self.image_height / 2
+        dx = center[0] - self.image_width / 2
+        dy = center[1] - self.image_height / 2
 
         # Berechnung des Winkels im Bogenmaß
         angle_radians = math.atan2(dy, dx)

@@ -264,7 +264,7 @@ def network_connection(s : socket, connection_established, videoManager : object
 
         # Starting ping thread to handle ping requests
         ping_thread = threading.Thread(target=ping_listener, args=(s,), daemon=True) # daemon=True to stop this thread with the main thread
-        ping_thread.start()
+        # ping_thread.start()
 
     except Exception as e:
         print(f"Error connecting: {e}")
@@ -464,20 +464,20 @@ def notify_drone_powered(s : socket):
             print('Drone to Hot or Battery to Low')
             if temperature >= maxTmp:   # Drone temp hits 70°C (default of maxTmp)
 
-                temp_img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/hsb-logo.png")  # read img in
+                #temp_img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/hsb-logo.png")  # read img in
                 print(f"Drohne ist {temperature}°C warm - zu heiß!")
-                cv2.imshow("WARNING:TEMPERATURE", temp_img )                # display img
-                cv2.waitKey(waitTime * 1000)                                # wait for 7 seconds
-                cv2.destroyWindow("WARNING:TEMPERATURE")    # close window
+                #cv2.imshow("WARNING:TEMPERATURE", temp_img )                # display img
+                #cv2.waitKey(waitTime * 1000)                                # wait for 7 seconds
+                #cv2.destroyWindow("WARNING:TEMPERATURE")    # close window
 
 
             elif battery <= minBat:     # Drone battery lower than 50% (default of minBat)
 
-                batt_img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png")   # read img in
+                #batt_img = cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png")   # read img in
                 print(f"Drohne ist zu {battery}% geladen - Spielzeit eingeschränkt!") 
-                cv2.imshow("WARNING:BATTERY", batt_img)                         # display img
-                cv2.waitKey(waitTime * 1000)                                # wait for 7 seconds
-                cv2.destroyWindow("WARNING:BATTERY")    # close window
+                #cv2.imshow("WARNING:BATTERY", batt_img)                         # display img
+                #cv2.waitKey(waitTime * 1000)                                # wait for 7 seconds
+                #cv2.destroyWindow("WARNING:BATTERY")    # close window
 
             # return None #TODO determine return
             return drone

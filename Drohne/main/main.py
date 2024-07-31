@@ -51,7 +51,7 @@ ssids = ["TELLO-303446", "TELLO-E9BB29", "TELLO-E9C3AE"]    # SSIDs of the drone
 kickerIP = "192.168.xxx.xxx"                                # IP-Address of the WohnInvest4.0 kicker
 kickerPORT = "1234"                                         # Port of the WohnInvest4.0 kicker
 
-filename = 'file.mp4'                                       # Filename, where to store the Video
+filename = 'file.avi'                                       # Filename, where to store the Video
 
 gameURL = "www.google.de"                                   # Website of Kicker displaying game information and instructions
 

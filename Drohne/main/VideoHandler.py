@@ -96,11 +96,11 @@ class VideoHandler():
         
         self.video_buffer = queue.deque(maxlen=self.replay_time*self.fps)                   # buffer for video replays
         self.t1 = None                                                                      # threading object (not initialized at this point)
-        self.fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        self.fourcc = cv2.VideoWriter_fourcc(*'MJPG')
         self.out = cv2.VideoWriter(filename = self.filename,
                                    fourcc = self.fourcc,
                                    fps = self.fps,
-                                   frameSize = (2*self.frame_width_x, 2*self.frame_width_y))
+                                   frameSize = (self.frame_width_x, self.frame_width_y))
         self.cap = None
         self.ret = False
         self.img = cv2.resize(cv2.imread("/home/jetson/prj-wi/files/Drohne/img/warning_battery.png"), (2*self.frame_width_x, 2*self.frame_width_y))
@@ -140,20 +140,39 @@ class VideoHandler():
         cv2.destroyWindow(windowName)
 
     def videoRecord(self):
+        '''
+        ACHTUNG:
+        Es funktioniert, aber ist nur eine vorläufige Lösung 
+        und MUSS noch überarbeitet werden!
+        '''
+        fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+        out = cv2.VideoWriter(filename = self.filename,
+                                   fourcc = fourcc,
+                                   fps = 30,
+                                   frameSize = (640,480))
+        
         while self.record and self.cap.isOpened():
             self.ret, self.img = self.cap.read()
-            self.video_buffer.append(self.img)
-            self.out.write(self.img)             # save frame to video
-
+            if not self.ret:
+                pass
+            else:
+                self.img = cv2.resize(self.img, (640, 480))
+                self.video_buffer.append(self.img)
+                out.write(self.img)             # save frame to video
+        
+        print("record = False")
+        out.release()
+        print("video released!")
+    
     def startRecord(self):
         self.record = True
-        self.t1 = threading.Thread(target=self.videoRecord)
+        self.t1 = threading.Thread(target=self.videoRecord, daemon=True)
         self.t1.start()
         print("VideoHandler: startRecord")
 
     def stopRecord(self):
         self.record = False
+        # self.out.release()
         self.t1.join()
-        self.out.release()
         print("VideoHandler: stopRecord")
 

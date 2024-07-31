@@ -8,3 +8,6 @@
 ## Jetson
 
 - Die Verbindung zum Internet lokal in der HSB ist schwierig. Zum updaten des Repositorys wurde meist ein USB-Stik genutzt und zum Downloaden von Python Bibliotheken wurde der Jeton mit nach Hause genommen.
+
+## Python - Threading
+- Bei Threads in Python ist darauf zu achten, dass Objekte und Variablen nicht direkt in unterschiedlichen Threads genutzt werden können. Das Problem kann mit Hilfe des Moduls `queue` behoben werden. Alle Threads greifen dann gleichzeitig auf die gleichen Objekte / Variablen in der Queue zu.

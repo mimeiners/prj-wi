@@ -20,7 +20,7 @@ Der Code ist sehr übersichtlich und einfach zu verstehen. Die Funktion ```init(
 
 ### Kurbelerkennung (LVL2_foul_detection.py)
 Die Kurbelerkennung besteht aus der Sicht des Kickers nur aus zwei Arduinos, die bei einem Foul HIGH melden. Zwei Pins des GPIO des Raspberrys werden konstant bei "ingame" auf HIGH geprüft, was beduetet, dass der Arduino einer Spielerseite ein Kurbeln des Spielers detektiert hat.
-Restliche Funktionalität ist durch Doku der [Torerkennung](#torerkennung-lvl2_goal_detectionpy) zu verstehen.
+Restliche Funktionalität ist durch Doku der [Torerkennung](#torerkennung-lvl2-goal-detectionpy) zu verstehen.
 
 ### Interface (LVL2_interface.py)
 War angedacht zur TCP Kommunikation mit einem zweiten Rechner (AuVAReS auf NVIDIA Jetson). So wird der zweite Rechner über Spielevents informiert und kann selber auch Schlüsselwörter senden, um den Spielablauf zu beeinflussen.
