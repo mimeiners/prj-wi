@@ -253,12 +253,16 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="00_Setup_index.html">Tischkicker Setup</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Pi-Einrichtung von InfluxDB und Grafana</a></li>
-
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Einrichtung von influxDB und Grafana</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04_Material.html">Listung der Materialien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="07_3D-Modelle.html">Dokumentation zu den 3D-Modellen</a></li>
+
+
 
 
 </ul>
@@ -276,7 +280,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../03_Spielsteuerung.html">Programmablauf zur Spielsteuerung</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../04_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_known_issues.html">Bekannte Probleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
 <ul class="nav bd-sidenav">
@@ -501,7 +506,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Pi-Einrichtung von InfluxDB und Grafana</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#einrichtung-von-influxdb">Einrichtung von InfluxDB</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-von-influxdb">Installation von InfluxDB</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#struktur-der-datenbank-und-daten-in-influxdb">Struktur der Datenbank und Daten in InfluxDB</a><ul class="nav section-nav flex-column">
@@ -516,10 +520,6 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#einrichtung-von-grafana-auf-dem-raspberry-pi">Einrichtung von Grafana auf dem Raspberry Pi</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#fusznoten">Fußnoten</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -687,7 +687,7 @@ Using<span class="w"> </span>database<span class="w"> </span>db01
 &gt;<span class="w"> </span><span class="nb">exit</span><span class="w"> </span>
 </pre></div>
 </div>
-<p>Wir können so beispielsweise auch über <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> Werte in die Datenbank schreiben (siehe docs für Syntax <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>)</p>
+<p>Wir können so beispielsweise auch über <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> Werte in die Datenbank schreiben.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-i<span class="w"> </span>-XPOST<span class="w"> </span><span class="s1">&#39;http://localhost:8086/write?db=db01&#39;</span><span class="w"> </span>--data-binary<span class="w"> </span><span class="s1">&#39;&lt;measurement&gt;[,&lt;tag-key&gt;=&lt;tag-value&gt;...] &lt;field-key&gt;=&lt;field-value&gt;[,&lt;field2-key&gt;=&lt;field2-value&gt;...] [unix-nano-timestamp]&#39;</span>
 </pre></div>
 </div>
@@ -708,23 +708,8 @@ In der grafana Oberfläche können wir influxDB als Datenquelle hinzufügen inde
 </ul>
 </li>
 </ul>
-<p>Den Fußnoten ist der Link zu einem Video mit anschaulichen Erklärungen beigefügt <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
 <p>Mit grafana können wir ein Dashboard erstellen, über welches das Gesamtsystem überwacht werden kann.</p>
 </section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="fusznoten">
-<h1>Fußnoten<a class="headerlink" href="#fusznoten" title="Link to this heading">#</a></h1>
-<hr class="footnotes docutils" />
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">3</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://docs.influxdata.com/influxdb/v1/write_protocols/line_protocol_tutorial/">https://docs.influxdata.com/influxdb/v1/write_protocols/line_protocol_tutorial/</a></p>
-</aside>
-<aside class="footnote brackets" id="id4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
-<p><a class="reference external" href="https://www.youtube.com/watch?v=Jszd7zrl-_U&amp;amp;t=104s">https://www.youtube.com/watch?v=Jszd7zrl-_U&amp;t=104s</a></p>
-</aside>
-</aside>
 </section>
 
     <script type="text/x-thebe-config">
@@ -791,7 +776,6 @@ In der grafana Oberfläche können wir influxDB als Datenquelle hinzufügen inde
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Pi-Einrichtung von InfluxDB und Grafana</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#einrichtung-von-influxdb">Einrichtung von InfluxDB</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-von-influxdb">Installation von InfluxDB</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#struktur-der-datenbank-und-daten-in-influxdb">Struktur der Datenbank und Daten in InfluxDB</a><ul class="nav section-nav flex-column">
@@ -806,10 +790,6 @@ In der grafana Oberfläche können wir influxDB als Datenquelle hinzufügen inde
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#einrichtung-von-grafana-auf-dem-raspberry-pi">Einrichtung von Grafana auf dem Raspberry Pi</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#fusznoten">Fußnoten</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>

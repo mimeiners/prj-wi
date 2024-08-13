@@ -101,12 +101,12 @@ const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/Kicker/04_Appendix/01_Kicker';</script>
-    <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/Kicker/04_Appendix/01_Kicker.html" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/Kicker/05_Appendix/01_Kicker';</script>
+    <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/Kicker/05_Appendix/01_Kicker.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Programmablauf AuVAReS" href="../../AuVAReS/Anleitungen/Programm-AuVAReS.html" />
-    <link rel="prev" title="Die Spielsteuerung des Kickers" href="../03_Spielsteuerung.html" />
+    <link rel="prev" title="Bekannte Probleme mit dem Kicker" href="../04_known_issues.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -251,12 +251,16 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../01_Setup/00_Setup_index.html">Tischkicker Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../01_Setup/01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../01_Setup/02_Datenbank.html">Pi-Einrichtung von InfluxDB und Grafana</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="../01_Setup/02_Datenbank.html">Einrichtung von influxDB und Grafana</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../01_Setup/03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../01_Setup/04_Material.html">Listung der Materialien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../01_Setup/05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../01_Setup/06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../01_Setup/07_3D-Modelle.html">Dokumentation zu den 3D-Modellen</a></li>
+
+
 
 
 </ul>
@@ -274,6 +278,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../03_Spielsteuerung.html">Programmablauf zur Spielsteuerung</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_known_issues.html">Bekannte Probleme</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Dokumentation des Vorgängerprojekts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
@@ -358,7 +363,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/mimeiners/prj-wi/edit/master/docs/Kicker/04_Appendix/01_Kicker.md" target="_blank"
+      <li><a href="https://github.com/mimeiners/prj-wi/edit/master/docs/Kicker/05_Appendix/01_Kicker.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -375,7 +380,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/mimeiners/prj-wi/issues/new?title=Issue%20on%20page%20%2Fdocs/Kicker/04_Appendix/01_Kicker.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/mimeiners/prj-wi/issues/new?title=Issue%20on%20page%20%2Fdocs/Kicker/05_Appendix/01_Kicker.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -405,7 +410,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../../_sources/docs/Kicker/04_Appendix/01_Kicker.md" target="_blank"
+      <li><a href="../../../_sources/docs/Kicker/05_Appendix/01_Kicker.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -518,6 +523,10 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="willkommen-zur-ewigen-liste">
 <h1>Willkommen zur ewigen Liste!<a class="headerlink" href="#willkommen-zur-ewigen-liste" title="Link to this heading">#</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Dies ist die Dokumentation des Vorgängerprojekts und soll als Referenz vergleichend aufzeigen, welche Veränderungen vorgenommen wurden.</p>
+</div>
 <p>Diese Schrift dokumentiert die softwareseitige Ausführung einer Erweiterung eines Tischkickers.</p>
 <p>Das Ziel ist es, den Spielstand eines Spiels anzuzeigen und die Daten in einer Datenbank zu erfassen und
 auszuwerten. Die Visualisierung des aktuellen Punktestandes erfolgt auf zwei Displays, welche auf dem
@@ -2963,7 +2972,7 @@ aufgelistet. Diese sind Abschnittsweise im Code kommentiert.</p>
         },
         kernelOptions: {
             name: "python3",
-            path: "./docs/Kicker/04_Appendix"
+            path: "./docs/Kicker/05_Appendix"
         },
         predefinedOutput: true
     }
@@ -2981,12 +2990,12 @@ aufgelistet. Diese sind Abschnittsweise im Code kommentiert.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../03_Spielsteuerung.html"
+       href="../04_known_issues.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Die Spielsteuerung des Kickers</p>
+        <p class="prev-next-title">Bekannte Probleme mit dem Kicker</p>
       </div>
     </a>
     <a class="right-next"

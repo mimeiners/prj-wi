@@ -106,7 +106,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Objekterkennung" href="Objekterkennung.html" />
-    <link rel="prev" title="Willkommen zur ewigen Liste!" href="../../Kicker/04_Appendix/01_Kicker.html" />
+    <link rel="prev" title="Willkommen zur ewigen Liste!" href="../../Kicker/05_Appendix/01_Kicker.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -251,12 +251,16 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../Kicker/01_Setup/00_Setup_index.html">Tischkicker Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/02_Datenbank.html">Pi-Einrichtung von InfluxDB und Grafana</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/02_Datenbank.html">Einrichtung von influxDB und Grafana</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/04_Material.html">Listung der Materialien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/07_3D-Modelle.html">Dokumentation zu den 3D-Modellen</a></li>
+
+
 
 
 </ul>
@@ -274,7 +278,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Kicker/03_Spielsteuerung.html">Programmablauf zur Spielsteuerung</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Kicker/04_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kicker/04_known_issues.html">Bekannte Probleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kicker/05_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
 <ul class="current nav bd-sidenav">
@@ -520,19 +525,87 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="programmablauf-auvares">
 <h1>Programmablauf AuVAReS<a class="headerlink" href="#programmablauf-auvares" title="Link to this heading">#</a></h1>
-<p><em>Stand: 14.06.2024</em><br>
-<em>Autoren: Julian Höpe, …</em></p>
 <section id="hauptprogramm">
 <h2>Hauptprogramm<a class="headerlink" href="#hauptprogramm" title="Link to this heading">#</a></h2>
 <section id="kommunikationsschnittstelle-zum-kicker">
 <h3>Kommunikationsschnittstelle zum Kicker<a class="headerlink" href="#kommunikationsschnittstelle-zum-kicker" title="Link to this heading">#</a></h3>
 <p>Das Hauptprogramm ist von AuVAReS ist so aufgebaut, dass die RJ45 Schnittstelle des Jetson-Boards genutzt wird um mit dem WI4.0-Kicker zu kommunizieren. Hierfür wird eine <code class="docutils literal notranslate"><span class="pre">socket-connection</span></code> mit Python aufgebaut, AuVAReS ist als Client konfiguriert.<br>
 Die IP-Adresse und der entsprechende Port des Kickers zu dem sich AuVAReS verbinden soll sind in der <code class="docutils literal notranslate"><span class="pre">main.py</span></code> mit den Variablen <code class="docutils literal notranslate"><span class="pre">host</span></code> (IP-Adresse als String) und <code class="docutils literal notranslate"><span class="pre">port</span></code> (Port als Integer) einzustellen.<br><br>
-Die Kommunikationsschnittstelle steuert den gesamten Ablauf von AuVAReS, hierzu wird die Funktion <code class="docutils literal notranslate"><span class="pre">network_connection</span></code> aus der Datei <code class="docutils literal notranslate"><span class="pre">auxiliaryFunctions.py</span></code> genutzt. Die Funktion wird in einem dedizierten Thread aufgerufen und hört die Socket-Verbindung zum Kicker auf Keywords (siehe Gesamtsystem) ab. Wird ein Keyword empfangen, wird eine entsprechende Funktion aufgerufen, welche in Verbindung zu dem empfangenen Keyword steht. Aus der aufgerufenen Funktion heraus wird ein ACK passend zum empfangenen Keyword gesendet.</p>
+Die Kommunikationsschnittstelle steuert den gesamten Ablauf von AuVAReS, hierzu wird die Funktion <code class="docutils literal notranslate"><span class="pre">network_connection</span></code> aus der Datei <code class="docutils literal notranslate"><span class="pre">auxiliaryFunctions.py</span></code> genutzt. Die Funktion wird in einem dedizierten Thread aufgerufen und hört die Socket-Verbindung zum Kicker auf Keywords (vgl. Gesamtsystem) ab:<br>
+K : Kicker <br>
+A : AuVAReS</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Sender</p></th>
+<th class="head text-left"><p>Schlüsselwort</p></th>
+<th class="head text-left"><p>Beschreibung</p></th>
+<th class="head text-left"><p>ACK</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>ping</p></td>
+<td class="text-left"><p>Wird mindestens zum Programmstart benutzt, um AuVAReS zu detektieren; nach timeout werden keine AuVAReS-abhängigängen Funktionen verwendet.</p></td>
+<td class="text-left"><p>hi</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_drone_powered</p></td>
+<td class="text-left"><p>Die Spielernamen sind eingetragen und sie haben die Drohne gestartet (Quittieren über Button)</p></td>
+<td class="text-left"><p>connecting_drone</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>A</p></td>
+<td class="text-left"><p>notify_drone_connected</p></td>
+<td class="text-left"><p>Meldung, dass die Drone verbunden ist</p></td>
+<td class="text-left"><p>waiting_for_startbutton</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_start_permission</p></td>
+<td class="text-left"><p>Meldung, dass die Drone freigegeben ist zum Starten</p></td>
+<td class="text-left"><p>positioning_drone</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>A</p></td>
+<td class="text-left"><p>notify_gamestart</p></td>
+<td class="text-left"><p>Meldung, dass das Spiel gestartet werden kann</p></td>
+<td class="text-left"><p>game_started</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_newgoal</p></td>
+<td class="text-left"><p>Ein Tor ist gefallen, ein replay sollte gestartet werden</p></td>
+<td class="text-left"><p>received_newgoal</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_foul</p></td>
+<td class="text-left"><p>Ein Regelverstoß ist vorgefallen, ein replay sollte gestartet werden</p></td>
+<td class="text-left"><p>received_foul</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>notify_gameover</p></td>
+<td class="text-left"><p>Zusätzlich zum replay des Siegertores wird die Abschlussroutine der Drohne ausgeführt.</p></td>
+<td class="text-left"><p>received_gamover</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>A</p></td>
+<td class="text-left"><p>please_wait</p></td>
+<td class="text-left"><p>AuVAReS kann das Spiel pausieren, bspw. wenn es Zwischenfälle gibt. Tore werden nicht gezählt.</p></td>
+<td class="text-left"><p>waiting</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>A</p></td>
+<td class="text-left"><p>please_resume</p></td>
+<td class="text-left"><p>AuVAReS ist wieder einsatzbereit und erlaubt dem Kicker, wieder Tore zu zählen.</p></td>
+<td class="text-left"><p>gaming</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>K</p></td>
+<td class="text-left"><p>STOP</p></td>
+<td class="text-left"><p>AuVAReS soll Notlandung einleiten</p></td>
+<td class="text-left"><p>received_stop</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Standardmäßig wird bei jedem empfangenen Keyword automatisch ein ACK gesendet.</p>
 </section>
 <section id="verbinden-mit-der-drohne">
 <h3>Verbinden mit der Drohne<a class="headerlink" href="#verbinden-mit-der-drohne" title="Link to this heading">#</a></h3>
-<p>AuVAReS verbindet sich automatisch mit der Drohne, sobald diese eingeschaltet ist. Für das Einschalten gibt der Kicker nach der Anmeldung entsprechende Anweisungen auf den Monitoren aus. Der Benutzer wird aufgefordert die Drohne anzuschalten und dies auch zu quittieren. Bei Quittierung sendet der Kicker das Keyword <em>notify_drone_powered</em>. Sobald AuVAReS dieses Keyword empfangen hat wird es mit passenden ACK bestätigt und die Funktion <code class="docutils literal notranslate"><span class="pre">connect_wifi</span></code> aus <code class="docutils literal notranslate"><span class="pre">auxiliaryFunctions.py</span></code> wird aufgerufen. In diesem Funktion sind die SSIDs der drei verwendeten Drohnen in einer Liste aufgeführt. Die Funktion aktiviert mit dem Modul <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> mittels CLI die WLAN-Schnittstelle auf dem Jetson-Board und scannt die verfügbaren Netzwerke. Anschließend versucht die Funktion einen Verbindungsaufbau mit einem der in der Liste SSIDs enthaltenem Netzwerk. Anschließend wird geprüft, ob die Verbindung erfolgreich hergestellt wurde. Nach erfolgreicher Verbindung wird die Drohne dem VideoHanlder-Objekt mittels der Methode <code class="docutils literal notranslate"><span class="pre">set_drone</span></code> hinzugefügt. Bei erfolgreicher Verbindung signalisiert die Drohne dies dem Kicker durch das Senden des Keywords <em>notify_drone_connected</em>.<br><br>
+<p>AuVAReS verbindet sich automatisch mit der Drohne, sobald diese eingeschaltet ist. Für das Einschalten gibt der Kicker nach der Anmeldung entsprechende Anweisungen auf den Monitoren aus. Der Benutzer wird aufgefordert die Drohne anzuschalten und dies auch zu quittieren. Bei Quittierung sendet der Kicker das Keyword <em>notify_drone_powered</em>. Sobald AuVAReS dieses Keyword empfangen hat wird es mit passenden ACK bestätigt und die Funktion <code class="docutils literal notranslate"><span class="pre">connect_wifi</span></code> aus <code class="docutils literal notranslate"><span class="pre">auxiliaryFunctions.py</span></code> wird aufgerufen. In diesem Funktion sind die SSIDs der drei verwendeten Drohnen in einer Liste aufgeführt. Die Funktion aktiviert mit dem Modul <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> mittels CLI die WLAN-Schnittstelle auf dem Jetson-Board und scannt die verfügbaren Netzwerke. Anschließend versucht die Funktion einen Verbindungsaufbau mit einem der in der Liste SSIDs enthaltenem Netzwerk. Anschließend wird geprüft, ob die Verbindung erfolgreich hergestellt wurde. Nach erfolgreicher Verbindung wird die Drohne dem VideoHandler-Objekt mittels der Methode <code class="docutils literal notranslate"><span class="pre">set_drone</span></code> hinzugefügt. Bei erfolgreicher Verbindung signalisiert die Drohne dies dem Kicker durch das Senden des Keywords <em>notify_drone_connected</em>.<br><br>
 Nachdem die Drohne verbunden wurde, wird die Temperatur und der Ladezustand der Drohne ausgelesen. Bei einer Temperatur von über 70°C oder einer Akkuladung unter 50% wird eine Meldung über verkürzte Spieldauer auf den Kickerdisplays ausgegeben.</p>
 </section>
 <section id="start-der-drohne">
@@ -588,7 +661,7 @@ AuVAReS ist nun wieder bereit für ein neues Spiel.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../Kicker/04_Appendix/01_Kicker.html"
+       href="../../Kicker/05_Appendix/01_Kicker.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">

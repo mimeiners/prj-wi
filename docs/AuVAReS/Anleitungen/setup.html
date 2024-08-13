@@ -251,12 +251,16 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../Kicker/01_Setup/00_Setup_index.html">Tischkicker Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/02_Datenbank.html">Pi-Einrichtung von InfluxDB und Grafana</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/02_Datenbank.html">Einrichtung von influxDB und Grafana</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/04_Material.html">Listung der Materialien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/07_3D-Modelle.html">Dokumentation zu den 3D-Modellen</a></li>
+
+
 
 
 </ul>
@@ -274,7 +278,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Kicker/03_Spielsteuerung.html">Programmablauf zur Spielsteuerung</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Kicker/04_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kicker/04_known_issues.html">Bekannte Probleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kicker/05_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
 <ul class="nav bd-sidenav">
@@ -509,6 +514,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-modul-djitellopy">Python-Modul djitellopy</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-module">Python-Module</a></li>
 </ul>
             </nav>
         </div>
@@ -522,30 +528,31 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="einrichtung-und-inbetriebnahme">
 <h1>Einrichtung und Inbetriebnahme<a class="headerlink" href="#einrichtung-und-inbetriebnahme" title="Link to this heading">#</a></h1>
-<p><em>Stand: 14.06.2024</em><br>
-<em>Autoren: Julian Höpe, Finn Katenkamp,…</em></p>
 <section id="hardware">
 <h2>Hardware<a class="headerlink" href="#hardware" title="Link to this heading">#</a></h2>
 <p>AuVAReS ist auf einem Nvidia Jetson Orin Nano implementiert. Bei der Hardware handelt es sich um ein Entwicklungskit, damit die gesamte Peripherie rund um den Chip genutzt werden kann. <br>
 Es ist nicht zwingend notwendig das Nvidia Jetson Board mit Ubuntu Linux 20.04 zu verwenden. Alle Codes sind auch auf anderen Systemen wie Windows oder MacOS lauffähig, es müssen hierzu lediglich die <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> Eingaben, welche genutzt werden um CLI-Eingaben um beispielsweise die Drohne per Wifi zu verbinden, an das jeweilige Betriebssystem angepasst werden. Die Standard-CLI Eingaben sind für Ubuntu Linux ausgelegt.</p>
 <section id="nvidia-jetson-nano-orin">
 <h3>Nvidia Jetson Nano Orin<a class="headerlink" href="#nvidia-jetson-nano-orin" title="Link to this heading">#</a></h3>
-<p>Für die entwicklung auf dem Jetson wurde ein VNC Server darauf eingerichtet, auf dem direkt nach start zugegriffen werden kann. Die IP ist dabei via DHCP eingestellt und muss initial nachgeguckt werden. Für die Verwendung des VNC Servers muss ggf. ein Bidschirm angeschlossen werden, da der desktop sonst nicht richtig upgedatet wird.</p>
+<p>Für die Entwicklung auf dem Jetson wurde ein VNC-Server darauf eingerichtet, auf dem direkt nach start zugegriffen werden kann. Die IP ist dabei via DHCP eingestellt und muss initial nachgeguckt werden. Für die Verwendung des VNC-Servers muss ggf. ein Bidschirm angeschlossen werden, da der desktop sonst nicht richtig upgedatet wird.</p>
 </section>
 </section>
 <section id="software">
 <h2>Software<a class="headerlink" href="#software" title="Link to this heading">#</a></h2>
-<p>QUICKSTART-GUIDE zu</p>
+<p>Die verwendete Python-Version ist <code class="docutils literal notranslate"><span class="pre">3.8.10</span></code>, eine Liste der installierten Module ist <a class="reference internal" href="#python-module"><span class="xref myst">hier</span></a> zu finden. Python inkl. aller benötigten Module ist bereits auf dem bestehenden Image installiert. Zudem sind neben Python alle weiteren Installationen wie beispielsweise: <br></p>
 <ul class="simple">
-<li><p>Python venv mit allen packages</p></li>
-<li><p>Requirements für Yolo on jetson</p></li>
+<li><p>Cuda</p></li>
+<li><p>Torch</p></li>
+<li><p>VideoCodecs</p></li>
+<li><p>OpenCV</p></li>
 </ul>
+<p>bereits auf dem bestehenden Image installiert.</p>
 </section>
 <section id="besonderheiten">
 <h2>Besonderheiten<a class="headerlink" href="#besonderheiten" title="Link to this heading">#</a></h2>
 <section id="inbetriebnahme-jetson-nano">
 <h3>Inbetriebnahme Jetson Nano<a class="headerlink" href="#inbetriebnahme-jetson-nano" title="Link to this heading">#</a></h3>
-<p>Zum Flashen des Jetsons kann eine SD Karte genutzt werden. Aufgrund von Schwierigkeiten mit <code class="docutils literal notranslate"><span class="pre">Cuda</span></code> und anderen Bibliotheken ist es zu empfehlen eine NVME Festplatte zu nutzen. Zum Flaschen benötigt man eine Linux Umgebung mit dem Nvidia SDK Manager installiert. Stand Mai 2024 ist die <a class="reference external" href="https://developer.nvidia.com/embedded/jetpack-sdk-512"><code class="docutils literal notranslate"><span class="pre">Version</span> <span class="pre">5.1.2</span></code></a> die stabilste Version. Alle, für das Projekt relevanten Bibliotheken können bei dieser Version verhältnismäßig einfach eingerichtet werden. Zu empfehlen ist dabei das Video von <a class="reference external" href="https://youtu.be/art0-99fFa8?si=-EsLxhJP-dhlvC51">JetsonHacks</a> um Cuda richtig zu installieren und zu aktivieren.</p>
+<p>Zum Flashen des Jetsons kann eine SD Karte genutzt werden. Aufgrund von Schwierigkeiten mit <code class="docutils literal notranslate"><span class="pre">Cuda</span></code> und anderen Bibliotheken ist es zu empfehlen eine NVME Festplatte zu nutzen. Zum Flaschen benötigt man eine Linux Umgebung mit dem Nvidia SDK Manager installiert. Stand Mai 2024 ist die <a class="reference external" href="https://developer.nvidia.com/embedded/jetpack-sdk-512"><code class="docutils literal notranslate"><span class="pre">Version</span> <span class="pre">5.1.2</span></code></a> die stabilste Version. Alle für das Projekt relevanten Bibliotheken können bei dieser Version verhältnismäßig einfach eingerichtet werden. Zu empfehlen ist dabei das Video von <a class="reference external" href="https://youtu.be/art0-99fFa8?si=-EsLxhJP-dhlvC51">JetsonHacks</a> um Cuda richtig zu installieren und zu aktivieren.</p>
 </section>
 <section id="python-modul-djitellopy">
 <h3>Python-Modul djitellopy<a class="headerlink" href="#python-modul-djitellopy" title="Link to this heading">#</a></h3>
@@ -557,8 +564,483 @@ Es ist nicht zwingend notwendig das Nvidia Jetson Board mit Ubuntu Linux 20.04 z
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>In dem entgültigen Programm wird das Video in einem seperaten Thread verarbeitet. In der <a class="reference internal" href="#../../../files/Drohne/main/export_drone.py"><span class="xref myst">export_drone.py</span></a> wird eine vereinfachte Klasse namens VideoGrabber für den Abgegriff und Bereitgestellung des Videos genutzt.</p>
+<p>In dem endgültigen Programm wird das Video in einem seperaten Thread verarbeitet. In der <a class="reference internal" href="#../../../files/Drohne/main/export_drone.py"><span class="xref myst">export_drone.py</span></a> wird eine vereinfachte Klasse namens VideoGrabber für den Abgriff und Bereitstellung des Videos genutzt.</p>
 </section>
+</section>
+<section id="python-module">
+<h2>Python-Module<a class="headerlink" href="#python-module" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Modul</p></th>
+<th class="head"><p>Version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>absl-py</p></td>
+<td><p>2.1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>apturl</p></td>
+<td><p>0.5.2</p></td>
+</tr>
+<tr class="row-even"><td><p>astunparse</p></td>
+<td><p>1.6.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>attrs</p></td>
+<td><p>23.2.0</p></td>
+</tr>
+<tr class="row-even"><td><p>av</p></td>
+<td><p>12.0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>bcrypt</p></td>
+<td><p>3.1.7</p></td>
+</tr>
+<tr class="row-even"><td><p>blinker</p></td>
+<td><p>1.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>Brlapi</p></td>
+<td><p>0.7.0</p></td>
+</tr>
+<tr class="row-even"><td><p>cachetools</p></td>
+<td><p>5.3.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>cattrs</p></td>
+<td><p>23.2.3</p></td>
+</tr>
+<tr class="row-even"><td><p>certifi</p></td>
+<td><p>2019.11.28</p></td>
+</tr>
+<tr class="row-odd"><td><p>chardet</p></td>
+<td><p>3.0.4</p></td>
+</tr>
+<tr class="row-even"><td><p>charset-normalizer</p></td>
+<td><p>3.3.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Click</p></td>
+<td><p>7.0</p></td>
+</tr>
+<tr class="row-even"><td><p>colorama</p></td>
+<td><p>0.4.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>contourpy</p></td>
+<td><p>1.1.1</p></td>
+</tr>
+<tr class="row-even"><td><p>coremltools</p></td>
+<td><p>7.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>cryptography</p></td>
+<td><p>2.8</p></td>
+</tr>
+<tr class="row-even"><td><p>cupshelpers</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>cycler</p></td>
+<td><p>0.10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>dbus-python</p></td>
+<td><p>1.2.16</p></td>
+</tr>
+<tr class="row-odd"><td><p>decorator</p></td>
+<td><p>4.4.2</p></td>
+</tr>
+<tr class="row-even"><td><p>defer</p></td>
+<td><p>1.0.6</p></td>
+</tr>
+<tr class="row-odd"><td><p>distro</p></td>
+<td><p>1.4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>distro-info</p></td>
+<td><p>0.23+ubuntu1.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>djitellopy</p></td>
+<td><p>2.5.0</p></td>
+</tr>
+<tr class="row-even"><td><p>duplicity</p></td>
+<td><p>0.8.12.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>entrypoints</p></td>
+<td><p>0.3</p></td>
+</tr>
+<tr class="row-even"><td><p>evdev</p></td>
+<td><p>1.7.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>exceptiongroup</p></td>
+<td><p>1.2.1</p></td>
+</tr>
+<tr class="row-even"><td><p>fasteners</p></td>
+<td><p>0.14.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>ffmpeg-python</p></td>
+<td><p>0.2.0</p></td>
+</tr>
+<tr class="row-even"><td><p>filelock</p></td>
+<td><p>3.14.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>flatbuffers</p></td>
+<td><p>24.3.25</p></td>
+</tr>
+<tr class="row-even"><td><p>fonttools</p></td>
+<td><p>4.52.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>fsspec</p></td>
+<td><p>2024.5.0</p></td>
+</tr>
+<tr class="row-even"><td><p>future</p></td>
+<td><p>0.18.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>gast</p></td>
+<td><p>0.4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>google-auth</p></td>
+<td><p>2.29.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>google-auth-oauthlib</p></td>
+<td><p>1.0.0</p></td>
+</tr>
+<tr class="row-even"><td><p>google-pasta</p></td>
+<td><p>0.2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>graphsurgeon</p></td>
+<td><p>0.4.6</p></td>
+</tr>
+<tr class="row-even"><td><p>grpcio</p></td>
+<td><p>1.64.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>h5py</p></td>
+<td><p>3.10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>httplib2</p></td>
+<td><p>0.14.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>idna</p></td>
+<td><p>2.8</p></td>
+</tr>
+<tr class="row-even"><td><p>imageio</p></td>
+<td><p>2.34.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>importlib_metadata</p></td>
+<td><p>7.1.0</p></td>
+</tr>
+<tr class="row-even"><td><p>importlib_resources</p></td>
+<td><p>6.4.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Jetson.GPIO</p></td>
+<td><p>2.1.1</p></td>
+</tr>
+<tr class="row-even"><td><p>jetson-stats</p></td>
+<td><p>4.2.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>Jinja2</p></td>
+<td><p>3.1.4</p></td>
+</tr>
+<tr class="row-even"><td><p>keras</p></td>
+<td><p>2.13.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>keyring</p></td>
+<td><p>18.0.1</p></td>
+</tr>
+<tr class="row-even"><td><p>kiwisolver</p></td>
+<td><p>1.0.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>language-selector</p></td>
+<td><p>0.1</p></td>
+</tr>
+<tr class="row-even"><td><p>lapx</p></td>
+<td><p>0.5.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>launchpadlib</p></td>
+<td><p>1.10.13</p></td>
+</tr>
+<tr class="row-even"><td><p>lazr.restfulclient</p></td>
+<td><p>0.14.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>lazr.uri</p></td>
+<td><p>1.0.3</p></td>
+</tr>
+<tr class="row-even"><td><p>libclang</p></td>
+<td><p>18.1.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>lockfile</p></td>
+<td><p>0.12.2</p></td>
+</tr>
+<tr class="row-even"><td><p>louis</p></td>
+<td><p>3.12.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>macaroonbakery</p></td>
+<td><p>1.3.1</p></td>
+</tr>
+<tr class="row-even"><td><p>Mako</p></td>
+<td><p>1.1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Markdown</p></td>
+<td><p>3.6</p></td>
+</tr>
+<tr class="row-even"><td><p>MarkupSafe</p></td>
+<td><p>2.1.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>matplotlib</p></td>
+<td><p>3.7.5</p></td>
+</tr>
+<tr class="row-even"><td><p>monotonic</p></td>
+<td><p>1.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>mpmath</p></td>
+<td><p>1.3.0</p></td>
+</tr>
+<tr class="row-even"><td><p>networkx</p></td>
+<td><p>3.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>numpy</p></td>
+<td><p>1.24.4</p></td>
+</tr>
+<tr class="row-even"><td><p>oauthlib</p></td>
+<td><p>3.1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>olefile</p></td>
+<td><p>0.46</p></td>
+</tr>
+<tr class="row-even"><td><p>onboard</p></td>
+<td><p>1.4.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>onnx</p></td>
+<td><p>1.16.1</p></td>
+</tr>
+<tr class="row-even"><td><p>onnx-graphsurgeon</p></td>
+<td><p>0.3.12</p></td>
+</tr>
+<tr class="row-odd"><td><p>opencv-contrib-python</p></td>
+<td><p>4.9.0.80</p></td>
+</tr>
+<tr class="row-even"><td><p>opencv-python</p></td>
+<td><p>4.9.0.80</p></td>
+</tr>
+<tr class="row-odd"><td><p>openvino</p></td>
+<td><p>2024.1.0</p></td>
+</tr>
+<tr class="row-even"><td><p>openvino-telemetry</p></td>
+<td><p>2024.1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>opt-einsum</p></td>
+<td><p>3.3.0</p></td>
+</tr>
+<tr class="row-even"><td><p>packaging</p></td>
+<td><p>20.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>pandas</p></td>
+<td><p>2.0.3</p></td>
+</tr>
+<tr class="row-even"><td><p>paramiko</p></td>
+<td><p>2.6.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>pexpect</p></td>
+<td><p>4.6.0</p></td>
+</tr>
+<tr class="row-even"><td><p>pillow</p></td>
+<td><p>10.3.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>pip</p></td>
+<td><p>24.0</p></td>
+</tr>
+<tr class="row-even"><td><p>protobuf</p></td>
+<td><p>3.20.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>psutil</p></td>
+<td><p>5.9.8</p></td>
+</tr>
+<tr class="row-even"><td><p>py-cpuinfo</p></td>
+<td><p>9.0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>pyaml</p></td>
+<td><p>24.4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>pyasn1</p></td>
+<td><p>0.6.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>pyasn1_modules</p></td>
+<td><p>0.4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>pycairo</p></td>
+<td><p>1.16.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>pycrypto</p></td>
+<td><p>2.6.1</p></td>
+</tr>
+<tr class="row-even"><td><p>pycups</p></td>
+<td><p>1.9.73</p></td>
+</tr>
+<tr class="row-odd"><td><p>pygame</p></td>
+<td><p>2.5.2</p></td>
+</tr>
+<tr class="row-even"><td><p>PyGObject</p></td>
+<td><p>3.36.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>PyJWT</p></td>
+<td><p>1.7.1</p></td>
+</tr>
+<tr class="row-even"><td><p>pymacaroons</p></td>
+<td><p>0.13.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>PyNaCl</p></td>
+<td><p>1.3.0</p></td>
+</tr>
+<tr class="row-even"><td><p>pynput</p></td>
+<td><p>1.7.7</p></td>
+</tr>
+<tr class="row-odd"><td><p>pyparsing</p></td>
+<td><p>2.4.6</p></td>
+</tr>
+<tr class="row-even"><td><p>pyRFC3339</p></td>
+<td><p>1.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>python-apt</p></td>
+<td><p>2.0.1+ubuntu0.20.4.1</p></td>
+</tr>
+<tr class="row-even"><td><p>python-dateutil</p></td>
+<td><p>2.9.0.post0</p></td>
+</tr>
+<tr class="row-odd"><td><p>python-dbusmock</p></td>
+<td><p>0.19</p></td>
+</tr>
+<tr class="row-even"><td><p>python-debian</p></td>
+<td><p>0.1.36+ubuntu1.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>python-xlib</p></td>
+<td><p>0.33</p></td>
+</tr>
+<tr class="row-even"><td><p>pytz</p></td>
+<td><p>2024.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>pyxdg</p></td>
+<td><p>0.26</p></td>
+</tr>
+<tr class="row-even"><td><p>PyYAML</p></td>
+<td><p>5.3.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>requests</p></td>
+<td><p>2.32.2</p></td>
+</tr>
+<tr class="row-even"><td><p>requests-oauthlib</p></td>
+<td><p>2.0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>requests-unixsocket</p></td>
+<td><p>0.2.0</p></td>
+</tr>
+<tr class="row-even"><td><p>rsa</p></td>
+<td><p>4.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>scipy</p></td>
+<td><p>1.10.1</p></td>
+</tr>
+<tr class="row-even"><td><p>seaborn</p></td>
+<td><p>0.13.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>SecretStorage</p></td>
+<td><p>2.3.1</p></td>
+</tr>
+<tr class="row-even"><td><p>setuptools</p></td>
+<td><p>45.2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>simplejson</p></td>
+<td><p>3.16.0</p></td>
+</tr>
+<tr class="row-even"><td><p>six</p></td>
+<td><p>1.14.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>smbus2</p></td>
+<td><p>0.4.3</p></td>
+</tr>
+<tr class="row-even"><td><p>sympy</p></td>
+<td><p>1.12</p></td>
+</tr>
+<tr class="row-odd"><td><p>systemd-python</p></td>
+<td><p>234</p></td>
+</tr>
+<tr class="row-even"><td><p>tensorboard</p></td>
+<td><p>2.13.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>tensorboard-data-server</p></td>
+<td><p>0.7.2</p></td>
+</tr>
+<tr class="row-even"><td><p>tensorflow</p></td>
+<td><p>2.13.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>tensorflow-cpu-aws</p></td>
+<td><p>2.13.1</p></td>
+</tr>
+<tr class="row-even"><td><p>tensorflow-estimator</p></td>
+<td><p>2.13.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>tensorflow-hub</p></td>
+<td><p>0.12.0</p></td>
+</tr>
+<tr class="row-even"><td><p>tensorflow-io-gcs-filesystem</p></td>
+<td><p>0.35.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>tensorflowjs</p></td>
+<td><p>3.18.0</p></td>
+</tr>
+<tr class="row-even"><td><p>tensorrt</p></td>
+<td><p>8.5.2.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>termcolor</p></td>
+<td><p>2.4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>thop</p></td>
+<td><p>0.1.1.post2209072238</p></td>
+</tr>
+<tr class="row-odd"><td><p>torch</p></td>
+<td><p>2.1.0a0+41361538.nv23.6</p></td>
+</tr>
+<tr class="row-even"><td><p>torchvision</p></td>
+<td><p>0.16.2+c6f3977</p></td>
+</tr>
+<tr class="row-odd"><td><p>tqdm</p></td>
+<td><p>4.66.4</p></td>
+</tr>
+<tr class="row-even"><td><p>typing_extensions</p></td>
+<td><p>4.5.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>tzdata</p></td>
+<td><p>2024.1</p></td>
+</tr>
+<tr class="row-even"><td><p>ubuntu-drivers-common</p></td>
+<td><p>0.0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>ubuntu-pro-client</p></td>
+<td><p>8001</p></td>
+</tr>
+<tr class="row-even"><td><p>uff</p></td>
+<td><p>0.6.9</p></td>
+</tr>
+<tr class="row-odd"><td><p>ultralytics</p></td>
+<td><p>8.2.22</p></td>
+</tr>
+<tr class="row-even"><td><p>urllib3</p></td>
+<td><p>1.25.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>urwid</p></td>
+<td><p>2.0.1</p></td>
+</tr>
+<tr class="row-even"><td><p>wadllib</p></td>
+<td><p>1.3.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>Werkzeug</p></td>
+<td><p>3.0.3</p></td>
+</tr>
+<tr class="row-even"><td><p>wheel</p></td>
+<td><p>0.34.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>wrapt</p></td>
+<td><p>1.16.0</p></td>
+</tr>
+<tr class="row-even"><td><p>xkit</p></td>
+<td><p>0.0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>zipp</p></td>
+<td><p>3.18.2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 </section>
 
@@ -636,6 +1118,7 @@ Es ist nicht zwingend notwendig das Nvidia Jetson Board mit Ubuntu Linux 20.04 z
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#python-modul-djitellopy">Python-Modul djitellopy</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-module">Python-Module</a></li>
 </ul>
   </nav></div>
 

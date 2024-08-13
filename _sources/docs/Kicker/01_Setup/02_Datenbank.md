@@ -121,7 +121,7 @@ Using database db01
 > grant all privileges on db01 to grafana
 > exit 
 ```
-Wir können so beispielsweise auch über `HTTP` Werte in die Datenbank schreiben (siehe docs für Syntax [^3]) 
+Wir können so beispielsweise auch über `HTTP` Werte in die Datenbank schreiben.
 ```bash
 curl -i -XPOST 'http://localhost:8086/write?db=db01' --data-binary '<measurement>[,<tag-key>=<tag-value>...] <field-key>=<field-value>[,<field2-key>=<field2-value>...] [unix-nano-timestamp]'
 ```
@@ -136,12 +136,5 @@ In der grafana Oberfläche können wir influxDB als Datenquelle hinzufügen inde
     + User: `grafana`
     + Password: `<password>`
 
-Den Fußnoten ist der Link zu einem Video mit anschaulichen Erklärungen beigefügt [^2].
 
 Mit grafana können wir ein Dashboard erstellen, über welches das Gesamtsystem überwacht werden kann.  
-
-# Fußnoten
-
-[^3]: https://docs.influxdata.com/influxdb/v1/write_protocols/line_protocol_tutorial/
-
-[^2]:https://www.youtube.com/watch?v=Jszd7zrl-_U&t=104s

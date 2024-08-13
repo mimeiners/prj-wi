@@ -1,5 +1,9 @@
 # Willkommen zur ewigen Liste!
 
+```{warning}
+Dies ist die Dokumentation des Vorgängerprojekts und soll als Referenz vergleichend aufzeigen, welche Veränderungen vorgenommen wurden. 
+```
+
 Diese Schrift dokumentiert die softwareseitige Ausführung einer Erweiterung eines Tischkickers.
 
 Das Ziel ist es, den Spielstand eines Spiels anzuzeigen und die Daten in einer Datenbank zu erfassen und

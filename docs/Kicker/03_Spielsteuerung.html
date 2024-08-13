@@ -105,7 +105,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="canonical" href="https://mimeiners.github.io/prj-wi/docs/Kicker/03_Spielsteuerung.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Willkommen zur ewigen Liste!" href="04_Appendix/01_Kicker.html" />
+    <link rel="next" title="Bekannte Probleme mit dem Kicker" href="04_known_issues.html" />
     <link rel="prev" title="Ergebnis-Seite" href="02_Webseite/07_Webseite_endgame.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -251,12 +251,16 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="01_Setup/00_Setup_index.html">Tischkicker Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="01_Setup/01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="01_Setup/02_Datenbank.html">Pi-Einrichtung von InfluxDB und Grafana</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="01_Setup/02_Datenbank.html">Einrichtung von influxDB und Grafana</a></li>
 <li class="toctree-l2"><a class="reference internal" href="01_Setup/03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="01_Setup/04_Material.html">Listung der Materialien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="01_Setup/05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="01_Setup/06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="01_Setup/07_3D-Modelle.html">Dokumentation zu den 3D-Modellen</a></li>
+
+
 
 
 </ul>
@@ -274,7 +278,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </details></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Programmablauf zur Spielsteuerung</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_known_issues.html">Bekannte Probleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
 <ul class="nav bd-sidenav">
@@ -586,7 +591,7 @@ Der Code ist sehr übersichtlich und einfach zu verstehen. Die Funktion <code cl
 <section id="kurbelerkennung-lvl2-foul-detection-py">
 <h2>Kurbelerkennung (LVL2_foul_detection.py)<a class="headerlink" href="#kurbelerkennung-lvl2-foul-detection-py" title="Link to this heading">#</a></h2>
 <p>Die Kurbelerkennung besteht aus der Sicht des Kickers nur aus zwei Arduinos, die bei einem Foul HIGH melden. Zwei Pins des GPIO des Raspberrys werden konstant bei “ingame” auf HIGH geprüft, was beduetet, dass der Arduino einer Spielerseite ein Kurbeln des Spielers detektiert hat.
-Restliche Funktionalität ist durch Doku der <a class="reference internal" href="#torerkennung-lvl2_goal_detectionpy"><span class="xref myst">Torerkennung</span></a> zu verstehen.</p>
+Restliche Funktionalität ist durch Doku der <a class="reference internal" href="#torerkennung-lvl2-goal-detectionpy"><span class="xref myst">Torerkennung</span></a> zu verstehen.</p>
 </section>
 <section id="interface-lvl2-interface-py">
 <h2>Interface (LVL2_interface.py)<a class="headerlink" href="#interface-lvl2-interface-py" title="Link to this heading">#</a></h2>
@@ -780,11 +785,11 @@ Fun fact: da der Torsensor weit hinten in der Ballrückgabe ist, wird ein Tor er
       </div>
     </a>
     <a class="right-next"
-       href="04_Appendix/01_Kicker.html"
+       href="04_known_issues.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Willkommen zur ewigen Liste!</p>
+        <p class="prev-next-title">Bekannte Probleme mit dem Kicker</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

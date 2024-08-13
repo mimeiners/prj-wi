@@ -253,12 +253,16 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Tischkicker Setup</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="02_Datenbank.html">Pi-Einrichtung von InfluxDB und Grafana</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="02_Datenbank.html">Einrichtung von influxDB und Grafana</a></li>
 <li class="toctree-l2"><a class="reference internal" href="03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04_Material.html">Listung der Materialien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="07_3D-Modelle.html">Dokumentation zu den 3D-Modellen</a></li>
+
+
 
 
 </ul>
@@ -276,7 +280,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../03_Spielsteuerung.html">Programmablauf zur Spielsteuerung</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../04_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../04_known_issues.html">Bekannte Probleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../05_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
 <ul class="nav bd-sidenav">
@@ -506,7 +511,7 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="hardware-setup-und-software-einrichtung-des-subsystems-kickertisch">
 <h1>Hardware-Setup und Software Einrichtung des Subsystems Kickertisch<a class="headerlink" href="#hardware-setup-und-software-einrichtung-des-subsystems-kickertisch" title="Link to this heading">#</a></h1>
 <p>In diesem Kapitel wird aufgezeigt welche Maßnahmen wir vornehmen, um die Softwareumgebung des Raspberry Pi 4 so einzurichten, dass dieser die Spielsteuerung für den Tischkicker übernehmen kann.</p>
-<p>Als zentrale Komponente des Kicker-Subsystems fungiert der Raspberry Pi 4 unter anderem als Datenbankserver, Wireless Access Point und als Webserver.</p>
+<p>Als zentrale Komponente des Kicker-Subsystems fungiert der Raspberry Pi 4 unter anderem als Datenbankserver, Wireless Access Point und als Webserver. Auf dem Raspberry Pi 4 läuft die Software Raspian-OS Version 12 (Bookworm).</p>
 <p>Im Anschluss an die Darlegung der notwendigen Softwareeinrichtungen folgen Abschnitte zur Hardwaremodifizierung des gestellten Kickertisches; dazu zählen eine Materialliste, die Dokumentation zur Kurbelerkennungsvorrichtung und ein Verdrahtungsübersicht.</p>
 <div class="toctree-wrapper compound">
 </div>

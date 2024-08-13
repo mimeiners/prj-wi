@@ -251,12 +251,16 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../Kicker/01_Setup/00_Setup_index.html">Tischkicker Setup</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/01_Webserver.html">Einrichtung von Webserver und Hotspot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/02_Datenbank.html">Pi-Einrichtung von InfluxDB und Grafana</a></li>
-
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/02_Datenbank.html">Einrichtung von influxDB und Grafana</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/03_Nutzerkontoverwaltung.html">Einrichtung der Nutzerkontoverwaltung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/04_Material.html">Listung der Materialien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/05_Verdrahtung.html">Übersicht der Verdrahtung des Subsystems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/06_Kurbelerkennung.html">Dokumentation zur Kurbelerkennung</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../../Kicker/01_Setup/07_3D-Modelle.html">Dokumentation zu den 3D-Modellen</a></li>
+
+
 
 
 </ul>
@@ -274,7 +278,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Kicker/03_Spielsteuerung.html">Programmablauf zur Spielsteuerung</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Kicker/04_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kicker/04_known_issues.html">Bekannte Probleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Kicker/05_Appendix/01_Kicker.html">Dokumentation des Vorgängerprojekts</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">AuVAReS</span></p>
 <ul class="current nav bd-sidenav">
@@ -501,6 +506,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drohnensteuerung">Drohnensteuerung</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jetson">Jetson</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-threading">Python - Threading</a></li>
 </ul>
             </nav>
         </div>
@@ -526,6 +532,12 @@ document.write(`
 <h2>Jetson<a class="headerlink" href="#jetson" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Die Verbindung zum Internet lokal in der HSB ist schwierig. Zum updaten des Repositorys wurde meist ein USB-Stik genutzt und zum Downloaden von Python Bibliotheken wurde der Jeton mit nach Hause genommen.</p></li>
+</ul>
+</section>
+<section id="python-threading">
+<h2>Python - Threading<a class="headerlink" href="#python-threading" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Bei Threads in Python ist darauf zu achten, dass Objekte und Variablen nicht direkt in unterschiedlichen Threads genutzt werden können. Das Problem kann mit Hilfe des Moduls <code class="docutils literal notranslate"><span class="pre">queue</span></code> behoben werden. Alle Threads greifen dann gleichzeitig auf die gleichen Objekte / Variablen in der Queue zu.</p></li>
 </ul>
 </section>
 </section>
@@ -596,6 +608,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drohnensteuerung">Drohnensteuerung</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jetson">Jetson</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-threading">Python - Threading</a></li>
 </ul>
   </nav></div>
 
