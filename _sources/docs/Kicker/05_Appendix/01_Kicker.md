@@ -24,7 +24,7 @@ die Spielernamen einzugeben und auf den Displays auszugeben, kann über ein im H
 verwendet werden. Zu diesem Zweck wird ein Tablett bereitgestellt. Von diesem aus kann auch die Einsicht in die
 Spieltabellen geschehen. Der schematische Programmaufbau ist in der Abbildung 1 dargestellt.
 
-```{figure} ../../images/Kicker/Ablauf.png
+```{figure} ../../../images/Kicker/Ablauf.png
 :align: center
 :name: Abb. 1 
 
