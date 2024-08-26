@@ -3,12 +3,6 @@
 format: jb-book
 root: about/unsyllabus
 parts:
-# Introduction
-  - caption: HowTo
-    chapters:
-      - file: docs/HowTo/HowTo_JB
-        title: How-To Jupyter-Book
-
 # Definition Gesamtsystem
   - caption: Gesamtsystem
     chapters:
@@ -23,14 +17,12 @@ parts:
         title: Schnittstelle Kicker - AuVAReS
         sections:
         - file: docs/Gesamtsystem/network-communication-keywords
-      
-
+          title: Schlüsselworte der Netzwerkkommunikation
 # Hardware Setup
   - caption: Hardware-Setup
     chapters:
       - file: docs/AuVAReS/Anleitungen/setup
         title: AuVAReS Nvidia Jetson Setup
-
 # Technische Details Kicker
   - caption: Kicker
     chapters:
@@ -74,8 +66,6 @@ parts:
         title: Bekannte Probleme    
       - file: docs/Kicker/05_Appendix/01_Kicker
         title: Dokumentation des Vorgängerprojekts   
-
-
 # Technische Details AuVAReS
   - caption: AuVAReS
     chapters:
@@ -85,8 +75,6 @@ parts:
         title: Objekterkennung
       - file: docs/AuVAReS/Anleitungen/Known_Issues
         title: Bekannte Probleme
-      
-
 # TBD
   # - caption: Kicker_tbd
   #   chapters:
@@ -104,3 +92,8 @@ parts:
         title: Meeting am 2024-04-17
       - file: docs/Meetings/05-03_Protokoll
         title: Meeting am 2024-05-03
+# Jupyter-Book HowTo
+  - caption: HowTo
+    chapters:
+      - file: docs/HowTo/HowTo_JB
+        title: How-To Jupyter-Book
