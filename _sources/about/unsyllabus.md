@@ -1,10 +1,9 @@
 
-| Name              | Beschreibung                                                                                                                                       |
-|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Kursus            | {{ COURSE_CODE }}                                                                                                                                  |
-| Semester          | {{ TERM }}                                                                                                                                         |
-| Dozent            | {{ INSTRUCTOR }}                                                                                                                                   |
-| Vorlesung         | {{ MEETING_TIMES }}: {{ ROOM }}                                                                                                                    |
-
-
+| Name          | Beschreibung                      |
+|---------------|-----------------------------------|
+| Kursus        | {{ COURSE_CODE }}                 |
+| Projekt       | {{ TITLE }}                       |
+| Semester      | {{ TERM }}                        |                                                                                                   
+| Dozenten      | {{ INSTRUCTOR }}                  |                                                                                                                
+| Raum          | {{ MEETING_TIMES }}: {{ ROOM }}   |
 
