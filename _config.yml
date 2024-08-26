@@ -1,9 +1,9 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: PRJ2/PRJ3 Wohninvest 4.0
-author: M. Meiners / B. Lehmann
-copyright: ""
+title: "PRJ2/PRJ3 Wohninvest 4.0"
+author: "M. Meiners / B. Lehmann"
+copyright: "2024"
 logo: ./images/hsb-logo.png
 exclude_patterns: ["LICENSE.md", "README.md"]
 only_build_toc_files: true
@@ -73,12 +73,12 @@ sphinx:
     myst_substitutions:
       INSTRUCTOR: "M. Meiners / B. Lehmann"
       PRONOUNCE: ""
-      OFFICE: "E 508 / E 30"
+      OFFICE: "E 508 / E 300"
       PHONE: "N/A"
       COURSE_CODE: "PRJ2/PRJ3"
       SECTION: ""
       CREDITS: "6"
-      TITLE: "WohnInvest 4.0"
+      TITLE: "Wohninvest 4.0"
       PREREQS: "PRJ1"
       COREQS: ""
       TERM: "SoSe 2024"
